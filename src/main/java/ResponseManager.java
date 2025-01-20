@@ -6,15 +6,37 @@ import java.util.HashMap;
  */
 public class ResponseManager {
     private final HashMap<String, String[]> responseMap = new HashMap<>();
+    private static TaskManager taskManager = null;
+    private static ResponseManager instance = null;
 
     /**
      * The constructor.
      * Initializes a response map which maps the response type to its array of responses.
      * The response map is given the final modifier as no modifications should be made upon initialization.
+     * Made private to prevent direct initialization.
+     * Should call getInstance instead.
      */
-    public ResponseManager() {
+    private ResponseManager() {
         responseMap.put("Greeting", new String[] {"Hello! My name is Mei!", "What can I do for you?"});
         responseMap.put("Exit", new String[] {"See you next time! :)"});
+
+        responseMap.put("AddTask", new String[] {"Certainly! Your new task is on the way!"});
+        responseMap.put("AddTaskSuccess", new String[] {"Task successfully added! Yay!", "Your added task is: "});
+
+        responseMap.put("NoTask", new String[] {"I can't find any tasks for you :(", "Maybe start adding new tasks?"});
+    }
+
+    /**
+     * Code adapted from geeksforgeeks.org/singleton-class-java
+     * Function to get the singleton instance of this class.
+     * @return The single instance of Response Manager.
+     */
+    public static ResponseManager getInstance() {
+        if (instance == null) {
+            instance = new ResponseManager();
+            taskManager = TaskManager.getInstance();
+        }
+        return instance;
     }
 
     /**
@@ -23,7 +45,20 @@ public class ResponseManager {
      * @param input The user input to redirect.
      */
     public void redirectInput(String input) {
-        echo(input);
+        switch (input) {
+        case "list":
+            taskManager.displayTasks();
+            break;
+
+        default:
+            boolean isAddTaskSuccess = taskManager.addTask(input);
+            if (isAddTaskSuccess) {
+                addTaskResponse(input);
+            }
+            else {
+                // Add Task Failed Exception.
+            }
+        }
     }
 
     /**
@@ -39,7 +74,7 @@ public class ResponseManager {
 
     /**
      * A function that echos everything in the given input array.
-     * This function ensures that all the responses echoed are wrapped in divider lines together.
+     * This function ensures that all the responses echoed are wrapped in the desired format.
      * @param inputs The input array to echo.
      */
     public void echoLines(String[] inputs) {
@@ -66,12 +101,36 @@ public class ResponseManager {
     }
 
     /**
+     * Prompts to the user after a task is successfully added.
+     * Assumption: The added task is always appended at the final string in the response array.
+     * @param task The task successfully added to be echoed.
+     */
+    public void addTaskResponse(String task) {
+        String[] addTaskSuccessResponse = responseMap.get("AddTaskSuccess");
+        int lastElementIndex = addTaskSuccessResponse.length - 1;
+        // Cache the original string.
+        String initialAddedTaskString = addTaskSuccessResponse[lastElementIndex];
+        addTaskSuccessResponse[lastElementIndex] += task;
+
+        echoLines(addTaskSuccessResponse);
+
+        // Reset the added task string back to default without the newly added task.
+        addTaskSuccessResponse[lastElementIndex] = initialAddedTaskString;
+    }
+
+    /**
+     * Lets the user know if there is no task to be found.
+     */
+    public void noTaskResponse() {
+        echoLines(responseMap.get("NoTask"));
+    }
+
+    /**
      * A divider line that groups the responses and makes everything neater.
      * Currently, we shall use a hard-coded method of calling this before and after every single response function calls.
      */
     private void dividerLine() {
         System.out.println("_________________________________");
     }
-
 
 }
