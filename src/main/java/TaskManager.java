@@ -1,15 +1,16 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TaskManager {
-    private final String[] tasks = new String[100];
+    private final List<Task> tasks = new ArrayList<>(100);
     private static int index = 0;
     private static TaskManager instance = null;
-    private static ResponseManager responseManager = null;
 
     /**
-     * Constructor.
+     * The constructor.
      * Made private to prevent direct initialization.
      * Should call getInstance instead.
      */
@@ -25,44 +26,68 @@ public class TaskManager {
     public static TaskManager getInstance() {
         if (instance == null) {
             instance = new TaskManager();
-            responseManager = ResponseManager.getInstance();
         }
         return instance;
     }
 
     /**
      * Adds the given task to the list of tasks.
+     * Sets the status of the new task as not done (false).
      * Returns true if success.
      * TODO: To add an exception in case the task adding fails.
-     * @param task The task to be added.
+     * @param taskDescription The description of the task to be added.
      * @return true or false.
      */
-    public boolean addTask(String task) {
-        tasks[index] = task;
+    public boolean addTask(String taskDescription) {
+        tasks.add(new Task(taskDescription, false));
         index++;
         return true;
     }
 
     /**
-     * Displays the list of tasks as a nicely organized indexed list.
-     * The list of tasks is processed before being sent to the response manager to echo the tasks.
+     * Marks the given task as completed.
+     * TODO: Should add error handling for invalid taskIndex (out of bounds index).
+     * TODO: (Optional) Add a response when user tries to mark a task that is already marked.
+     * @param taskIndex The index of the task to be marked as completed.
+     * @return The completed task itself.
      */
-    public void displayTasks() {
+    public Task markTask(int taskIndex) {
+        Task taskToBeMarked = tasks.get(taskIndex - 1);
+        taskToBeMarked.completeTask();
+        return taskToBeMarked;
+    }
+
+    /**
+     * Marks the given task as incomplete.
+     * TODO: Should add error handling for invalid taskIndex (out of bounds index).
+     * TODO: (Optional) Add a response when user tries to unmark a task that isn't marked.
+     * @param taskIndex The index of the task to be marked as incomplete.
+     * @return The unmarked task itself.
+     */
+    public Task unmarkTask(int taskIndex) {
+        Task taskToBeUnmarked = tasks.get(taskIndex - 1);
+        taskToBeUnmarked.uncheckTask();
+        return taskToBeUnmarked;
+    }
+
+    /**
+     * Formats the list of tasks as a nicely organized indexed list.
+     * @return The list of valid tasks to be sent to the response manager to display.
+     */
+    public String[] getTaskStringsToDisplay() {
         // First task doesn't exist, can assume no task.
         // Prompt response manager to reply with no task.
-        if (tasks[0] == null) {
-            responseManager.noTaskResponse();
-            return;
+        if (tasks.get(0) == null) {
+            return null;
         }
 
         // Do some processing here before sending them back to Response Manager to print out the tasks.
         AtomicInteger i = new AtomicInteger();
-        String[] validTasks = Arrays.stream(tasks)
-                .filter(Objects::nonNull)
-                .map(task -> getTaskDisplayString(i.getAndIncrement() + 1, task))
-                .toArray(String[]::new);
 
-        responseManager.echoLines(validTasks);
+        return Arrays.stream(tasks.toArray())
+                .filter(Objects::nonNull)
+                .map(task -> getTaskDisplayString(i.getAndIncrement() + 1, (Task) task))
+                .toArray(String[]::new);
     }
 
     /**
@@ -71,8 +96,8 @@ public class TaskManager {
      * @param task The task to be displayed.
      * @return A string of the desired task display format.
      */
-    private String getTaskDisplayString(int index, String task) {
-        return index + ". " + task;
+    private String getTaskDisplayString(int index, Task task) {
+        return index + ". " + task.toString();
     }
 
     /**
@@ -82,4 +107,5 @@ public class TaskManager {
     public int getTotalTasks() {
         return index;
     }
+
 }

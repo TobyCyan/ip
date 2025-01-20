@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -17,13 +18,21 @@ public class ResponseManager {
      * Should call getInstance instead.
      */
     private ResponseManager() {
+        // Basic greetings.
         responseMap.put("Greeting", new String[] {"Hello! My name is Mei!", "What can I do for you?"});
         responseMap.put("Exit", new String[] {"See you next time! :)"});
 
+        // Listing user tasks.
+        responseMap.put("ListTasks", new String[] {"Sure! Here are all your tasks!", "Enjoy :3"});
+        responseMap.put("NoTask", new String[] {"I can't find any tasks for you :(", "Maybe start adding new tasks?"});
+
+        // Adding new task.
         responseMap.put("AddTask", new String[] {"Certainly! Your new task is on the way!"});
         responseMap.put("AddTaskSuccess", new String[] {"Task successfully added! Yay!", "Your added task is: "});
 
-        responseMap.put("NoTask", new String[] {"I can't find any tasks for you :(", "Maybe start adding new tasks?"});
+        // Marking and unmarking existing tasks.
+        responseMap.put("MarkTask", new String[] {"You've completed this? That's amazing!", "I've noted down your achievement, congratulations!"});
+        responseMap.put("UnmarkTask", new String[] {"It's alright to take things easy.", "I've unchecked this task for you to revisit next time!"});
     }
 
     /**
@@ -45,9 +54,29 @@ public class ResponseManager {
      * @param input The user input to redirect.
      */
     public void redirectInput(String input) {
-        switch (input) {
+        String[] splitInput = input.split(" ");
+        String keyword = splitInput[0];
+        switch (keyword) {
         case "list":
-            taskManager.displayTasks();
+            String[] tasksToBeListed = taskManager.getTaskStringsToDisplay();
+            if (tasksToBeListed == null) {
+                noTaskResponse();
+                break;
+            } else {
+                listTasksResponse(tasksToBeListed);
+            }
+            break;
+
+        case "mark":
+            int taskIndexToMark = Integer.parseInt(splitInput[1]);
+            Task markedTask = taskManager.markTask(taskIndexToMark);
+            markTaskResponse(markedTask);
+            break;
+
+        case "unmark":
+            int taskIndexToUnmark = Integer.parseInt(splitInput[1]);
+            Task unmarkedTask = taskManager.unmarkTask(taskIndexToUnmark);
+            unmarkTaskResponse(unmarkedTask);
             break;
 
         default:
@@ -119,10 +148,63 @@ public class ResponseManager {
     }
 
     /**
+     * Prompts to the user their list of tasks.
+     * @param tasksToBeDisplayed The list of valid tasks to be displayed to the user.
+     */
+    public void listTasksResponse(String[] tasksToBeDisplayed) {
+        String[] listTasksResponses = responseMap.get("ListTasks");
+        listTasksResponses = concatResponses(listTasksResponses, tasksToBeDisplayed);
+        echoLines(listTasksResponses);
+    }
+
+    /**
+     * Concatenates 2 arrays, first followed by the second.
+     * @param first The first array.
+     * @param second The second array.
+     * @return The resulting array after concatenation.
+     */
+    public String[] concatResponses(String[] first, String[] second) {
+        int firstLength = first.length;
+        int secondLength = second.length;
+        String[] result = new String[firstLength + secondLength];
+
+        System.arraycopy(first, 0, result, 0, firstLength);
+        System.arraycopy(second, 0, result, firstLength, firstLength + secondLength - firstLength);
+
+        return result;
+    }
+
+    /**
      * Lets the user know if there is no task to be found.
      */
     public void noTaskResponse() {
         echoLines(responseMap.get("NoTask"));
+    }
+
+    /**
+     * Prompts to the user that the given task has been marked as completed.
+     * @param markedTask The task to be marked as completed.
+     */
+    public void markTaskResponse(Task markedTask) {
+        String[] markTaskResponses = responseMap.get("MarkTask");
+        int markTaskResponseLength = markTaskResponses.length + 1;
+        markTaskResponses = Arrays.copyOf(markTaskResponses, markTaskResponseLength);
+        markTaskResponses[markTaskResponseLength - 1] = markedTask.toString();
+
+        echoLines(markTaskResponses);
+    }
+
+    /**
+     * Prompts to the user that the given task has been marked as incomplete.
+     * @param unmarkedTask The task to be marked as incomplete.
+     */
+    public void unmarkTaskResponse(Task unmarkedTask) {
+        String[] unmarkTaskResponses = responseMap.get("UnmarkTask");
+        int unmarkTaskResponseLength = unmarkTaskResponses.length + 1;
+        unmarkTaskResponses = Arrays.copyOf(unmarkTaskResponses, unmarkTaskResponseLength);
+        unmarkTaskResponses[unmarkTaskResponseLength - 1] = unmarkedTask.toString();
+
+        echoLines(unmarkTaskResponses);
     }
 
     /**
