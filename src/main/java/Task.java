@@ -5,11 +5,10 @@ public class Task {
     /**
      * The constructor.
      * @param description The description of this task.
-     * @param isTaskDone The status of this task, whether it is done or not.
      */
-    public Task(String description, boolean isTaskDone) {
+    public Task(String description) {
         this.description = description;
-        this.isTaskDone = isTaskDone;
+        this.isTaskDone = false;
     }
 
     /**

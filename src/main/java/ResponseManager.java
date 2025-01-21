@@ -28,7 +28,8 @@ public class ResponseManager {
 
         // Adding new task.
         responseMap.put("AddTask", new String[] {"Certainly! Your new task is on the way!"});
-        responseMap.put("AddTaskSuccess", new String[] {"Task successfully added! Yay!", "Your added task is: "});
+        responseMap.put("AddTaskSuccess", new String[] {"Task successfully added! Yay!", "Your added task is: \n", "The total tasks you currently have is: "});
+        responseMap.put("UnknownTaskType", new String[] {"Oops! I think you may have entered an unknown task type! Please try again!", "The accepted tasks are todo, deadline, and event :))"});
 
         // Marking and unmarking existing tasks.
         responseMap.put("MarkTask", new String[] {"You've completed this? That's amazing!", "I've noted down your achievement, congratulations!"});
@@ -36,7 +37,9 @@ public class ResponseManager {
     }
 
     /**
-     * Code adapted from geeksforgeeks.org/singleton-class-java
+     * @@author TobyCyan-reused.
+     * Reused from geeksforgeeks.org/singleton-class-java
+     * with minor modifications.
      * Function to get the singleton instance of this class.
      * @return The single instance of Response Manager.
      */
@@ -54,7 +57,7 @@ public class ResponseManager {
      * @param input The user input to redirect.
      */
     public void redirectInput(String input) {
-        String[] splitInput = input.split(" ");
+        String[] splitInput = input.split(" ", 2);
         String keyword = splitInput[0];
         switch (keyword) {
         case "list":
@@ -80,12 +83,12 @@ public class ResponseManager {
             break;
 
         default:
-            boolean isAddTaskSuccess = taskManager.addTask(input);
-            if (isAddTaskSuccess) {
-                addTaskResponse(input);
-            }
-            else {
-                // Add Task Failed Exception.
+            // Task types.
+            Task addedTask = taskManager.processTask(keyword, splitInput[1]);
+            if (addedTask == null) {
+                unknownTaskTypeResponse();
+            } else {
+                addTaskResponse(addedTask);
             }
         }
     }
@@ -131,20 +134,38 @@ public class ResponseManager {
 
     /**
      * Prompts to the user after a task is successfully added.
-     * Assumption: The added task is always appended at the final string in the response array.
+     * Important to update the index variables where the information should be appended in the response array.
      * @param task The task successfully added to be echoed.
      */
-    public void addTaskResponse(String task) {
+    public void addTaskResponse(Task task) {
         String[] addTaskSuccessResponse = responseMap.get("AddTaskSuccess");
-        int lastElementIndex = addTaskSuccessResponse.length - 1;
-        // Cache the original string.
-        String initialAddedTaskString = addTaskSuccessResponse[lastElementIndex];
-        addTaskSuccessResponse[lastElementIndex] += task;
+        int totalTasks = taskManager.getTotalTasks();
 
+        // Index variables where information should be appended to.
+        int totalTaskStringIndex = addTaskSuccessResponse.length - 1;
+        int taskStringIndex = 1;
+
+        // Cache the original string.
+        String initialAddedTaskString = addTaskSuccessResponse[taskStringIndex];
+        String initialTotalTaskString = addTaskSuccessResponse[totalTaskStringIndex];
+
+        // Append the newly updated information to the responses.
+        addTaskSuccessResponse[taskStringIndex] += task.toString();
+        addTaskSuccessResponse[totalTaskStringIndex] += totalTasks;
+
+        // Echo the responses.
         echoLines(addTaskSuccessResponse);
 
         // Reset the added task string back to default without the newly added task.
-        addTaskSuccessResponse[lastElementIndex] = initialAddedTaskString;
+        addTaskSuccessResponse[taskStringIndex] = initialAddedTaskString;
+        addTaskSuccessResponse[totalTaskStringIndex] = initialTotalTaskString;
+    }
+
+    /**
+     * Prompts to the user if the task type given is unknown to Mei.
+     */
+    public void unknownTaskTypeResponse() {
+        echoLines(responseMap.get("UnknownTaskType"));
     }
 
     /**

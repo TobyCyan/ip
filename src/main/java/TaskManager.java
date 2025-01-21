@@ -8,6 +8,8 @@ public class TaskManager {
     private final List<Task> tasks = new ArrayList<>(100);
     private static int index = 0;
     private static TaskManager instance = null;
+    /** Regex to use for splitting the given user task input. */
+    private final String taskStringSplitRegex = "(/from|/by|/to)";
 
     /**
      * The constructor.
@@ -19,7 +21,9 @@ public class TaskManager {
     }
 
     /**
-     * Code adapted from geeksforgeeks.org/singleton-class-java
+     * @@author TobyCyan-reused.
+     * Reused from geeksforgeeks.org/singleton-class-java
+     * with minor modifications.
      * Function to get the singleton instance of this class.
      * @return The single instance of Task Manager.
      */
@@ -31,6 +35,43 @@ public class TaskManager {
     }
 
     /**
+     * Processes new tasks before returning them back to the response manager to prompt the user.
+     * @param taskType The type of the task.
+     * @param taskDescription The description of the task.
+     * @return The processed task itself.
+     */
+    public Task processTask(String taskType, String taskDescription) {
+        Task newTask = null;
+        String[] taskDescriptionSplit = taskDescription.split(taskStringSplitRegex, 3);
+        String description = taskDescriptionSplit[0];
+
+        switch (taskType) {
+        case "todo":
+            newTask = new ToDo(description);
+            break;
+
+        case "deadline":
+            String deadlineDateTime = taskDescriptionSplit[1];
+            newTask = new Deadline(description, deadlineDateTime);
+            break;
+
+        case "event":
+            String startDateTime = taskDescriptionSplit[1];
+            String endDateTime = taskDescriptionSplit[2];
+            newTask = new Event(description, startDateTime, endDateTime);
+            break;
+
+        }
+
+        if (newTask == null) {
+            return newTask;
+        }
+
+        addTask(newTask);
+        return newTask;
+    }
+
+    /**
      * Adds the given task to the list of tasks.
      * Sets the status of the new task as not done (false).
      * Returns true if success.
@@ -38,8 +79,8 @@ public class TaskManager {
      * @param taskDescription The description of the task to be added.
      * @return true or false.
      */
-    public boolean addTask(String taskDescription) {
-        tasks.add(new Task(taskDescription, false));
+    public boolean addTask(Task task) {
+        tasks.add(task);
         index++;
         return true;
     }
