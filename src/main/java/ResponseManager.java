@@ -28,7 +28,7 @@ public class ResponseManager {
 
         // Adding new task.
         responseMap.put("AddTask", new String[] {"Certainly! Your new task is on the way!"});
-        responseMap.put("AddTaskSuccess", new String[] {"Task successfully added! Yay!", "Your added task is: \n", "The total tasks you currently have is: "});
+        responseMap.put("AddTaskSuccess", new String[] {"Task successfully added! Yay!", "Your added task is:\n", "The total tasks you currently have is: "});
         responseMap.put("UnknownTaskType", new String[] {"Oops! I think you may have entered an unknown task type! Please try again!", "The accepted tasks are todo, deadline, and event :))"});
 
         // Marking and unmarking existing tasks.

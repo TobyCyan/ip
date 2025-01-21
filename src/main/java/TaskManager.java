@@ -118,7 +118,7 @@ public class TaskManager {
     public String[] getTaskStringsToDisplay() {
         // First task doesn't exist, can assume no task.
         // Prompt response manager to reply with no task.
-        if (tasks.get(0) == null) {
+        if (tasks.isEmpty()) {
             return null;
         }
 

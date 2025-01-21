@@ -1,0 +1,12 @@
+list
+todo borrow book
+deadline return book /by Sunday 3pm
+event JCFN 2025 /from Saturday 11am /to 9pm
+list
+mark 3
+mark 2
+list
+unmark 3
+list
+random plant the flowers
+bye
