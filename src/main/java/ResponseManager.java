@@ -29,11 +29,15 @@ public class ResponseManager {
         // Adding new task.
         responseMap.put("AddTask", new String[] {"Certainly! Your new task is on the way!"});
         responseMap.put("AddTaskSuccess", new String[] {"Task successfully added! Yay!", "Your added task is:\n", "The total tasks you currently have is: "});
-        responseMap.put("UnknownTaskType", new String[] {"Oops! I think you may have entered an unknown task type! Please try again!", "The accepted tasks are todo, deadline, and event :))"});
 
         // Marking and unmarking existing tasks.
         responseMap.put("MarkTask", new String[] {"You've completed this? That's amazing!", "I've noted down your achievement, congratulations!"});
         responseMap.put("UnmarkTask", new String[] {"It's alright to take things easy.", "I've unchecked this task for you to revisit next time!"});
+
+        // Exception responses.
+        responseMap.put("UnknownTaskType", new String[] {"Oops! I think you may have entered an unknown task type! Please try again!", "The accepted tasks are todo, deadline, and event :))"});
+        responseMap.put("EmptyTaskDescription", new String[] {"Remember to add a description to your tasks, okay?"});
+        responseMap.put("TaskIndexOutOfBounds", new String[] {"Hmm..? This task number doesn't seem to be on the list...", "Can you repeat with a valid one? :3"});
     }
 
     /**
@@ -72,25 +76,58 @@ public class ResponseManager {
 
         case "mark":
             int taskIndexToMark = Integer.parseInt(splitInput[1]);
+            if (isTaskIndexProblematic(taskIndexToMark)) {
+                break;
+            }
             Task markedTask = taskManager.markTask(taskIndexToMark);
             markTaskResponse(markedTask);
             break;
 
         case "unmark":
             int taskIndexToUnmark = Integer.parseInt(splitInput[1]);
+            if (isTaskIndexProblematic(taskIndexToUnmark)) {
+                break;
+            }
             Task unmarkedTask = taskManager.unmarkTask(taskIndexToUnmark);
             unmarkTaskResponse(unmarkedTask);
             break;
 
         default:
             // Task types.
-            Task addedTask = taskManager.processTask(keyword, splitInput[1]);
-            if (addedTask == null) {
-                unknownTaskTypeResponse();
-            } else {
-                addTaskResponse(addedTask);
+            try {
+                // User input only has a single word. i.e. no description.
+                if (splitInput.length == 1) {
+                    throw new EmptyTaskDescriptionException(getResponses("EmptyTaskDescription"));
+                }
+
+                Task addedTask = taskManager.processTask(keyword, splitInput[1]);
+                // No new task is created, which means task type is unknown.
+                if (addedTask == null) {
+                    throw new UnknownTaskTypeException(getResponses("UnknownTaskType"));
+                } else {
+                    addTaskResponse(addedTask);
+                }
+            } catch (MeiException e) {
+                e.echoErrorResponse();
             }
         }
+    }
+
+    /**
+     * Handles the task index and throws exception if it is problematic.
+     * @param taskIndex The task index to handle.
+     * @return true or false depending on whether the task index is problematic or not.
+     */
+    public boolean isTaskIndexProblematic(int taskIndex) {
+        try {
+            if (!taskManager.isTaskIndexValid(taskIndex)) {
+                throw new TaskIndexOutOfBoundsException(getResponses("TaskIndexOutOfBounds"));
+            }
+        } catch (MeiException e) {
+            e.echoErrorResponse();
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -109,7 +146,7 @@ public class ResponseManager {
      * This function ensures that all the responses echoed are wrapped in the desired format.
      * @param inputs The input array to echo.
      */
-    public void echoLines(String[] inputs) {
+    public static void echoLines(String[] inputs) {
         dividerLine();
         for (String input : inputs) {
             System.out.println(input);
@@ -121,7 +158,7 @@ public class ResponseManager {
      * Greets the user, pretty straight forward.
      */
     public void greetUser() {
-        echoLines(responseMap.get("Greeting"));
+        echoLines(getResponses("Greeting"));
     }
 
     /**
@@ -129,7 +166,7 @@ public class ResponseManager {
      * This should be the final response of the interaction.
      */
     public void exitChat() {
-        echoLines(responseMap.get("Exit"));
+        echoLines(getResponses("Exit"));
     }
 
     /**
@@ -138,7 +175,7 @@ public class ResponseManager {
      * @param task The task successfully added to be echoed.
      */
     public void addTaskResponse(Task task) {
-        String[] addTaskSuccessResponse = responseMap.get("AddTaskSuccess");
+        String[] addTaskSuccessResponse = getResponses("AddTaskSuccess");
         int totalTasks = taskManager.getTotalTasks();
 
         // Index variables where information should be appended to.
@@ -165,7 +202,7 @@ public class ResponseManager {
      * Prompts to the user if the task type given is unknown to Mei.
      */
     public void unknownTaskTypeResponse() {
-        echoLines(responseMap.get("UnknownTaskType"));
+        echoLines(getResponses("UnknownTaskType"));
     }
 
     /**
@@ -173,7 +210,7 @@ public class ResponseManager {
      * @param tasksToBeDisplayed The list of valid tasks to be displayed to the user.
      */
     public void listTasksResponse(String[] tasksToBeDisplayed) {
-        String[] listTasksResponses = responseMap.get("ListTasks");
+        String[] listTasksResponses = getResponses("ListTasks");
         listTasksResponses = concatResponses(listTasksResponses, tasksToBeDisplayed);
         echoLines(listTasksResponses);
     }
@@ -199,7 +236,7 @@ public class ResponseManager {
      * Lets the user know if there is no task to be found.
      */
     public void noTaskResponse() {
-        echoLines(responseMap.get("NoTask"));
+        echoLines(getResponses("NoTask"));
     }
 
     /**
@@ -207,7 +244,7 @@ public class ResponseManager {
      * @param markedTask The task to be marked as completed.
      */
     public void markTaskResponse(Task markedTask) {
-        String[] markTaskResponses = responseMap.get("MarkTask");
+        String[] markTaskResponses = getResponses("MarkTask");
         int markTaskResponseLength = markTaskResponses.length + 1;
         markTaskResponses = Arrays.copyOf(markTaskResponses, markTaskResponseLength);
         markTaskResponses[markTaskResponseLength - 1] = markedTask.toString();
@@ -220,7 +257,7 @@ public class ResponseManager {
      * @param unmarkedTask The task to be marked as incomplete.
      */
     public void unmarkTaskResponse(Task unmarkedTask) {
-        String[] unmarkTaskResponses = responseMap.get("UnmarkTask");
+        String[] unmarkTaskResponses = getResponses("UnmarkTask");
         int unmarkTaskResponseLength = unmarkTaskResponses.length + 1;
         unmarkTaskResponses = Arrays.copyOf(unmarkTaskResponses, unmarkTaskResponseLength);
         unmarkTaskResponses[unmarkTaskResponseLength - 1] = unmarkedTask.toString();
@@ -232,8 +269,17 @@ public class ResponseManager {
      * A divider line that groups the responses and makes everything neater.
      * Currently, we shall use a hard-coded method of calling this before and after every single response function calls.
      */
-    private void dividerLine() {
+    private static void dividerLine() {
         System.out.println("_________________________________");
+    }
+
+    /**
+     * Get the array of responses from the response map.
+     * @param key The hash key of the responses.
+     * @return The array of responses corresponding to the given key.
+     */
+    public String[] getResponses(String key) {
+        return responseMap.get(key);
     }
 
 }

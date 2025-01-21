@@ -16,9 +16,7 @@ public class TaskManager {
      * Made private to prevent direct initialization.
      * Should call getInstance instead.
      */
-    private TaskManager() {
-
-    }
+    private TaskManager() {}
 
     /**
      * @@author TobyCyan-reused.
@@ -147,6 +145,10 @@ public class TaskManager {
      */
     public int getTotalTasks() {
         return index;
+    }
+
+    public boolean isTaskIndexValid(int taskIndex) {
+        return taskIndex >= 1 && taskIndex <= getTotalTasks();
     }
 
 }
