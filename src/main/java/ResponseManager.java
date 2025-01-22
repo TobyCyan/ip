@@ -6,7 +6,7 @@ import java.util.HashMap;
  * Any calls to make Mei speak or make a response should be done via here.
  */
 public class ResponseManager {
-    private final HashMap<String, String[]> responseMap = new HashMap<>();
+    private static final HashMap<String, String[]> responseMap = new HashMap<>();
     private static TaskManager taskManager = null;
     private static ResponseManager instance = null;
 
@@ -34,10 +34,15 @@ public class ResponseManager {
         responseMap.put("MarkTask", new String[] {"You've completed this? That's amazing!", "I've noted down your achievement, congratulations!"});
         responseMap.put("UnmarkTask", new String[] {"It's alright to take things easy.", "I've unchecked this task for you to revisit next time!"});
 
+        // Deleting tasks.
+        responseMap.put("DeleteTask", new String[] {"Got it! I will erase this task from my list.", "The removed task is:\n", "The amount of tasks left for you is: "});
+
         // Exception responses.
         responseMap.put("UnknownTaskType", new String[] {"Oops! I think you may have entered an unknown task type! Please try again!", "The accepted tasks are todo, deadline, and event :))"});
         responseMap.put("EmptyTaskDescription", new String[] {"Remember to add a description to your tasks, okay?"});
         responseMap.put("TaskIndexOutOfBounds", new String[] {"Hmm..? This task number doesn't seem to be on the list...", "Can you repeat with a valid one? :3"});
+        responseMap.put("DeadlineNotEnoughInfo", new String[] {"Hmm? I think you missed some information there...", "I would need to know the deadline so... do use /by to indicate it!"});
+        responseMap.put("EventNotEnoughInfo", new String[] {"Hmm? I think you missed some information there...", "I would need to know the start and end date/times so... do use /from and /to to indicate them!"});
     }
 
     /**
@@ -92,6 +97,15 @@ public class ResponseManager {
             unmarkTaskResponse(unmarkedTask);
             break;
 
+        case "delete":
+            int taskIndexToDelete = Integer.parseInt(splitInput[1]);
+            if (isTaskIndexProblematic(taskIndexToDelete)) {
+                break;
+            }
+            Task deletedTask = taskManager.deleteTask(taskIndexToDelete);
+            deleteTaskResponse(deletedTask);
+            break;
+
         default:
             // Task types.
             try {
@@ -100,8 +114,8 @@ public class ResponseManager {
                     throw new EmptyTaskDescriptionException(getResponses("EmptyTaskDescription"));
                 }
 
-                Task addedTask = taskManager.processTask(keyword, splitInput[1]);
-                // No new task is created, which means task type is unknown.
+                Task addedTask = taskManager.processAddTask(keyword, splitInput[1]);
+                // No new task is created, which means task type is unknown or task description does not contain enough information to create a new task.
                 if (addedTask == null) {
                     throw new UnknownTaskTypeException(getResponses("UnknownTaskType"));
                 } else {
@@ -175,34 +189,55 @@ public class ResponseManager {
      * @param task The task successfully added to be echoed.
      */
     public void addTaskResponse(Task task) {
-        String[] addTaskSuccessResponse = getResponses("AddTaskSuccess");
+        String[] addTaskSuccessResponses = getResponses("AddTaskSuccess");
         int totalTasks = taskManager.getTotalTasks();
 
         // Index variables where information should be appended to.
-        int totalTaskStringIndex = addTaskSuccessResponse.length - 1;
+        int totalTaskStringIndex = addTaskSuccessResponses.length - 1;
         int taskStringIndex = 1;
 
         // Cache the original string.
-        String initialAddedTaskString = addTaskSuccessResponse[taskStringIndex];
-        String initialTotalTaskString = addTaskSuccessResponse[totalTaskStringIndex];
+        String initialAddedTaskString = addTaskSuccessResponses[taskStringIndex];
+        String initialTotalTaskString = addTaskSuccessResponses[totalTaskStringIndex];
 
         // Append the newly updated information to the responses.
-        addTaskSuccessResponse[taskStringIndex] += task.toString();
-        addTaskSuccessResponse[totalTaskStringIndex] += totalTasks;
+        addTaskSuccessResponses[taskStringIndex] += task.toString();
+        addTaskSuccessResponses[totalTaskStringIndex] += totalTasks;
 
         // Echo the responses.
-        echoLines(addTaskSuccessResponse);
+        echoLines(addTaskSuccessResponses);
 
         // Reset the added task string back to default without the newly added task.
-        addTaskSuccessResponse[taskStringIndex] = initialAddedTaskString;
-        addTaskSuccessResponse[totalTaskStringIndex] = initialTotalTaskString;
+        addTaskSuccessResponses[taskStringIndex] = initialAddedTaskString;
+        addTaskSuccessResponses[totalTaskStringIndex] = initialTotalTaskString;
     }
 
     /**
-     * Prompts to the user if the task type given is unknown to Mei.
+     * Prompts to the user after task is deleted.
+     * @param deletedTask The deleted task.
      */
-    public void unknownTaskTypeResponse() {
-        echoLines(getResponses("UnknownTaskType"));
+    public void deleteTaskResponse(Task deletedTask) {
+        String[] deleteTaskSuccessResponses = getResponses("DeleteTask");
+        int totalTasks = taskManager.getTotalTasks();
+
+        // Index variables where information should be appended to.
+        int totalTaskStringIndex = deleteTaskSuccessResponses.length - 1;
+        int taskStringIndex = 1;
+
+        // Cache the original string.
+        String initialDeletedTaskString = deleteTaskSuccessResponses[taskStringIndex];
+        String initialTotalTaskString = deleteTaskSuccessResponses[totalTaskStringIndex];
+
+        // Append the newly updated information to the responses.
+        deleteTaskSuccessResponses[taskStringIndex] += deletedTask.toString();
+        deleteTaskSuccessResponses[totalTaskStringIndex] += totalTasks;
+
+        // Echo the responses.
+        echoLines(deleteTaskSuccessResponses);
+
+        // Reset the added task string back to default without the newly added task.
+        deleteTaskSuccessResponses[taskStringIndex] = initialDeletedTaskString;
+        deleteTaskSuccessResponses[totalTaskStringIndex] = initialTotalTaskString;
     }
 
     /**
@@ -278,7 +313,7 @@ public class ResponseManager {
      * @param key The hash key of the responses.
      * @return The array of responses corresponding to the given key.
      */
-    public String[] getResponses(String key) {
+    public static String[] getResponses(String key) {
         return responseMap.get(key);
     }
 

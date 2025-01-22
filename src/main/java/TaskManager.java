@@ -33,12 +33,12 @@ public class TaskManager {
     }
 
     /**
-     * Processes new tasks before returning them back to the response manager to prompt the user.
+     * Processes new added tasks before returning them back to the response manager to prompt the user.
      * @param taskType The type of the task.
      * @param taskDescription The description of the task.
      * @return The processed task itself.
      */
-    public Task processTask(String taskType, String taskDescription) {
+    public Task processAddTask(String taskType, String taskDescription) throws MeiException {
         Task newTask = null;
         String[] taskDescriptionSplit = taskDescription.split(taskStringSplitRegex, 3);
         String description = taskDescriptionSplit[0];
@@ -49,11 +49,21 @@ public class TaskManager {
             break;
 
         case "deadline":
+            // Task description split must be length 2.
+            if (taskDescriptionSplit.length < 2) {
+                throw new DeadlineNotEnoughInfoException(ResponseManager.getResponses("DeadlineNotEnoughInfo"));
+            }
+
             String deadlineDateTime = taskDescriptionSplit[1];
             newTask = new Deadline(description, deadlineDateTime);
             break;
 
         case "event":
+            // Task description split must be length 3.
+            if (taskDescriptionSplit.length < 3) {
+                throw new EventNotEnoughInfoException(ResponseManager.getResponses("EventNotEnoughInfo"));
+            }
+
             String startDateTime = taskDescriptionSplit[1];
             String endDateTime = taskDescriptionSplit[2];
             newTask = new Event(description, startDateTime, endDateTime);
@@ -73,19 +83,14 @@ public class TaskManager {
      * Adds the given task to the list of tasks.
      * Sets the status of the new task as not done (false).
      * Returns true if success.
-     * TODO: To add an exception in case the task adding fails.
      * @param taskDescription The description of the task to be added.
-     * @return true or false.
      */
-    public boolean addTask(Task task) {
+    public void addTask(Task task) {
         tasks.add(task);
-        index++;
-        return true;
     }
 
     /**
      * Marks the given task as completed.
-     * TODO: Should add error handling for invalid taskIndex (out of bounds index).
      * TODO: (Optional) Add a response when user tries to mark a task that is already marked.
      * @param taskIndex The index of the task to be marked as completed.
      * @return The completed task itself.
@@ -98,7 +103,6 @@ public class TaskManager {
 
     /**
      * Marks the given task as incomplete.
-     * TODO: Should add error handling for invalid taskIndex (out of bounds index).
      * TODO: (Optional) Add a response when user tries to unmark a task that isn't marked.
      * @param taskIndex The index of the task to be marked as incomplete.
      * @return The unmarked task itself.
@@ -107,6 +111,12 @@ public class TaskManager {
         Task taskToBeUnmarked = tasks.get(taskIndex - 1);
         taskToBeUnmarked.uncheckTask();
         return taskToBeUnmarked;
+    }
+
+    public Task deleteTask(int taskIndex) {
+        Task taskToBeDeleted = tasks.get(taskIndex - 1);
+        tasks.remove(taskToBeDeleted);
+        return taskToBeDeleted;
     }
 
     /**
@@ -144,9 +154,14 @@ public class TaskManager {
      * @return The number of tasks.
      */
     public int getTotalTasks() {
-        return index;
+        return tasks.size();
     }
 
+    /**
+     * Checks whether the task index used to process a task is valid.
+     * @param taskIndex The task index to check.
+     * @return true or false.
+     */
     public boolean isTaskIndexValid(int taskIndex) {
         return taskIndex >= 1 && taskIndex <= getTotalTasks();
     }

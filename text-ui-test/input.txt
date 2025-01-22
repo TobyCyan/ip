@@ -8,5 +8,14 @@ mark 2
 list
 unmark 3
 list
+todo
+event
+deadline
 random plant the flowers
+event Career Fair /from tmr
+deadline watch online lecture
+delete 2
+todo read textbook
+delete 3
+list
 bye

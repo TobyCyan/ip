@@ -61,8 +61,49 @@ Enjoy :3
 3. [E][ ] JCFN 2025 (from: Saturday 11am to: 9pm)
 _________________________________
 _________________________________
+Remember to add a description to your tasks, okay?
+_________________________________
+_________________________________
+Remember to add a description to your tasks, okay?
+_________________________________
+_________________________________
+Remember to add a description to your tasks, okay?
+_________________________________
+_________________________________
 Oops! I think you may have entered an unknown task type! Please try again!
 The accepted tasks are todo, deadline, and event :))
+_________________________________
+_________________________________
+Hmm? I think you missed some information there...
+I would need to know the start and end date/times so... do use /from and /to to indicate them!
+_________________________________
+_________________________________
+Hmm? I think you missed some information there...
+I would need to know the deadline so... do use /by to indicate it!
+_________________________________
+_________________________________
+Got it! I will erase this task from my list.
+The removed task is:
+[D][X] return book (by: Sunday 3pm)
+The amount of tasks left for you is: 2
+_________________________________
+_________________________________
+Task successfully added! Yay!
+Your added task is:
+[T][ ] read textbook
+The total tasks you currently have is: 3
+_________________________________
+_________________________________
+Got it! I will erase this task from my list.
+The removed task is:
+[T][ ] read textbook
+The amount of tasks left for you is: 2
+_________________________________
+_________________________________
+Sure! Here are all your tasks!
+Enjoy :3
+1. [T][ ] borrow book
+2. [E][ ] JCFN 2025 (from: Saturday 11am to: 9pm)
 _________________________________
 _________________________________
 See you next time! :)
