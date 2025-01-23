@@ -5,11 +5,11 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TaskManager {
-    private final List<Task> tasks = new ArrayList<>(100);
+    private List<Task> tasks = new ArrayList<>(100);
     private static int index = 0;
     private static TaskManager instance = null;
     /** Regex to use for splitting the given user task input. */
-    private final String taskStringSplitRegex = "(/from|/by|/to)";
+    private final String TASK_STRING_SPLIT_REGEX = "(/from|/by|/to)";
 
     /**
      * The constructor.
@@ -40,7 +40,7 @@ public class TaskManager {
      */
     public Task processAddTask(String taskType, String taskDescription) throws MeiException {
         Task newTask = null;
-        String[] taskDescriptionSplit = taskDescription.split(taskStringSplitRegex, 3);
+        String[] taskDescriptionSplit = taskDescription.split(TASK_STRING_SPLIT_REGEX, 3);
         String description = taskDescriptionSplit[0];
 
         switch (taskType) {

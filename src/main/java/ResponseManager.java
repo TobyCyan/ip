@@ -6,7 +6,7 @@ import java.util.HashMap;
  * Any calls to make Mei speak or make a response should be done via here.
  */
 public class ResponseManager {
-    private static final HashMap<String, String[]> responseMap = new HashMap<>();
+    private static final HashMap<String, String[]> RESPONSE_MAP = new HashMap<>();
     private static TaskManager taskManager = null;
     private static ResponseManager instance = null;
 
@@ -19,30 +19,30 @@ public class ResponseManager {
      */
     private ResponseManager() {
         // Basic greetings.
-        responseMap.put("Greeting", new String[] {"Hello! My name is Mei!", "What can I do for you?"});
-        responseMap.put("Exit", new String[] {"See you next time! :)"});
+        RESPONSE_MAP.put("Greeting", new String[] {"Hello! My name is Mei!", "What can I do for you?"});
+        RESPONSE_MAP.put("Exit", new String[] {"See you next time! :)"});
 
         // Listing user tasks.
-        responseMap.put("ListTasks", new String[] {"Sure! Here are all your tasks!", "Enjoy :3"});
-        responseMap.put("NoTask", new String[] {"I can't find any tasks for you :(", "Maybe start adding new tasks?"});
+        RESPONSE_MAP.put("ListTasks", new String[] {"Sure! Here are all your tasks!", "Enjoy :3"});
+        RESPONSE_MAP.put("NoTask", new String[] {"I can't find any tasks for you :(", "Maybe start adding new tasks?"});
 
         // Adding new task.
-        responseMap.put("AddTask", new String[] {"Certainly! Your new task is on the way!"});
-        responseMap.put("AddTaskSuccess", new String[] {"Task successfully added! Yay!", "Your added task is:\n", "The total tasks you currently have is: "});
+        RESPONSE_MAP.put("AddTask", new String[] {"Certainly! Your new task is on the way!"});
+        RESPONSE_MAP.put("AddTaskSuccess", new String[] {"Task successfully added! Yay!", "Your added task is:\n", "The total tasks you currently have is: "});
 
         // Marking and unmarking existing tasks.
-        responseMap.put("MarkTask", new String[] {"You've completed this? That's amazing!", "I've noted down your achievement, congratulations!"});
-        responseMap.put("UnmarkTask", new String[] {"It's alright to take things easy.", "I've unchecked this task for you to revisit next time!"});
+        RESPONSE_MAP.put("MarkTask", new String[] {"You've completed this? That's amazing!", "I've noted down your achievement, congratulations!"});
+        RESPONSE_MAP.put("UnmarkTask", new String[] {"It's alright to take things easy.", "I've unchecked this task for you to revisit next time!"});
 
         // Deleting tasks.
-        responseMap.put("DeleteTask", new String[] {"Got it! I will erase this task from my list.", "The removed task is:\n", "The amount of tasks left for you is: "});
+        RESPONSE_MAP.put("DeleteTask", new String[] {"Got it! I will erase this task from my list.", "The removed task is:\n", "The amount of tasks left for you is: "});
 
         // Exception responses.
-        responseMap.put("UnknownTaskType", new String[] {"Oops! I think you may have entered an unknown task type! Please try again!", "The accepted tasks are todo, deadline, and event :))"});
-        responseMap.put("EmptyTaskDescription", new String[] {"Remember to add a description to your tasks, okay?"});
-        responseMap.put("TaskIndexOutOfBounds", new String[] {"Hmm..? This task number doesn't seem to be on the list...", "Can you repeat with a valid one? :3"});
-        responseMap.put("DeadlineNotEnoughInfo", new String[] {"Hmm? I think you missed some information there...", "I would need to know the deadline so... do use /by to indicate it!"});
-        responseMap.put("EventNotEnoughInfo", new String[] {"Hmm? I think you missed some information there...", "I would need to know the start and end date/times so... do use /from and /to to indicate them!"});
+        RESPONSE_MAP.put("UnknownTaskType", new String[] {"Oops! I think you may have entered an unknown task type! Please try again!", "The accepted tasks are todo, deadline, and event :))"});
+        RESPONSE_MAP.put("EmptyTaskDescription", new String[] {"Remember to add a description to your tasks, okay?"});
+        RESPONSE_MAP.put("TaskIndexOutOfBounds", new String[] {"Hmm..? This task number doesn't seem to be on the list...", "Can you repeat with a valid one? :3"});
+        RESPONSE_MAP.put("DeadlineNotEnoughInfo", new String[] {"Hmm? I think you missed some information there...", "I would need to know the deadline so... do use /by to indicate it!"});
+        RESPONSE_MAP.put("EventNotEnoughInfo", new String[] {"Hmm? I think you missed some information there...", "I would need to know the start and end date/times so... do use /from and /to to indicate them!"});
     }
 
     /**
@@ -314,7 +314,7 @@ public class ResponseManager {
      * @return The array of responses corresponding to the given key.
      */
     public static String[] getResponses(String key) {
-        return responseMap.get(key);
+        return RESPONSE_MAP.get(key);
     }
 
 }
