@@ -19,10 +19,12 @@ public class FileRead {
     public static ArrayList<Task> readFromFile() throws IOException {
         ArrayList<Task> resultTasks = new ArrayList<>();
         File file = new File(READ_FROM_FILE_PATH);
+
         boolean isFilePathExist = FileWrite.isFilePathExist(file);
         if (!isFilePathExist) {
             FileWrite.createFilePath(file);
         }
+
         Scanner scanner = new Scanner(file);
         while (scanner.hasNext()) {
             Task taskData = processFileTaskData(scanner.nextLine());
