@@ -15,7 +15,7 @@ public class Deadline extends Task {
     }
 
     public String getTaskDataString() {
-        return getClass() + "|" + getTaskStatusString() + "|" + super.description + "|" + deadlineDateTime;
+        return toRunTimeClassString() + "|" + getTaskStatusString() + "|" + super.description + "|" + deadlineDateTime;
     }
 
     public String toString() {

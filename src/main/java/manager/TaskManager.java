@@ -52,10 +52,11 @@ public class TaskManager {
     }
 
     /**
-     * Processes new added tasks before returning them back to the response manager to prompt the user.
+     * Processes new added tasks before returning them to the response manager to prompt the user.
+     * Assumes that there are only 3 types of tasks to be considered: todo, deadline and event.
      * @param taskType The type of the task.
      * @param taskDescription The description of the task.
-     * @return The processed task itself.
+     * @return The processed task itself, or null if the task type does not match any of the valid types.
      */
     public Task processAddTask(String taskType, String taskDescription) throws MeiException {
         Task newTask = null;

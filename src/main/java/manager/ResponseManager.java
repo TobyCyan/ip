@@ -1,13 +1,11 @@
 package manager;
 
-import exception.EmptyTaskDescriptionException;
-import exception.MeiException;
-import exception.TaskIndexOutOfBoundsException;
-import exception.UnknownTaskTypeException;
+import exception.*;
 import tasks.Task;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * This is the manager responsible for managing Mei's responses.
@@ -15,6 +13,7 @@ import java.util.HashMap;
  */
 public class ResponseManager {
     private static final HashMap<String, String[]> RESPONSE_MAP = new HashMap<>();
+    private static final HashSet<String> TASK_TYPES = new HashSet<>();
     private static TaskManager taskManager = null;
     private static ResponseManager instance = null;
 
@@ -26,6 +25,11 @@ public class ResponseManager {
      * Should call getInstance instead.
      */
     private ResponseManager() {
+        // Task types.
+        TASK_TYPES.add("ToDo");
+        TASK_TYPES.add("Deadline");
+        TASK_TYPES.add("Event");
+
         // Basic greetings.
         RESPONSE_MAP.put("Greeting", new String[] {"Hello! My name is Mei!", "What can I do for you?"});
         RESPONSE_MAP.put("Exit", new String[] {"See you next time! :)"});
@@ -46,6 +50,7 @@ public class ResponseManager {
         RESPONSE_MAP.put("DeleteTask", new String[] {"Got it! I will erase this task from my list.", "The removed task is:\n", "The amount of tasks left for you is: "});
 
         // Exception responses.
+        RESPONSE_MAP.put("UnknownUserInput", new String[] {"Come again? I don't quite get what you are saying."});
         RESPONSE_MAP.put("UnknownTaskType", new String[] {"Oops! I think you may have entered an unknown task type! Please try again!", "The accepted tasks are todo, deadline, and event :))"});
         RESPONSE_MAP.put("EmptyTaskDescription", new String[] {"Remember to add a description to your tasks, okay?"});
         RESPONSE_MAP.put("TaskIndexOutOfBounds", new String[] {"Hmm..? This task number doesn't seem to be on the list...", "Can you repeat with a valid one? :3"});
@@ -117,6 +122,11 @@ public class ResponseManager {
         default:
             // Task types.
             try {
+                // First word doesn't fit in any of the commands nor task types.
+                if (!TASK_TYPES.contains(splitInput[0])) {
+                    throw new UnknownUserInputException(getResponses("UnknownUserInput"));
+                }
+
                 // User input only has a single word. i.e. no description.
                 if (splitInput.length == 1) {
                     throw new EmptyTaskDescriptionException(getResponses("EmptyTaskDescription"));

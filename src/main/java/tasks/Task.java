@@ -22,7 +22,7 @@ public class Task {
     }
 
     public String getTaskDataString() {
-        return getClass() + "|" + getTaskStatusString() + "|" + description;
+        return toRunTimeClassString() + "|" + getTaskStatusString() + "|" + description;
     }
 
     /**
@@ -37,6 +37,10 @@ public class Task {
      */
     public void uncheckTask() {
         isTaskDone = false;
+    }
+
+    public String toRunTimeClassString() {
+        return getClass().getSimpleName();
     }
 
     public String toString() {

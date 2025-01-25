@@ -18,7 +18,7 @@ public class Event extends Task {
     }
 
     public String getTaskDataString() {
-        return getClass() + "|" + getTaskStatusString() + "|" + super.description + "|" + startDateTime + "|" + endDateTime;
+        return toRunTimeClassString() + "|" + getTaskStatusString() + "|" + super.description + "|" + startDateTime + "|" + endDateTime;
     }
 
     public String toString() {
