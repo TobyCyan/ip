@@ -1,3 +1,16 @@
+package manager;
+
+import exception.DeadlineNotEnoughInfoException;
+import exception.EventNotEnoughInfoException;
+import exception.MeiException;
+import fileaccess.FileRead;
+import fileaccess.FileWrite;
+import tasks.Deadline;
+import tasks.Event;
+import tasks.Task;
+import tasks.ToDo;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -5,8 +18,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TaskManager {
-    private List<Task> tasks = new ArrayList<>(100);
-    private static int index = 0;
+    private List<Task> tasks = new ArrayList<>();
     private static TaskManager instance = null;
     /** Regex to use for splitting the given user task input. */
     private final String TASK_STRING_SPLIT_REGEX = "(/from|/by|/to)";
@@ -15,8 +27,15 @@ public class TaskManager {
      * The constructor.
      * Made private to prevent direct initialization.
      * Should call getInstance instead.
+     * Attempts to read the list of tasks from the .txt file and store it into tasks.
      */
-    private TaskManager() {}
+    private TaskManager() {
+        try {
+            this.tasks = FileRead.readFromFile();
+        } catch (Exception e) {
+            System.out.println("Error reading from file path: " + e.getMessage());
+        }
+    }
 
     /**
      * @@author TobyCyan-reused.
@@ -83,10 +102,15 @@ public class TaskManager {
      * Adds the given task to the list of tasks.
      * Sets the status of the new task as not done (false).
      * Returns true if success.
-     * @param taskDescription The description of the task to be added.
+     * @param task The new task to be added.
      */
     public void addTask(Task task) {
         tasks.add(task);
+        try {
+            FileWrite.writeTaskToFile(task);
+        } catch (Exception e) {
+            System.out.println("Error writing task to file path: " + e.getMessage());
+        }
     }
 
     /**
@@ -98,6 +122,11 @@ public class TaskManager {
     public Task markTask(int taskIndex) {
         Task taskToBeMarked = tasks.get(taskIndex - 1);
         taskToBeMarked.completeTask();
+        try {
+            FileWrite.overwriteTaskData(taskIndex, taskToBeMarked.getTaskDataString());
+        } catch (Exception e) {
+            System.out.println("Error overwriting task upon completion: " + e.getMessage());
+        }
         return taskToBeMarked;
     }
 
@@ -110,12 +139,22 @@ public class TaskManager {
     public Task unmarkTask(int taskIndex) {
         Task taskToBeUnmarked = tasks.get(taskIndex - 1);
         taskToBeUnmarked.uncheckTask();
+        try {
+            FileWrite.overwriteTaskData(taskIndex, taskToBeUnmarked.getTaskDataString());
+        } catch (Exception e) {
+            System.out.println("Error overwriting task upon incompletion: " + e.getMessage());
+        }
         return taskToBeUnmarked;
     }
 
     public Task deleteTask(int taskIndex) {
         Task taskToBeDeleted = tasks.get(taskIndex - 1);
         tasks.remove(taskToBeDeleted);
+        try {
+            FileWrite.removeTaskData(taskIndex);
+        } catch (Exception e) {
+            System.out.println("Error deleting task from the .txt file: " + e.getMessage());
+        }
         return taskToBeDeleted;
     }
 

@@ -1,3 +1,7 @@
+package exception;
+
+import manager.ResponseManager;
+
 public class MeiException extends Throwable {
     private final String[] errorResponses;
 

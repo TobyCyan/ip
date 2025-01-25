@@ -1,3 +1,5 @@
+package tasks;
+
 public class Deadline extends Task {
     private final String deadlineDateTime;
 
@@ -10,6 +12,10 @@ public class Deadline extends Task {
     public Deadline(String description, String deadlineDateTime) {
         super(description);
         this.deadlineDateTime = deadlineDateTime;
+    }
+
+    public String getTaskDataString() {
+        return getClass() + "|" + getTaskStatusString() + "|" + super.description + "|" + deadlineDateTime;
     }
 
     public String toString() {

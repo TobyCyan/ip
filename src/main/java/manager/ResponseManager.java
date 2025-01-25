@@ -1,3 +1,11 @@
+package manager;
+
+import exception.EmptyTaskDescriptionException;
+import exception.MeiException;
+import exception.TaskIndexOutOfBoundsException;
+import exception.UnknownTaskTypeException;
+import tasks.Task;
+
 import java.util.Arrays;
 import java.util.HashMap;
 

@@ -1,3 +1,5 @@
+package tasks;
+
 public class Event extends Task {
     private final String startDateTime;
     private final String endDateTime;
@@ -13,6 +15,10 @@ public class Event extends Task {
         super(description);
         this.startDateTime = startDateTime;
         this.endDateTime = endDateTime;
+    }
+
+    public String getTaskDataString() {
+        return getClass() + "|" + getTaskStatusString() + "|" + super.description + "|" + startDateTime + "|" + endDateTime;
     }
 
     public String toString() {

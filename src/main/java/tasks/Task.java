@@ -1,5 +1,7 @@
+package tasks;
+
 public class Task {
-    private final String description;
+    protected final String description;
     private boolean isTaskDone;
 
     /**
@@ -17,6 +19,10 @@ public class Task {
      */
     public String getTaskStatusString() {
         return isTaskDone ? "[X]" : "[ ]";
+    }
+
+    public String getTaskDataString() {
+        return getClass() + "|" + getTaskStatusString() + "|" + description;
     }
 
     /**

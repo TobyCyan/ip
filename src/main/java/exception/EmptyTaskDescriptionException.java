@@ -1,3 +1,5 @@
+package exception;
+
 public class EmptyTaskDescriptionException extends MeiException {
 
     public EmptyTaskDescriptionException(String[] errorResponses) {
