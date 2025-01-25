@@ -23,7 +23,7 @@ public class Deadline extends TimedTask {
     }
 
     public String toString() {
-        return "[D]" + super.toString() + "(by:" + toFormattedDateTimeOutputString(deadlineDateTime) + ")";
+        return "[D]" + super.toString() + " (by: " + toFormattedDateTimeOutputString(deadlineDateTime) + ")";
     }
 
 }

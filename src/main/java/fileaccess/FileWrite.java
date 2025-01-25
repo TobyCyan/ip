@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class FileWrite {
-    private static final String WRITE_TO_FILE_PATH = "./../../taskdata/tasks.txt";
+    private static final String WRITE_TO_FILE_PATH = "./taskdata/tasks.txt";
 
     public static void writeTaskToFile(Task task) throws IOException {
         File file = new File(WRITE_TO_FILE_PATH);

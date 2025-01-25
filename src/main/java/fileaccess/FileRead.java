@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class FileRead {
     private static final String SPLIT_TASK_FILE_DATA_REGEX = "\\|";
-    private static final String READ_FROM_FILE_PATH = "./../../taskdata/tasks.txt";
+    private static final String READ_FROM_FILE_PATH = "./taskdata/tasks.txt";
 
     public static ArrayList<Task> readFromFile() throws IOException {
         ArrayList<Task> resultTasks = new ArrayList<>();

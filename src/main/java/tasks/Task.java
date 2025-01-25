@@ -44,6 +44,6 @@ public class Task {
     }
 
     public String toString() {
-        return getTaskStatusString() + " " + description;
+        return getTaskStatusString() + " " + description.trim();
     }
 }
