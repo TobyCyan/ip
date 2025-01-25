@@ -6,15 +6,19 @@ public class Task {
 
     /**
      * The constructor.
+     * The task description is trimmed.
+     * So that display and save formats will ignore leading and trailing spaces.
+     *
      * @param description The description of this task.
      */
     public Task(String description) {
-        this.description = description;
+        this.description = description.trim();
         this.isTaskDone = false;
     }
 
     /**
      * Gets this task's status string.
+     *
      * @return The status string that is already wrapped in the desired format.
      */
     public String getTaskStatusString() {
@@ -44,6 +48,6 @@ public class Task {
     }
 
     public String toString() {
-        return getTaskStatusString() + " " + description.trim();
+        return getTaskStatusString() + " " + description;
     }
 }
