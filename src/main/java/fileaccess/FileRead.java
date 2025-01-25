@@ -14,15 +14,17 @@ import java.util.Scanner;
 
 public class FileRead {
     private static final String SPLIT_TASK_FILE_DATA_REGEX = "\\|";
-    private static final String READ_FROM_FILE_PATH = "./../taskdata/tasks.txt";
+    private static final String READ_FROM_FILE_PATH = "./taskdata/tasks.txt";
 
     public static ArrayList<Task> readFromFile() throws IOException {
         ArrayList<Task> resultTasks = new ArrayList<>();
         File file = new File(READ_FROM_FILE_PATH);
+
         boolean isFilePathExist = FileWrite.isFilePathExist(file);
         if (!isFilePathExist) {
             FileWrite.createFilePath(file);
         }
+
         Scanner scanner = new Scanner(file);
         while (scanner.hasNext()) {
             Task taskData = processFileTaskData(scanner.nextLine());
@@ -33,7 +35,7 @@ public class FileRead {
     }
 
     private static Task processFileTaskData(String fileData) {
-        String[] splitFileData = fileData.split(SPLIT_TASK_FILE_DATA_REGEX, 4);
+        String[] splitFileData = fileData.split(SPLIT_TASK_FILE_DATA_REGEX, 5);
         Task newTask = null;
         String taskType = splitFileData[0];
         boolean isTaskDone = splitFileData[1].equals("[X]");

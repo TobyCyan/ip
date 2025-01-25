@@ -1,8 +1,10 @@
 package tasks;
 
-public class Event extends Task {
-    private final String startDateTime;
-    private final String endDateTime;
+import java.time.LocalDateTime;
+
+public class Event extends TimedTask {
+    private final LocalDateTime startDateTime;
+    private final LocalDateTime endDateTime;
 
     /**
      * The constructor.
@@ -13,16 +15,16 @@ public class Event extends Task {
      */
     public Event(String description, String startDateTime, String endDateTime) {
         super(description);
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
+        this.startDateTime = convertDateTimeFormat(startDateTime);
+        this.endDateTime = convertDateTimeFormat(endDateTime);
     }
 
     public String getTaskDataString() {
-        return toRunTimeClassString() + "|" + getTaskStatusString() + "|" + super.description + "|" + startDateTime + "|" + endDateTime;
+        return toRunTimeClassString() + "|" + getTaskStatusString() + "|" + super.description + "|" + toFormattedDateTimeInputString(startDateTime) + "|" + toFormattedDateTimeInputString(endDateTime);
     }
 
     public String toString() {
-        return "[E]" + super.toString() + "(from:" + startDateTime + "to:" + endDateTime + ")";
+        return "[E]" + super.toString() + " (from: " + toFormattedDateTimeOutputString(startDateTime) + " to: " + toFormattedDateTimeOutputString(endDateTime) + ")";
     }
 
 }
