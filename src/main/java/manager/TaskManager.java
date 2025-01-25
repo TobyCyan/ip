@@ -11,14 +11,12 @@ import tasks.Task;
 import tasks.ToDo;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TaskManager {
     private List<Task> tasks = new ArrayList<>();
+    private static final HashSet<String> TASK_TYPES = new HashSet<>();
     private static TaskManager instance = null;
     /** Regex to use for splitting the given user task input. */
     private final String TASK_STRING_SPLIT_REGEX = "(/from|/by|/to)";
@@ -30,6 +28,11 @@ public class TaskManager {
      * Attempts to read the list of tasks from the .txt file and store it into tasks.
      */
     private TaskManager() {
+        // Task types.
+        TASK_TYPES.add("todo");
+        TASK_TYPES.add("deadline");
+        TASK_TYPES.add("event");
+
         try {
             this.tasks = FileRead.readFromFile();
         } catch (Exception e) {
@@ -206,4 +209,7 @@ public class TaskManager {
         return taskIndex >= 1 && taskIndex <= getTotalTasks();
     }
 
+    public boolean isTaskTypeExist(String type) {
+        return TASK_TYPES.contains(type);
+    }
 }

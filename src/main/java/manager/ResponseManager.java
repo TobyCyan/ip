@@ -13,7 +13,6 @@ import java.util.HashSet;
  */
 public class ResponseManager {
     private static final HashMap<String, String[]> RESPONSE_MAP = new HashMap<>();
-    private static final HashSet<String> TASK_TYPES = new HashSet<>();
     private static TaskManager taskManager = null;
     private static ResponseManager instance = null;
 
@@ -25,11 +24,6 @@ public class ResponseManager {
      * Should call getInstance instead.
      */
     private ResponseManager() {
-        // Task types.
-        TASK_TYPES.add("ToDo");
-        TASK_TYPES.add("Deadline");
-        TASK_TYPES.add("Event");
-
         // Basic greetings.
         RESPONSE_MAP.put("Greeting", new String[] {"Hello! My name is Mei!", "What can I do for you?"});
         RESPONSE_MAP.put("Exit", new String[] {"See you next time! :)"});
@@ -123,7 +117,7 @@ public class ResponseManager {
             // Task types.
             try {
                 // First word doesn't fit in any of the commands nor task types.
-                if (!TASK_TYPES.contains(splitInput[0])) {
+                if (!taskManager.isTaskTypeExist(splitInput[0])) {
                     throw new UnknownUserInputException(getResponses("UnknownUserInput"));
                 }
 
