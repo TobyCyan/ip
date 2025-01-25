@@ -1,7 +1,11 @@
 package tasks;
 
-public class Deadline extends Task {
-    private final String deadlineDateTime;
+import java.time.LocalDateTime;
+
+
+public class Deadline extends TimedTask {
+    // private final String deadlineDateTime;
+    private final LocalDateTime deadlineDateTime;
 
     /**
      * The constructor.
@@ -11,15 +15,15 @@ public class Deadline extends Task {
      */
     public Deadline(String description, String deadlineDateTime) {
         super(description);
-        this.deadlineDateTime = deadlineDateTime;
+        this.deadlineDateTime = convertDateTimeFormat(deadlineDateTime);
     }
 
     public String getTaskDataString() {
-        return toRunTimeClassString() + "|" + getTaskStatusString() + "|" + super.description + "|" + deadlineDateTime;
+        return toRunTimeClassString() + "|" + getTaskStatusString() + "|" + super.description + "|" + toFormattedDateTimeInputString(deadlineDateTime);
     }
 
     public String toString() {
-        return "[D]" + super.toString() + "(by:" + deadlineDateTime + ")";
+        return "[D]" + super.toString() + "(by:" + toFormattedDateTimeOutputString(deadlineDateTime) + ")";
     }
 
 }
