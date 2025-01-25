@@ -33,7 +33,7 @@ public class FileRead {
     }
 
     private static Task processFileTaskData(String fileData) {
-        String[] splitFileData = fileData.split(SPLIT_TASK_FILE_DATA_REGEX, 4);
+        String[] splitFileData = fileData.split(SPLIT_TASK_FILE_DATA_REGEX, 5);
         Task newTask = null;
         String taskType = splitFileData[0];
         boolean isTaskDone = splitFileData[1].equals("[X]");

@@ -24,7 +24,7 @@ public class Event extends TimedTask {
     }
 
     public String toString() {
-        return "[E]" + super.toString() + "(from:" + toFormattedDateTimeOutputString(startDateTime) + "to:" + toFormattedDateTimeOutputString(endDateTime) + ")";
+        return "[E]" + super.toString() + " (from: " + toFormattedDateTimeOutputString(startDateTime) + " to: " + toFormattedDateTimeOutputString(endDateTime) + ")";
     }
 
 }
