@@ -164,7 +164,7 @@ public class TaskManager {
      * @param task The task to be displayed.
      * @return A string of the desired task display format.
      */
-    private String getTaskDisplayString(int index, Task task) {
+    public String getTaskDisplayString(int index, Task task) {
         return index + ". " + task.toString();
     }
 
