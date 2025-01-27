@@ -12,6 +12,12 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Represents a class that acts as a utility to read from the designated file path.
+ * This class holds methods that can read from a file path that supposedly holds all the saved task data
+ * and can process the task data within it.
+ * This class should not be interacted with directly but rather all methods here can be called from the FileStorage class.
+ */
 public class FileRead {
     private static final String SPLIT_TASK_FILE_DATA_REGEX = "\\|";
     private final String FILE_READ_PATH;
@@ -20,13 +26,21 @@ public class FileRead {
         this.FILE_READ_PATH = fileReadPath;
     }
 
+    /**
+     * Reads from the defined file path during initialization.
+     * This method first checks whether the file path exists, and ensures that the directory and files are created first.
+     * Then, the task data are retrieved iteratively, line by line from the file, and returned as an array list.
+     *
+     * @return The array list that holds all the retrieved task data.
+     * @throws IOException if an error occurred while reading from the task data file.
+     */
     public ArrayList<Task> readFromFile() throws IOException {
         ArrayList<Task> resultTasks = new ArrayList<>();
         File file = new File(FILE_READ_PATH);
 
-        boolean isFilePathExist = FileWrite.isFilePathExist(file);
+        boolean isFilePathExist = FileStorage.isFilePathExist(file);
         if (!isFilePathExist) {
-            FileWrite.createFilePath(file);
+            FileStorage.createFilePath(file);
         }
 
         Scanner scanner = new Scanner(file);

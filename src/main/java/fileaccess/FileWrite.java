@@ -11,6 +11,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * Represents a class that acts as a utility to write to the designated file path.
+ * This class holds methods that can write, overwrite, and remove task data that supposedly holds all the saved task data.
+ * This class should not be interacted with directly but rather all methods here can be called from the FileStorage class.
+ */
 public class FileWrite {
     private final String FILE_WRITE_PATH;
 
@@ -18,9 +23,17 @@ public class FileWrite {
         this.FILE_WRITE_PATH = fileWritePath;
     }
 
+    /**
+     * Writes a new task to the defined file path during initialization.
+     * This method checks whether the file path exists, then appends the new task data as a string to it.
+     * If it doesn't exist yet, attempts to create the directory and file, then appends the new task data to it.
+     *
+     * @param task The new task to write to the file path.
+     * @throws IOException if an error occurred during the creation of the file path.
+     */
     public void writeTaskToFile(Task task) throws IOException {
         File file = new File(FILE_WRITE_PATH);
-        boolean isFilePathExist = isFilePathExist(file);
+        boolean isFilePathExist = FileStorage.isFilePathExist(file);
         String taskDataAsString = task.getTaskDataString();
 
         if (isFilePathExist) {
@@ -29,58 +42,13 @@ public class FileWrite {
         }
 
         try {
-            boolean isCreateFilePathSuccess = createFilePath(file);
+            boolean isCreateFilePathSuccess = FileStorage.createFilePath(file);
             if (isCreateFilePathSuccess) {
                 appendToFile(taskDataAsString);
             }
         } catch (Exception e) {
             System.out.println("Error creating file path: " + e.getMessage());
         }
-    }
-
-    public static boolean createFilePath(File file) throws IOException {
-        boolean isCreateParentDirSuccess = createFileParentDirectory(file);
-        if (!isCreateParentDirSuccess) {
-            throw new IOException("Parent directory creation failed.");
-        }
-        boolean isCreateFileSuccess = createFileUnderParent(file);
-        if (!isCreateFileSuccess) {
-            throw new IOException("File path creation failed.");
-        }
-        return true;
-    }
-
-    public static boolean isFilePathExist(File file) {
-        return file.exists();
-    }
-
-    /**
-     * Creates the parent directory of the given file.
-     * This function must be called before createFileUnderParent because it depends on this.
-     * @param file The file in which the parent directory is to be created.
-     * @return true or false whether the parent directory has been successfully created.
-     */
-    public static boolean createFileParentDirectory(File file) {
-        File parentDir = file.getParentFile();
-        if (parentDir != null && parentDir.exists()) {
-            return true;
-        }
-        assert parentDir != null;
-        return parentDir.mkdir();
-    }
-
-    /**
-     * Creates a file specified at the end of the given path under a parent folder.
-     * At this point, we must be sure that the parent folder should exist.
-     * @param file The file to be created.
-     * @return true or false whether the file has been successfully created.
-     * @throws IOException when error creating the new file.
-     */
-    public static boolean createFileUnderParent(File file) throws IOException {
-        if (file.exists()) {
-            return true;
-        }
-        return file.createNewFile();
     }
 
     private void appendToFile(String textToAppend) throws IOException {
@@ -103,6 +71,17 @@ public class FileWrite {
         Files.write(path, taskDatas, StandardCharsets.UTF_8);
     }
 
+    /**
+     * Removes the task data that is currently written at the given line number within the task data file.
+     * This method first retrieves the current task data, stores them as a list,
+     * then removes the task at the appropriate index.
+     * Finally, the final updated list gets written back.
+     * <p>
+     * This method always returns as a success due to a check for invalid task index before the call.
+     *
+     * @param lineNumber The task index number, or the line number in the task data file to remove.
+     * @throws IOException if an error occurred during the writing of the final updated task list.
+     */
     public void removeTaskData(int lineNumber) throws IOException {
         Path path = Paths.get(FILE_WRITE_PATH);
         List<String> taskDatas = Files.readAllLines(path, StandardCharsets.UTF_8);
