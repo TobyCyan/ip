@@ -85,6 +85,15 @@ public class FileStorage {
         }
     }
 
+    /**
+     * Creates the given file at the initialized file path.
+     * This method first creates the file's parent directory if it doesn't exist yet,
+     * then creates the file itself that is used to store all the task data.
+     *
+     * @param file The file object to be created at the given path.
+     * @return true or false depending on whether the file has been successfully created or not.
+     * @throws IOException if an error occurred during the creation of either the parent directory or the file.
+     */
     public static boolean createFilePath(File file) throws IOException {
         boolean isCreateParentDirSuccess = createFileParentDirectory(file);
         if (!isCreateParentDirSuccess) {
@@ -97,6 +106,12 @@ public class FileStorage {
         return true;
     }
 
+    /**
+     * Checks whether the file path exists.
+     *
+     * @param file The file to check for its existence.
+     * @return true or false whether the given file exists or not.
+     */
     public static boolean isFilePathExist(File file) {
         return file.exists();
     }
