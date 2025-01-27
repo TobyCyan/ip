@@ -14,11 +14,15 @@ import java.util.Scanner;
 
 public class FileRead {
     private static final String SPLIT_TASK_FILE_DATA_REGEX = "\\|";
-    private static final String READ_FROM_FILE_PATH = "./taskdata/tasks.txt";
+    private final String FILE_READ_PATH;
 
-    public static ArrayList<Task> readFromFile() throws IOException {
+    public FileRead(String fileReadPath) {
+        this.FILE_READ_PATH = fileReadPath;
+    }
+
+    public ArrayList<Task> readFromFile() throws IOException {
         ArrayList<Task> resultTasks = new ArrayList<>();
-        File file = new File(READ_FROM_FILE_PATH);
+        File file = new File(FILE_READ_PATH);
 
         boolean isFilePathExist = FileWrite.isFilePathExist(file);
         if (!isFilePathExist) {
@@ -34,7 +38,7 @@ public class FileRead {
         return resultTasks;
     }
 
-    private static Task processFileTaskData(String fileData) {
+    private Task processFileTaskData(String fileData) {
         String[] splitFileData = fileData.split(SPLIT_TASK_FILE_DATA_REGEX, 5);
         Task newTask = null;
         String taskType = splitFileData[0];

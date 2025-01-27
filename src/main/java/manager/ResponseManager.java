@@ -13,17 +13,17 @@ import java.util.HashSet;
  */
 public class ResponseManager {
     private static final HashMap<String, String[]> RESPONSE_MAP = new HashMap<>();
-    private static TaskManager taskManager = null;
-    private static ResponseManager instance = null;
+    private TaskManager taskManager;
 
     /**
      * The constructor.
      * Initializes a response map which maps the response type to its array of responses.
      * The response map is given the final modifier as no modifications should be made upon initialization.
-     * Made private to prevent direct initialization.
-     * Should call getInstance instead.
      */
-    private ResponseManager() {
+    public ResponseManager(TaskManager taskManager) {
+        // Task manager.
+        this.taskManager = taskManager;
+
         // Basic greetings.
         RESPONSE_MAP.put("Greeting", new String[] {"Hello! My name is Mei!", "What can I do for you?"});
         RESPONSE_MAP.put("Exit", new String[] {"See you next time! :)"});
@@ -52,109 +52,6 @@ public class ResponseManager {
         RESPONSE_MAP.put("EventNotEnoughInfo", new String[] {"Hmm? I think you missed some information there...", "I would need to know the start and end date/times so... do use /from and /to to indicate them!"});
     }
 
-    /**
-     * @@author TobyCyan-reused.
-     * Reused from geeksforgeeks.org/singleton-class-java
-     * with minor modifications.
-     * Function to get the singleton instance of this class.
-     * @return The single instance of Response Manager.
-     */
-    public static ResponseManager getInstance() {
-        if (instance == null) {
-            instance = new ResponseManager();
-            taskManager = TaskManager.getInstance();
-        }
-        return instance;
-    }
-
-    /**
-     * A function to redirect all incoming inputs to their respective functions.
-     * This should serve as a middle-man function between the user and the manager functions
-     * @param input The user input to redirect.
-     */
-    public void redirectInput(String input) {
-        String[] splitInput = input.split(" ", 2);
-        String keyword = splitInput[0];
-        switch (keyword) {
-        case "list":
-            String[] tasksToBeListed = taskManager.getTaskStringsToDisplay();
-            if (tasksToBeListed == null) {
-                noTaskResponse();
-                break;
-            } else {
-                listTasksResponse(tasksToBeListed);
-            }
-            break;
-
-        case "mark":
-            int taskIndexToMark = Integer.parseInt(splitInput[1]);
-            if (isTaskIndexProblematic(taskIndexToMark)) {
-                break;
-            }
-            Task markedTask = taskManager.markTask(taskIndexToMark);
-            markTaskResponse(markedTask);
-            break;
-
-        case "unmark":
-            int taskIndexToUnmark = Integer.parseInt(splitInput[1]);
-            if (isTaskIndexProblematic(taskIndexToUnmark)) {
-                break;
-            }
-            Task unmarkedTask = taskManager.unmarkTask(taskIndexToUnmark);
-            unmarkTaskResponse(unmarkedTask);
-            break;
-
-        case "delete":
-            int taskIndexToDelete = Integer.parseInt(splitInput[1]);
-            if (isTaskIndexProblematic(taskIndexToDelete)) {
-                break;
-            }
-            Task deletedTask = taskManager.deleteTask(taskIndexToDelete);
-            deleteTaskResponse(deletedTask);
-            break;
-
-        default:
-            // Task types.
-            try {
-                // First word doesn't fit in any of the commands nor task types.
-                if (!taskManager.isTaskTypeExist(splitInput[0])) {
-                    throw new UnknownUserInputException(getResponses("UnknownUserInput"));
-                }
-
-                // User input only has a single word. i.e. no description.
-                if (splitInput.length == 1) {
-                    throw new EmptyTaskDescriptionException(getResponses("EmptyTaskDescription"));
-                }
-
-                Task addedTask = taskManager.processAddTask(keyword, splitInput[1]);
-                // No new task is created, which means task type is unknown or task description does not contain enough information to create a new task.
-                if (addedTask == null) {
-                    throw new UnknownTaskTypeException(getResponses("UnknownTaskType"));
-                } else {
-                    addTaskResponse(addedTask);
-                }
-            } catch (MeiException e) {
-                e.echoErrorResponse();
-            }
-        }
-    }
-
-    /**
-     * Handles the task index and throws exception if it is problematic.
-     * @param taskIndex The task index to handle.
-     * @return true or false depending on whether the task index is problematic or not.
-     */
-    public boolean isTaskIndexProblematic(int taskIndex) {
-        try {
-            if (!taskManager.isTaskIndexValid(taskIndex)) {
-                throw new TaskIndexOutOfBoundsException(getResponses("TaskIndexOutOfBounds"));
-            }
-        } catch (MeiException e) {
-            e.echoErrorResponse();
-            return true;
-        }
-        return false;
-    }
 
     /**
      * A function that simply echos what is passed in.

@@ -4,6 +4,7 @@ import exception.DeadlineNotEnoughInfoException;
 import exception.EventNotEnoughInfoException;
 import exception.MeiException;
 import fileaccess.FileRead;
+import fileaccess.FileStorage;
 import fileaccess.FileWrite;
 import tasks.Deadline;
 import tasks.Event;
@@ -15,9 +16,9 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TaskManager {
-    private List<Task> tasks = new ArrayList<>();
+    private List<Task> tasks;
     private static final HashSet<String> TASK_TYPES = new HashSet<>();
-    private static TaskManager instance = null;
+    private FileStorage fileStorage;
     /** Regex to use for splitting the given user task input. */
     private final String TASK_STRING_SPLIT_REGEX = "(/from|/by|/to)";
 
@@ -27,32 +28,17 @@ public class TaskManager {
      * Should call getInstance instead.
      * Attempts to read the list of tasks from the .txt file and store it into tasks.
      */
-    private TaskManager() {
+    public TaskManager(List<Task> tasks, FileStorage fileStorage) {
         // Task types.
+        // Make sure to add the relevant task types when adding a new one.
         TASK_TYPES.add("todo");
         TASK_TYPES.add("deadline");
         TASK_TYPES.add("event");
 
-        try {
-            this.tasks = FileRead.readFromFile();
-        } catch (Exception e) {
-            System.out.println("Error reading from file path: " + e.getMessage());
-        }
+        this.tasks = tasks;
+        this.fileStorage = fileStorage;
     }
 
-    /**
-     * @@author TobyCyan-reused.
-     * Reused from geeksforgeeks.org/singleton-class-java
-     * with minor modifications.
-     * Function to get the singleton instance of this class.
-     * @return The single instance of Task Manager.
-     */
-    public static TaskManager getInstance() {
-        if (instance == null) {
-            instance = new TaskManager();
-        }
-        return instance;
-    }
 
     /**
      * Processes new added tasks before returning them to the response manager to prompt the user.
@@ -110,11 +96,7 @@ public class TaskManager {
      */
     public void addTask(Task task) {
         tasks.add(task);
-        try {
-            FileWrite.writeTaskToFile(task);
-        } catch (Exception e) {
-            System.out.println("Error writing task to file path: " + e.getMessage());
-        }
+        fileStorage.writeTask(task);
     }
 
     /**
@@ -126,11 +108,9 @@ public class TaskManager {
     public Task markTask(int taskIndex) {
         Task taskToBeMarked = tasks.get(taskIndex - 1);
         taskToBeMarked.completeTask();
-        try {
-            FileWrite.overwriteTaskData(taskIndex, taskToBeMarked.getTaskDataString());
-        } catch (Exception e) {
-            System.out.println("Error overwriting task upon completion: " + e.getMessage());
-        }
+
+        fileStorage.overwriteTask(taskIndex, taskToBeMarked.getTaskDataString());
+
         return taskToBeMarked;
     }
 
@@ -143,22 +123,18 @@ public class TaskManager {
     public Task unmarkTask(int taskIndex) {
         Task taskToBeUnmarked = tasks.get(taskIndex - 1);
         taskToBeUnmarked.uncheckTask();
-        try {
-            FileWrite.overwriteTaskData(taskIndex, taskToBeUnmarked.getTaskDataString());
-        } catch (Exception e) {
-            System.out.println("Error overwriting task upon incompletion: " + e.getMessage());
-        }
+
+        fileStorage.overwriteTask(taskIndex, taskToBeUnmarked.getTaskDataString());
+
         return taskToBeUnmarked;
     }
 
     public Task deleteTask(int taskIndex) {
         Task taskToBeDeleted = tasks.get(taskIndex - 1);
         tasks.remove(taskToBeDeleted);
-        try {
-            FileWrite.removeTaskData(taskIndex);
-        } catch (Exception e) {
-            System.out.println("Error deleting task from the .txt file: " + e.getMessage());
-        }
+
+        fileStorage.removeTask(taskIndex);
+
         return taskToBeDeleted;
     }
 
