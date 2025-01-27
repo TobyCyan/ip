@@ -188,11 +188,7 @@ public class ResponseManager {
      * @param markedTask The task to be marked as completed.
      */
     public void markTaskResponse(Task markedTask) {
-        String[] markTaskResponses = getResponses("MarkTask");
-        int markTaskResponseLength = markTaskResponses.length + 1;
-        markTaskResponses = Arrays.copyOf(markTaskResponses, markTaskResponseLength);
-        markTaskResponses[markTaskResponseLength - 1] = markedTask.toString();
-
+        String[] markTaskResponses = appendTaskStringToResponseArrayAndReturn("MarkTask", markedTask.toString());
         echoLines(markTaskResponses);
     }
 
@@ -201,12 +197,16 @@ public class ResponseManager {
      * @param unmarkedTask The task to be marked as incomplete.
      */
     public void unmarkTaskResponse(Task unmarkedTask) {
-        String[] unmarkTaskResponses = getResponses("UnmarkTask");
-        int unmarkTaskResponseLength = unmarkTaskResponses.length + 1;
-        unmarkTaskResponses = Arrays.copyOf(unmarkTaskResponses, unmarkTaskResponseLength);
-        unmarkTaskResponses[unmarkTaskResponseLength - 1] = unmarkedTask.toString();
-
+        String[] unmarkTaskResponses = appendTaskStringToResponseArrayAndReturn("UnmarkTask", unmarkedTask.toString());
         echoLines(unmarkTaskResponses);
+    }
+
+    public String[] appendTaskStringToResponseArrayAndReturn(String arrayKey, String taskString) {
+        String[] taskResponses = getResponses(arrayKey);
+        int unmarkTaskResponseLength = taskResponses.length + 1;
+        taskResponses = Arrays.copyOf(taskResponses, unmarkTaskResponseLength);
+        taskResponses[unmarkTaskResponseLength - 1] = taskString;
+        return taskResponses;
     }
 
     /**

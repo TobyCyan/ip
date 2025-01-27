@@ -14,7 +14,7 @@ public class TimedTask extends Task {
     private static final List<DateTimeFormatter> INPUT_FORMATTERS = new ArrayList<>();
 
     /** The formatter for formatting any local date time data into the desired format. **/
-    private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("MMMM d 'at' h:mm a");
+    private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("MMMM d yyyy 'at' h:mm a");
 
     /**
      * The constructor.
