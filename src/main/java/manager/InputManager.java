@@ -14,7 +14,8 @@ public class InputManager {
 
     /**
      * A function to redirect all incoming inputs to their respective functions.
-     * This should serve as a middle-man function between the user and the manager functions
+     * This should serve as a middle-man function between the user and the manager functions.
+     *
      * @param input The user input to redirect.
      */
     public void redirectInput(String input) {
@@ -86,6 +87,7 @@ public class InputManager {
 
     /**
      * Handles the task index and throws exception if it is problematic.
+     *
      * @param taskIndex The task index to handle.
      * @return true or false depending on whether the task index is problematic or not.
      */

@@ -56,6 +56,7 @@ public class ResponseManager {
     /**
      * A function that simply echos what is passed in.
      * This function ensures that every response echoed is wrapped in divider lines.
+     *
      * @param input The input string to echo.
      */
     public void echo(String input) {
@@ -67,6 +68,7 @@ public class ResponseManager {
     /**
      * A function that echos everything in the given input array.
      * This function ensures that all the responses echoed are wrapped in the desired format.
+     *
      * @param inputs The input array to echo.
      */
     public static void echoLines(String[] inputs) {
@@ -95,6 +97,7 @@ public class ResponseManager {
     /**
      * Prompts to the user after a task is successfully added.
      * Important to update the index variables where the information should be appended in the response array.
+     *
      * @param task The task successfully added to be echoed.
      */
     public void addTaskResponse(Task task) {
@@ -123,6 +126,7 @@ public class ResponseManager {
 
     /**
      * Prompts to the user after task is deleted.
+     *
      * @param deletedTask The deleted task.
      */
     public void deleteTaskResponse(Task deletedTask) {
@@ -151,6 +155,7 @@ public class ResponseManager {
 
     /**
      * Prompts to the user their list of tasks.
+     *
      * @param tasksToBeDisplayed The list of valid tasks to be displayed to the user.
      */
     public void listTasksResponse(String[] tasksToBeDisplayed) {
@@ -161,6 +166,7 @@ public class ResponseManager {
 
     /**
      * Concatenates 2 arrays, first followed by the second.
+     *
      * @param first The first array.
      * @param second The second array.
      * @return The resulting array after concatenation.
@@ -185,6 +191,7 @@ public class ResponseManager {
 
     /**
      * Prompts to the user that the given task has been marked as completed.
+     *
      * @param markedTask The task to be marked as completed.
      */
     public void markTaskResponse(Task markedTask) {
@@ -194,6 +201,7 @@ public class ResponseManager {
 
     /**
      * Prompts to the user that the given task has been marked as incomplete.
+     *
      * @param unmarkedTask The task to be marked as incomplete.
      */
     public void unmarkTaskResponse(Task unmarkedTask) {
@@ -219,6 +227,7 @@ public class ResponseManager {
 
     /**
      * Get the array of responses from the response map.
+     *
      * @param key The hash key of the responses.
      * @return The array of responses corresponding to the given key.
      */

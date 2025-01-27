@@ -43,6 +43,7 @@ public class TaskManager {
     /**
      * Processes new added tasks before returning them to the response manager to prompt the user.
      * Assumes that there are only 3 types of tasks to be considered: todo, deadline and event.
+     *
      * @param taskType The type of the task.
      * @param taskDescription The description of the task.
      * @return The processed task itself, or null if the task type does not match any of the valid types.
@@ -91,7 +92,7 @@ public class TaskManager {
     /**
      * Adds the given task to the list of tasks.
      * Sets the status of the new task as not done (false).
-     * Returns true if success.
+     *
      * @param task The new task to be added.
      */
     public void addTask(Task task) {
@@ -102,6 +103,7 @@ public class TaskManager {
     /**
      * Marks the given task as completed.
      * TODO: (Optional) Add a response when user tries to mark a task that is already marked.
+     *
      * @param taskIndex The index of the task to be marked as completed.
      * @return The completed task itself.
      */
@@ -117,6 +119,7 @@ public class TaskManager {
     /**
      * Marks the given task as incomplete.
      * TODO: (Optional) Add a response when user tries to unmark a task that isn't marked.
+     *
      * @param taskIndex The index of the task to be marked as incomplete.
      * @return The unmarked task itself.
      */
@@ -140,6 +143,7 @@ public class TaskManager {
 
     /**
      * Formats the list of tasks as a nicely organized indexed list.
+     *
      * @return The list of valid tasks to be sent to the response manager to display.
      */
     public String[] getTaskStringsToDisplay() {
@@ -160,6 +164,7 @@ public class TaskManager {
 
     /**
      * Converts the task string into the desired format to be displayed to the user.
+     *
      * @param index The current task index.
      * @param task The task to be displayed.
      * @return A string of the desired task display format.
@@ -170,6 +175,7 @@ public class TaskManager {
 
     /**
      * Gets the total number of tasks the user currently has.
+     *
      * @return The number of tasks.
      */
     public int getTotalTasks() {
@@ -178,6 +184,7 @@ public class TaskManager {
 
     /**
      * Checks whether the task index used to process a task is valid.
+     *
      * @param taskIndex The task index to check.
      * @return true or false.
      */
