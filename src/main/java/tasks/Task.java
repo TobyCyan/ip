@@ -25,6 +25,12 @@ public class Task {
         return isTaskDone ? "[X]" : "[ ]";
     }
 
+    /**
+     * Represents the current task in a format to be written to the task data save file.
+     * This representation helps the file reader to interpret this task when loading from the save file.
+     *
+     * @return The string representation for writing to the save file.
+     */
     public String getTaskDataString() {
         return toRunTimeClassString() + "|" + getTaskStatusString() + "|" + description;
     }
@@ -58,6 +64,12 @@ public class Task {
         return getClass().getSimpleName();
     }
 
+    /**
+     * Represents the current task in a format to be displayed to the user.
+     * Since this is the base class, this string representation isn't directly called by any managers.
+     *
+     * @return The string representation for displaying to the user.
+     */
     public String toString() {
         return getTaskStatusString() + " " + description;
     }

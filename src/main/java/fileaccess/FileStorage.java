@@ -119,6 +119,7 @@ public class FileStorage {
     /**
      * Creates the parent directory of the given file.
      * This method must be called before createFileUnderParent because it depends on this.
+     *
      * @param file The file in which the parent directory is to be created.
      * @return true or false whether the parent directory has been successfully created.
      */
@@ -134,6 +135,7 @@ public class FileStorage {
     /**
      * Creates a file specified at the end of the given path under a parent folder.
      * At this point, we must be sure that the parent folder should exist.
+     *
      * @param file The file to be created.
      * @return true or false whether the file has been successfully created.
      * @throws IOException when error creating the new file.

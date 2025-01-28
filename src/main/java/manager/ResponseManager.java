@@ -224,7 +224,8 @@ public class ResponseManager {
         echoLines(unmarkTaskResponses);
     }
 
-    /** Prompts to the user their list of tasks found based on the keyword.
+    /**
+     * Prompts to the user their list of tasks found based on the keyword.
      * It is possible that the foundTasks is empty.
      *
      * @param foundTasks The list of found tasks to be displayed to the user.

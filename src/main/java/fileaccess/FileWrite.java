@@ -33,7 +33,7 @@ public class FileWrite {
      */
     public void writeTaskToFile(Task task) throws IOException {
         File file = new File(fileWritePath);
-        boolean isFilePathExist = isFilePathExist(file);
+        boolean isFilePathExist = FileStorage.isFilePathExist(file);
         String taskDataAsString = task.getTaskDataString();
 
         if (isFilePathExist) {
@@ -61,6 +61,7 @@ public class FileWrite {
      * @@author TobyCyan-reused.
      * Reused from stackoverflow.com/questions/31375972/how-to-replace-a-specific-line-in-a-file-using-java
      * Overwrites a line of task data from the tasks.txt file at the given line number.
+     *
      * @param lineNumber The line number within the .txt file to be overwritten.
      * @param taskData The new task data string to replace the old data.
      */
