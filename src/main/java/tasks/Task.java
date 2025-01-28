@@ -43,6 +43,17 @@ public class Task {
         isTaskDone = false;
     }
 
+    /**
+     * Checks if this task's description contains the given keyword.
+     * This is used for finding tasks using a keyword based on their descriptions.
+     *
+     * @param keyword The keyword used to check for a match.
+     * @return true or false depending on whether the description consists of the given keyword.
+     */
+    public boolean isDescriptionContainsKeyword(String keyword) {
+        return description.contains(keyword);
+    }
+
     public String toRunTimeClassString() {
         return getClass().getSimpleName();
     }

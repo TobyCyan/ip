@@ -58,6 +58,19 @@ public class InputManager {
             responseManager.deleteTaskResponse(deletedTask);
             break;
 
+        case "find":
+            try {
+                if (splitInput.length == 1) {
+                    throw new EmptyTaskDescriptionException(ResponseManager.getResponses("EmptyTaskSearchDescription"));
+                }
+                String[] foundTasksAsStrings = taskManager.findTasksToDisplay(splitInput[1]);
+                responseManager.findTasksResponse(foundTasksAsStrings);
+
+            } catch (MeiException e) {
+                e.echoErrorResponse();
+            }
+             break;
+
         default:
             // Task types.
             try {

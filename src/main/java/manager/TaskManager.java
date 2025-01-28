@@ -139,6 +139,23 @@ public class TaskManager {
     }
 
     /**
+     * Finds the tasks based on the given keyword.
+     * The keyword check is only done to the task description.
+     * These tasks are converted into the desired display format and collected into an array.
+     *
+     * @param keyword The keyword used to find tasks.
+     * @return The array of tasks in their displayed format.
+     */
+    public String[] findTasksToDisplay(String keyword) {
+        AtomicInteger i = new AtomicInteger();
+
+        return tasks.stream()
+                .filter(task -> task.isDescriptionContainsKeyword(keyword))
+                .map(task -> getTaskDisplayString(i.getAndIncrement() + 1, (Task) task))
+                .toArray(String[]::new);
+    }
+
+    /**
      * Formats the list of tasks as a nicely organized indexed list.
      * @return The list of valid tasks to be sent to the response manager to display.
      */
