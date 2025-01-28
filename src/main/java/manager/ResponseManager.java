@@ -32,6 +32,10 @@ public class ResponseManager {
         RESPONSE_MAP.put("ListTasks", new String[] {"Sure! Here are all your tasks!", "Enjoy :3"});
         RESPONSE_MAP.put("NoTask", new String[] {"I can't find any tasks for you :(", "Maybe start adding new tasks?"});
 
+        // Listing found user tasks.
+        RESPONSE_MAP.put("FindTasks", new String[] {"Alright! Here are the tasks that I found from your list:", "Hope I didn't miss any!"});
+        RESPONSE_MAP.put("FindTasksEmpty", new String[] {"Sorry! It seems like there isn't any tasks that matched the description :("});
+
         // Adding new task.
         RESPONSE_MAP.put("AddTask", new String[] {"Certainly! Your new task is on the way!"});
         RESPONSE_MAP.put("AddTaskSuccess", new String[] {"Task successfully added! Yay!", "Your added task is:\n", "The total tasks you currently have is: "});
@@ -199,6 +203,24 @@ public class ResponseManager {
     public void unmarkTaskResponse(Task unmarkedTask) {
         String[] unmarkTaskResponses = appendTaskStringToResponseArrayAndReturn("UnmarkTask", unmarkedTask.toString());
         echoLines(unmarkTaskResponses);
+    }
+
+    /**
+     * Prompts to the user their list of tasks found based on the keyword.
+     * It is possible that the foundTasks is empty.
+     *
+     * @param foundTasks The list of found tasks to be displayed to the user.
+     */
+    public void findTasksResponse(String[] foundTasks) {
+        String[] foundTasksResponses = getResponses("FindTasks");
+
+        if (foundTasks.length == 0) {
+            echoLines(getResponses("FindTasksEmpty"));
+            return;
+        }
+
+        foundTasksResponses = concatResponses(foundTasksResponses, foundTasks);
+        echoLines(foundTasksResponses);
     }
 
     public String[] appendTaskStringToResponseArrayAndReturn(String arrayKey, String taskString) {
