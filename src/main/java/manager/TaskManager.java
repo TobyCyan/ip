@@ -16,11 +16,11 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class TaskManager {
-    private List<Task> tasks;
+    private final List<Task> tasks;
     private static final HashSet<String> TASK_TYPES = new HashSet<>();
-    private FileStorage fileStorage;
+    private final FileStorage fileStorage;
     /** Regex to use for splitting the given user task input. */
-    private final String TASK_STRING_SPLIT_REGEX = "(/from|/by|/to)";
+    private static final String TASK_STRING_SPLIT_REGEX = "(/from|/by|/to)";
 
     /**
      * The constructor.

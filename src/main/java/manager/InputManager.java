@@ -4,8 +4,8 @@ import exception.*;
 import tasks.Task;
 
 public class InputManager {
-    private TaskManager taskManager;
-    private ResponseManager responseManager;
+    private final TaskManager taskManager;
+    private final ResponseManager responseManager;
     
     public InputManager(TaskManager taskManager, ResponseManager responseManager) {
         this.taskManager = taskManager;
@@ -20,6 +20,7 @@ public class InputManager {
     public void redirectInput(String input) {
         String[] splitInput = input.split(" ", 2);
         String keyword = splitInput[0];
+
         switch (keyword) {
         case "list":
             String[] tasksToBeListed = taskManager.getTaskStringsToDisplay();

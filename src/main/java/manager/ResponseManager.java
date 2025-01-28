@@ -13,7 +13,7 @@ import java.util.HashSet;
  */
 public class ResponseManager {
     private static final HashMap<String, String[]> RESPONSE_MAP = new HashMap<>();
-    private TaskManager taskManager;
+    private final TaskManager taskManager;
 
     /**
      * The constructor.
