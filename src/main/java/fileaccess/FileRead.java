@@ -6,23 +6,21 @@ import tasks.Task;
 import tasks.ToDo;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FileRead {
     private static final String SPLIT_TASK_FILE_DATA_REGEX = "\\|";
-    private final String FILE_READ_PATH;
+    private final String fileReadPath;
 
     public FileRead(String fileReadPath) {
-        this.FILE_READ_PATH = fileReadPath;
+        this.fileReadPath = fileReadPath;
     }
 
     public ArrayList<Task> readFromFile() throws IOException {
         ArrayList<Task> resultTasks = new ArrayList<>();
-        File file = new File(FILE_READ_PATH);
+        File file = new File(fileReadPath);
 
         boolean isFilePathExist = FileWrite.isFilePathExist(file);
         if (!isFilePathExist) {

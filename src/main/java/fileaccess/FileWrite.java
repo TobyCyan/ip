@@ -12,14 +12,14 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class FileWrite {
-    private final String FILE_WRITE_PATH;
+    private final String fileWritePath;
 
     public FileWrite(String fileWritePath) {
-        this.FILE_WRITE_PATH = fileWritePath;
+        this.fileWritePath = fileWritePath;
     }
 
     public void writeTaskToFile(Task task) throws IOException {
-        File file = new File(FILE_WRITE_PATH);
+        File file = new File(fileWritePath);
         boolean isFilePathExist = isFilePathExist(file);
         String taskDataAsString = task.getTaskDataString();
 
@@ -84,7 +84,7 @@ public class FileWrite {
     }
 
     private void appendToFile(String textToAppend) throws IOException {
-        FileWriter fw = new FileWriter(FILE_WRITE_PATH, true);
+        FileWriter fw = new FileWriter(fileWritePath, true);
         fw.write(textToAppend + "\n");
         fw.close();
     }
@@ -97,14 +97,14 @@ public class FileWrite {
      * @param taskData The new task data string to replace the old data.
      */
     public void overwriteTaskData(int lineNumber, String taskData) throws IOException {
-        Path path = Paths.get(FILE_WRITE_PATH);
+        Path path = Paths.get(fileWritePath);
         List<String> taskDatas = Files.readAllLines(path, StandardCharsets.UTF_8);
         taskDatas.set(lineNumber - 1, taskData);
         Files.write(path, taskDatas, StandardCharsets.UTF_8);
     }
 
     public void removeTaskData(int lineNumber) throws IOException {
-        Path path = Paths.get(FILE_WRITE_PATH);
+        Path path = Paths.get(fileWritePath);
         List<String> taskDatas = Files.readAllLines(path, StandardCharsets.UTF_8);
         taskDatas.remove(lineNumber - 1);
         Files.write(path, taskDatas, StandardCharsets.UTF_8);
