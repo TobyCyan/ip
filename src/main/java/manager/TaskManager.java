@@ -15,19 +15,20 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Represents the manager class that supports all task-related functionalities.
+ * This class contains methods to add, delete, mark, unmark tasks.
+ * A set of task types is also maintained so that this manager knows what task types are valid.
+ * Hence, it is important to update this list when new tasks get added.
+ */
 public class TaskManager {
     private final List<Task> tasks;
+    /** The set of task types that are valid, be sure to update this when new task types are added. **/
     private static final HashSet<String> TASK_TYPES = new HashSet<>();
     private final FileStorage fileStorage;
     /** Regex to use for splitting the given user task input. */
     private static final String TASK_STRING_SPLIT_REGEX = "(/from|/by|/to)";
 
-    /**
-     * The constructor.
-     * Made private to prevent direct initialization.
-     * Should call getInstance instead.
-     * Attempts to read the list of tasks from the .txt file and store it into tasks.
-     */
     public TaskManager(List<Task> tasks, FileStorage fileStorage) {
         // Task types.
         // Make sure to add the relevant task types when adding a new one.
@@ -43,6 +44,7 @@ public class TaskManager {
     /**
      * Processes new added tasks before returning them to the response manager to prompt the user.
      * Assumes that there are only 3 types of tasks to be considered: todo, deadline and event.
+     *
      * @param taskType The type of the task.
      * @param taskDescription The description of the task.
      * @return The processed task itself, or null if the task type does not match any of the valid types.
@@ -91,7 +93,7 @@ public class TaskManager {
     /**
      * Adds the given task to the list of tasks.
      * Sets the status of the new task as not done (false).
-     * Returns true if success.
+     *
      * @param task The new task to be added.
      */
     public void addTask(Task task) {
@@ -102,6 +104,7 @@ public class TaskManager {
     /**
      * Marks the given task as completed.
      * TODO: (Optional) Add a response when user tries to mark a task that is already marked.
+     *
      * @param taskIndex The index of the task to be marked as completed.
      * @return The completed task itself.
      */
@@ -116,9 +119,11 @@ public class TaskManager {
 
     /**
      * Marks the given task as incomplete.
+     * Tells the file storage class to carry out the process.
      * TODO: (Optional) Add a response when user tries to unmark a task that isn't marked.
+     *
      * @param taskIndex The index of the task to be marked as incomplete.
-     * @return The unmarked task itself.
+     * @return The unmarked task itself to be prompted to the user.
      */
     public Task unmarkTask(int taskIndex) {
         Task taskToBeUnmarked = tasks.get(taskIndex - 1);
@@ -129,6 +134,13 @@ public class TaskManager {
         return taskToBeUnmarked;
     }
 
+    /**
+     * Deletes the task located at the given task index.
+     * Tells the file storage class to carry out the process.
+     *
+     * @param taskIndex The index where the deleted task is located at.
+     * @return The deleted task itself to be prompted to the user.
+     */
     public Task deleteTask(int taskIndex) {
         Task taskToBeDeleted = tasks.get(taskIndex - 1);
         tasks.remove(taskToBeDeleted);
@@ -157,6 +169,7 @@ public class TaskManager {
 
     /**
      * Formats the list of tasks as a nicely organized indexed list.
+     *
      * @return The list of valid tasks to be sent to the response manager to display.
      */
     public String[] getTaskStringsToDisplay() {
@@ -177,6 +190,7 @@ public class TaskManager {
 
     /**
      * Converts the task string into the desired format to be displayed to the user.
+     *
      * @param index The current task index.
      * @param task The task to be displayed.
      * @return A string of the desired task display format.
@@ -187,6 +201,7 @@ public class TaskManager {
 
     /**
      * Gets the total number of tasks the user currently has.
+     *
      * @return The number of tasks.
      */
     public int getTotalTasks() {
@@ -195,13 +210,23 @@ public class TaskManager {
 
     /**
      * Checks whether the task index used to process a task is valid.
+     * The index is considered valid if there a task of that index exists.
+     *
      * @param taskIndex The task index to check.
-     * @return true or false.
+     * @return true or false depending on whether the index is valid.
      */
     public boolean isTaskIndexValid(int taskIndex) {
         return taskIndex >= 1 && taskIndex <= getTotalTasks();
     }
 
+    /**
+     * Checks whether the given task type is valid.
+     * The task manager will take a look at the set of valid task types and
+     * determines whether the task type is in it or not.
+     *
+     * @param type The task type to check for existence.
+     * @return true or false depending on whether the set of valid task type contains the given type.
+     */
     public boolean isTaskTypeExist(String type) {
         return TASK_TYPES.contains(type);
     }

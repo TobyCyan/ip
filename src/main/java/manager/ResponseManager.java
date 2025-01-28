@@ -58,8 +58,9 @@ public class ResponseManager {
 
 
     /**
-     * A function that simply echos what is passed in.
+     * Simply echos what is passed in.
      * This function ensures that every response echoed is wrapped in divider lines.
+     *
      * @param input The input string to echo.
      */
     public void echo(String input) {
@@ -69,8 +70,9 @@ public class ResponseManager {
     }
 
     /**
-     * A function that echos everything in the given input array.
+     * Echos everything in the given input array.
      * This function ensures that all the responses echoed are wrapped in the desired format.
+     *
      * @param inputs The input array to echo.
      */
     public static void echoLines(String[] inputs) {
@@ -83,6 +85,7 @@ public class ResponseManager {
 
     /**
      * Greets the user, pretty straight forward.
+     * The corresponding array that contains the responses are fetched with the relevant keyword.
      */
     public void greetUser() {
         echoLines(getResponses("Greeting"));
@@ -91,6 +94,7 @@ public class ResponseManager {
     /**
      * Bids farewell to the user and exits.
      * This should be the final response of the interaction.
+     * The corresponding array that contains the responses are fetched with the relevant keyword.
      */
     public void exitChat() {
         echoLines(getResponses("Exit"));
@@ -98,7 +102,11 @@ public class ResponseManager {
 
     /**
      * Prompts to the user after a task is successfully added.
-     * Important to update the index variables where the information should be appended in the response array.
+     * The corresponding array that contains the responses are fetched with the relevant keyword.
+     * Goes through a series of process to append the newly added task to the end of the response array
+     * to echo it back to the user.
+     * The original strings that are manipulated were cached to restore the response array to its original state upon echoing.
+     *
      * @param task The task successfully added to be echoed.
      */
     public void addTaskResponse(Task task) {
@@ -127,6 +135,11 @@ public class ResponseManager {
 
     /**
      * Prompts to the user after task is deleted.
+     * The corresponding array that contains the responses are fetched with the relevant keyword.
+     * Goes through a series of process to append the deleted task to the end of the response array
+     * to echo it back to the user.
+     * The original strings that are manipulated were cached to restore the response array to its original state upon echoing.
+     *
      * @param deletedTask The deleted task.
      */
     public void deleteTaskResponse(Task deletedTask) {
@@ -155,6 +168,7 @@ public class ResponseManager {
 
     /**
      * Prompts to the user their list of tasks.
+     *
      * @param tasksToBeDisplayed The list of valid tasks to be displayed to the user.
      */
     public void listTasksResponse(String[] tasksToBeDisplayed) {
@@ -165,6 +179,9 @@ public class ResponseManager {
 
     /**
      * Concatenates 2 arrays, first followed by the second.
+     * If the arrays are empty, an empty string array is returned.
+     * However, we expect both the first and second arrays are always non-empty.
+     *
      * @param first The first array.
      * @param second The second array.
      * @return The resulting array after concatenation.
@@ -189,6 +206,7 @@ public class ResponseManager {
 
     /**
      * Prompts to the user that the given task has been marked as completed.
+     *
      * @param markedTask The task to be marked as completed.
      */
     public void markTaskResponse(Task markedTask) {
@@ -198,6 +216,7 @@ public class ResponseManager {
 
     /**
      * Prompts to the user that the given task has been marked as incomplete.
+     *
      * @param unmarkedTask The task to be marked as incomplete.
      */
     public void unmarkTaskResponse(Task unmarkedTask) {
@@ -205,8 +224,7 @@ public class ResponseManager {
         echoLines(unmarkTaskResponses);
     }
 
-    /**
-     * Prompts to the user their list of tasks found based on the keyword.
+    /** Prompts to the user their list of tasks found based on the keyword.
      * It is possible that the foundTasks is empty.
      *
      * @param foundTasks The list of found tasks to be displayed to the user.
@@ -223,6 +241,15 @@ public class ResponseManager {
         echoLines(foundTasksResponses);
     }
 
+
+    /**
+     * Appends a task as its string representation defined in its class to a response array corresponding to the given array key.
+     * This method also returns the final appended array.
+     *
+     * @param arrayKey The key to fetch the response array from the RESPONSE_MAP.
+     * @param taskString The task represented as a string.
+     * @return The resulting appended array.
+     */
     public String[] appendTaskStringToResponseArrayAndReturn(String arrayKey, String taskString) {
         String[] taskResponses = getResponses(arrayKey);
         int unmarkTaskResponseLength = taskResponses.length + 1;
@@ -233,7 +260,6 @@ public class ResponseManager {
 
     /**
      * A divider line that groups the responses and makes everything neater.
-     * Currently, we shall use a hard-coded method of calling this before and after every single response function calls.
      */
     private static void dividerLine() {
         System.out.println("_________________________________");
@@ -241,6 +267,7 @@ public class ResponseManager {
 
     /**
      * Get the array of responses from the response map.
+     *
      * @param key The hash key of the responses.
      * @return The array of responses corresponding to the given key.
      */

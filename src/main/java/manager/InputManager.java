@@ -3,6 +3,11 @@ package manager;
 import exception.*;
 import tasks.Task;
 
+/**
+ *  Represents the manager for all user inputs towards the interaction with Mei.
+ *  This class contains methods to interpret user input and redirect it to the appropriate managers.
+ *  Acts as the middle-man between the user and other managers.
+ */
 public class InputManager {
     private final TaskManager taskManager;
     private final ResponseManager responseManager;
@@ -13,8 +18,11 @@ public class InputManager {
     }
 
     /**
-     * A function to redirect all incoming inputs to their respective functions.
-     * This should serve as a middle-man function between the user and the manager functions
+     * Interprets and redirects all incoming inputs to their respective functions.
+     * This should serve as a middle-man function between the user and the manager functions.
+     * This method can only receive a limited number of commands based on the keyword (i.e. the first word of the given input.)
+     * and the command is assumed to be a task command if none of the defined cases match.
+     *
      * @param input The user input to redirect.
      */
     public void redirectInput(String input) {
@@ -100,6 +108,8 @@ public class InputManager {
 
     /**
      * Handles the task index and throws exception if it is problematic.
+     * The task index is considered problematic if a task of that index does not exist.
+     *
      * @param taskIndex The task index to handle.
      * @return true or false depending on whether the task index is problematic or not.
      */
