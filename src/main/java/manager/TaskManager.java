@@ -15,19 +15,20 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Represents the manager class that supports all task-related functionalities.
+ * This class contains methods to add, delete, mark, unmark tasks.
+ * A set of task types is also maintained so that this manager knows what task types are valid.
+ * Hence, it is important to update this list when new tasks get added.
+ */
 public class TaskManager {
     private List<Task> tasks;
+    /** The set of task types that are valid, be sure to update this when new task types are added. **/
     private static final HashSet<String> TASK_TYPES = new HashSet<>();
     private FileStorage fileStorage;
     /** Regex to use for splitting the given user task input. */
     private final String TASK_STRING_SPLIT_REGEX = "(/from|/by|/to)";
 
-    /**
-     * The constructor.
-     * Made private to prevent direct initialization.
-     * Should call getInstance instead.
-     * Attempts to read the list of tasks from the .txt file and store it into tasks.
-     */
     public TaskManager(List<Task> tasks, FileStorage fileStorage) {
         // Task types.
         // Make sure to add the relevant task types when adding a new one.
@@ -38,7 +39,6 @@ public class TaskManager {
         this.tasks = tasks;
         this.fileStorage = fileStorage;
     }
-
 
     /**
      * Processes new added tasks before returning them to the response manager to prompt the user.
@@ -118,10 +118,11 @@ public class TaskManager {
 
     /**
      * Marks the given task as incomplete.
+     * Tells the file storage class to carry out the process.
      * TODO: (Optional) Add a response when user tries to unmark a task that isn't marked.
      *
      * @param taskIndex The index of the task to be marked as incomplete.
-     * @return The unmarked task itself.
+     * @return The unmarked task itself to be prompted to the user.
      */
     public Task unmarkTask(int taskIndex) {
         Task taskToBeUnmarked = tasks.get(taskIndex - 1);
@@ -132,6 +133,13 @@ public class TaskManager {
         return taskToBeUnmarked;
     }
 
+    /**
+     * Deletes the task located at the given task index.
+     * Tells the file storage class to carry out the process.
+     *
+     * @param taskIndex The index where the deleted task is located at.
+     * @return The deleted task itself to be prompted to the user.
+     */
     public Task deleteTask(int taskIndex) {
         Task taskToBeDeleted = tasks.get(taskIndex - 1);
         tasks.remove(taskToBeDeleted);
@@ -184,14 +192,23 @@ public class TaskManager {
 
     /**
      * Checks whether the task index used to process a task is valid.
+     * The index is considered valid if there a task of that index exists.
      *
      * @param taskIndex The task index to check.
-     * @return true or false.
+     * @return true or false depending on whether the index is valid.
      */
     public boolean isTaskIndexValid(int taskIndex) {
         return taskIndex >= 1 && taskIndex <= getTotalTasks();
     }
 
+    /**
+     * Checks whether the given task type is valid.
+     * The task manager will take a look at the set of valid task types and
+     * determines whether the task type is in it or not.
+     *
+     * @param type The task type to check for existence.
+     * @return true or false depending on whether the set of valid task type contains the given type.
+     */
     public boolean isTaskTypeExist(String type) {
         return TASK_TYPES.contains(type);
     }
