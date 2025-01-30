@@ -28,7 +28,7 @@ test {
 }
 
 application {
-    mainClass.set("Mei");
+    mainClass.set("mei/Mei");
 }
 
 shadowJar {
