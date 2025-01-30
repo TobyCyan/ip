@@ -1,4 +1,4 @@
-package tasks;
+package mei.tasks;
 
 public class ToDo extends Task {
 

@@ -1,7 +1,7 @@
-package stub;
+package mei.stub;
 
-import manager.ResponseManager;
-import manager.TaskManager;
+import mei.manager.ResponseManager;
+import mei.manager.TaskManager;
 
 public class ResponseManagerStub extends ResponseManager {
     /**

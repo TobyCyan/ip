@@ -1,8 +1,10 @@
 package manager;
 
+import mei.manager.ResponseManager;
+import mei.manager.TaskManager;
 import org.junit.jupiter.api.Test;
-import stub.FileStorageStub;
-import tasks.Task;
+import mei.stub.FileStorageStub;
+import mei.tasks.Task;
 
 import java.util.ArrayList;
 

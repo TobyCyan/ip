@@ -1,4 +1,4 @@
-package exception;
+package mei.exception;
 
 /**
  * The Mei exception that is thrown when the user gives an input undefined to Mei.

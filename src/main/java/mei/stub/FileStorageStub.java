@@ -1,11 +1,9 @@
-package stub;
+package mei.stub;
 
-import fileaccess.FileStorage;
-import tasks.Task;
+import mei.fileaccess.FileStorage;
+import mei.tasks.Task;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.concurrent.Callable;
 
 public class FileStorageStub extends FileStorage {
 

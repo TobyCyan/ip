@@ -1,8 +1,8 @@
-package stub;
+package mei.stub;
 
-import fileaccess.FileStorage;
-import manager.TaskManager;
-import tasks.Task;
+import mei.fileaccess.FileStorage;
+import mei.manager.TaskManager;
+import mei.tasks.Task;
 
 import java.util.List;
 

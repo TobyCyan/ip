@@ -1,11 +1,9 @@
-package manager;
+package mei.manager;
 
-import exception.*;
-import tasks.Task;
+import mei.tasks.Task;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * This is the manager responsible for managing Mei's responses.

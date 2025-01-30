@@ -1,7 +1,7 @@
-package manager;
+package mei.manager;
 
-import exception.*;
-import tasks.Task;
+import mei.exception.*;
+import mei.tasks.Task;
 
 /**
  *  Represents the manager for all user inputs towards the interaction with Mei.

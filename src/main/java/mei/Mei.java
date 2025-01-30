@@ -1,9 +1,9 @@
 package mei;
 
-import fileaccess.FileStorage;
-import manager.InputManager;
-import manager.ResponseManager;
-import manager.TaskManager;
+import mei.fileaccess.FileStorage;
+import mei.manager.InputManager;
+import mei.manager.ResponseManager;
+import mei.manager.TaskManager;
 
 import java.util.Scanner;
 

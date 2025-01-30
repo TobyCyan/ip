@@ -1,17 +1,14 @@
-package manager;
+package mei.manager;
 
-import exception.DeadlineNotEnoughInfoException;
-import exception.EventNotEnoughInfoException;
-import exception.MeiException;
-import fileaccess.FileRead;
-import fileaccess.FileStorage;
-import fileaccess.FileWrite;
-import tasks.Deadline;
-import tasks.Event;
-import tasks.Task;
-import tasks.ToDo;
+import mei.exception.DeadlineNotEnoughInfoException;
+import mei.exception.EventNotEnoughInfoException;
+import mei.exception.MeiException;
+import mei.fileaccess.FileStorage;
+import mei.tasks.Deadline;
+import mei.tasks.Event;
+import mei.tasks.Task;
+import mei.tasks.ToDo;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 

@@ -1,6 +1,6 @@
-package exception;
+package mei.exception;
 
-import manager.ResponseManager;
+import mei.manager.ResponseManager;
 
 /**
  * The parent class for all exceptions specific to Mei.
