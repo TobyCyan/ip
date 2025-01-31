@@ -9,8 +9,10 @@ import mei.tasks.Task;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Represents the class to test response manager methods.
+ */
 public class ResponseManagerTest {
     @Test
     public void concatResponse_bothEmpty_success() {

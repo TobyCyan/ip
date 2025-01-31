@@ -15,6 +15,11 @@ public class FileStorage {
     private final FileRead fileReader;
     private final FileWrite fileWriter;
 
+    /**
+     * Initializes the file reader and writer with the given file store path.
+     *
+     * @param fileStorePath The path string to store the task data file.
+     */
     public FileStorage(String fileStorePath) {
         this.fileReader = new FileRead(fileStorePath);
         this.fileWriter = new FileWrite(fileStorePath);

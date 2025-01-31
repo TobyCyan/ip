@@ -17,7 +17,8 @@ public class TimedTask extends Task {
     private static final DateTimeFormatter OUTPUT_FORMATTER = DateTimeFormatter.ofPattern("MMMM d yyyy 'at' h:mm a");
 
     /**
-     * The constructor.
+     * Initializes the task description and the list of formatters to convert the input date/time string
+     * into its LocalDateTime object.
      *
      * @param description The description of this task.
      */

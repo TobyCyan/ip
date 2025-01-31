@@ -13,7 +13,8 @@ public class Event extends TimedTask {
     private final LocalDateTime endDateTime;
 
     /**
-     * The constructor.
+     * Initializes the task description
+     * and start and end date/time by converting them into their LocalDateTime objects.
      *
      * @param description The description of this task.
      * @param startDateTime The starting date/time of this task.
@@ -32,7 +33,8 @@ public class Event extends TimedTask {
      * @return The string representation for writing to the save file.
      */
     public String getTaskDataString() {
-        return toRunTimeClassString() + "|" + getTaskStatusString() + "|" + super.description + "|" + toFormattedDateTimeInputString(startDateTime) + "|" + toFormattedDateTimeInputString(endDateTime);
+        return toRunTimeClassString() + "|" + getTaskStatusString() + "|" + super.description + "|"
+                + toFormattedDateTimeInputString(startDateTime) + "|" + toFormattedDateTimeInputString(endDateTime);
     }
 
     /**
@@ -41,7 +43,8 @@ public class Event extends TimedTask {
      * @return The string representation for displaying to the user.
      */
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + toFormattedDateTimeOutputString(startDateTime) + " to: " + toFormattedDateTimeOutputString(endDateTime) + ")";
+        return "[E]" + super.toString() + " (from: " + toFormattedDateTimeOutputString(startDateTime)
+                + " to: " + toFormattedDateTimeOutputString(endDateTime) + ")";
     }
 
 }

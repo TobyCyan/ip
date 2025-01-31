@@ -12,7 +12,7 @@ public class Deadline extends TimedTask {
     private final LocalDateTime deadlineDateTime;
 
     /**
-     * The constructor.
+     * Initializes the date/time field by converting the given date/time string into a LocalDateTime object.
      *
      * @param description The description of this task.
      * @param deadlineDateTime The deadline date/time of this task.
@@ -29,7 +29,8 @@ public class Deadline extends TimedTask {
      * @return The string representation for writing to the save file.
      */
     public String getTaskDataString() {
-        return toRunTimeClassString() + "|" + getTaskStatusString() + "|" + super.description + "|" + toFormattedDateTimeInputString(deadlineDateTime);
+        return toRunTimeClassString() + "|" + getTaskStatusString() + "|" + super.description + "|"
+                + toFormattedDateTimeInputString(deadlineDateTime);
     }
 
     /**

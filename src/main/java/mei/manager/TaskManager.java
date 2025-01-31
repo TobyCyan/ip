@@ -26,6 +26,13 @@ public class TaskManager {
     /** Regex to use for splitting the given user task input. */
     private static final String TASK_STRING_SPLIT_REGEX = "(/from|/by|/to)";
 
+    /**
+     * Initializes the valid task types and adds them to the set of task types.
+     * Also loads the list of tasks and file storage instance to the fields.
+     *
+     * @param tasks The list of user tasks.
+     * @param fileStorage The file storage instance.
+     */
     public TaskManager(List<Task> tasks, FileStorage fileStorage) {
         // Task types.
         // Make sure to add the relevant task types when adding a new one.

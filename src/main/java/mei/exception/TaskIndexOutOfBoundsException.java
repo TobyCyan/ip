@@ -1,7 +1,7 @@
 package mei.exception;
 
 /**
- * The Mei exception that is thrown when the user tries to access a task index that is invalid.
+ * Represents the Mei exception that is thrown when the user tries to access a task index that is invalid.
  * The task index is invalid if it falls outside the bounds (i.e. not an index held by any existing task.).
  * echoErrorResponse should be called when this exception is caught.
  * This is classified as a task-related exception.

@@ -3,7 +3,7 @@ package mei.exception;
 import mei.manager.ResponseManager;
 
 /**
- * The parent class for all exceptions specific to Mei.
+ * Represents the parent class for all exceptions specific to Mei.
  * This class is a throwable and should be called using echoErrorResponse when caught.
  * This class also holds an array of error response strings.
  */

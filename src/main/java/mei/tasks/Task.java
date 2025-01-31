@@ -5,7 +5,7 @@ public class Task {
     private boolean isTaskDone;
 
     /**
-     * The constructor.
+     * Initializes the task description.
      * The task description is trimmed.
      * So that display and save formats will ignore leading and trailing spaces.
      *
