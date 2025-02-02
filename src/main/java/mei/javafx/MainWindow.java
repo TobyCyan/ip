@@ -82,10 +82,22 @@ public class MainWindow extends AnchorPane {
         userInput.clear();
     }
 
+    /**
+     * Gets the Mei dialog box component from the given text input.
+     * This text input is displayed as Mei's response.
+     *
+     * @param meiText The text input as Mei's response.
+     * @return The Mei dialog box component.
+     */
     public DialogBox getMeiDialog(String[] meiText) {
         return DialogBox.getMeiDialog(meiText, meiImg);
     }
 
+    /**
+     * Adds any amount of dialog boxes into the dialog container to be displayed to the user.
+     *
+     * @param dialogBoxes The dialog boxes to be added to the container.
+     */
     public void addChildrenToDialogContainer(DialogBox... dialogBoxes) {
         dialogContainer.getChildren().addAll(dialogBoxes);
     }
