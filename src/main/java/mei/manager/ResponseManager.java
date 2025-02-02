@@ -76,29 +76,10 @@ public class ResponseManager {
     }
 
     /**
-     * Greets the user, pretty straight forward.
-     * The corresponding array that contains the responses are fetched with the relevant keyword.
-     */
-    public void greetUser() {
-        setInputsAsApplicationResponse(getResponses("Greeting"));
-    }
-
-    /**
-     * Bids farewell to the user and exits.
-     * This should be the final response of the interaction.
-     * The corresponding array that contains the responses are fetched with the relevant keyword.
-     */
-    public void exitChat() {
-        setInputsAsApplicationResponse(getResponses("Exit"));
-    }
-
-    /**
      * Prompts to the user after a task is successfully added.
      * The corresponding array that contains the responses are fetched with the relevant keyword.
      * Goes through a series of process to append the newly added task to the end of the response array
      * to echo it back to the user.
-     * The original strings that are manipulated were cached to restore the response array
-     * to its original state upon echoing.
      *
      * @param task The task successfully added to be echoed.
      */
@@ -110,20 +91,12 @@ public class ResponseManager {
         int totalTaskStringIndex = addTaskSuccessResponses.length - 1;
         int taskStringIndex = 1;
 
-        // Cache the original string.
-        String initialAddedTaskString = addTaskSuccessResponses[taskStringIndex];
-        String initialTotalTaskString = addTaskSuccessResponses[totalTaskStringIndex];
-
         // Append the newly updated information to the responses.
         addTaskSuccessResponses[taskStringIndex] += task.toString();
         addTaskSuccessResponses[totalTaskStringIndex] += totalTasks;
 
         // Echo the responses.
         setInputsAsApplicationResponse(addTaskSuccessResponses);
-
-        // Reset the added task string back to default without the newly added task.
-        addTaskSuccessResponses[taskStringIndex] = initialAddedTaskString;
-        addTaskSuccessResponses[totalTaskStringIndex] = initialTotalTaskString;
     }
 
     /**
@@ -131,8 +104,6 @@ public class ResponseManager {
      * The corresponding array that contains the responses are fetched with the relevant keyword.
      * Goes through a series of process to append the deleted task to the end of the response array
      * to echo it back to the user.
-     * The original strings that are manipulated were cached to restore the response array to its original state
-     * upon echoing.
      *
      * @param deletedTask The deleted task.
      */
@@ -144,20 +115,12 @@ public class ResponseManager {
         int totalTaskStringIndex = deleteTaskSuccessResponses.length - 1;
         int taskStringIndex = 1;
 
-        // Cache the original string.
-        String initialDeletedTaskString = deleteTaskSuccessResponses[taskStringIndex];
-        String initialTotalTaskString = deleteTaskSuccessResponses[totalTaskStringIndex];
-
         // Append the newly updated information to the responses.
         deleteTaskSuccessResponses[taskStringIndex] += deletedTask.toString();
         deleteTaskSuccessResponses[totalTaskStringIndex] += totalTasks;
 
         // Echo the responses.
         setInputsAsApplicationResponse(deleteTaskSuccessResponses);
-
-        // Reset the added task string back to default without the newly added task.
-        deleteTaskSuccessResponses[taskStringIndex] = initialDeletedTaskString;
-        deleteTaskSuccessResponses[totalTaskStringIndex] = initialTotalTaskString;
     }
 
     /**

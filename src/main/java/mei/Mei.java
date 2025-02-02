@@ -32,32 +32,6 @@ public class Mei {
         // Initialize response manager to process user input and generate responses.
         this.responseManager = new ResponseManager(taskManager);
         this.inputManager = new InputManager(taskManager, responseManager);
-
-        responseManager.greetUser();
-    }
-
-    /**
-     * Runs the chatbot known as Mei.
-     * Starts of by greeting the user,
-     * then take in input by the user and passes it to the Input Manager to be redirected to the relevant managers.
-     * Finally, exits the conversation when the user says "bye".
-     */
-    public void run() {
-        // First, greet the user.
-        responseManager.greetUser();
-
-        // Get user input.
-        Scanner scanner = new Scanner(System.in);
-        String userInput = scanner.nextLine();
-
-        // Process every user input until the user bids farewell to Mei.
-        while (!userInput.equals("bye")) {
-            inputManager.redirectInput(userInput);
-            userInput = scanner.nextLine();
-        }
-
-        // Prompt Mei to bid farewell to the user and exit the chat.
-        responseManager.exitChat();
     }
 
     /**

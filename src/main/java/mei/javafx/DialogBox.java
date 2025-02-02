@@ -13,9 +13,11 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
 
 /**
- *
+ * Represents the class that holds the dialog box component.
+ * This class contains methods to initialize new dialog boxes that have a text and an icon.
  */
 public class DialogBox extends HBox {
     @FXML
@@ -40,6 +42,9 @@ public class DialogBox extends HBox {
         }
 
         dialog.setText(text);
+
+        // Some settings for the display icon.
+        displayIcon.setClip(new Circle(50, 50, 50));
         displayIcon.setImage(icon);
     }
 
