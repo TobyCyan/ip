@@ -84,6 +84,8 @@ public class TaskManager {
             newTask = new Event(description, startDateTime, endDateTime);
             break;
 
+        default:
+            break;
         }
 
         if (newTask == null) {

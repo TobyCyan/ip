@@ -20,7 +20,7 @@ public class MeiException extends Throwable {
      * The error response array is defined at the construction of any Mei exceptions.
      */
     public void echoErrorResponse() {
-        ResponseManager.echoLines(errorResponses);
+        ResponseManager.setInputsAsApplicationResponse(errorResponses);
     }
 
 }

@@ -78,7 +78,7 @@ public class InputManager {
             } catch (MeiException e) {
                 e.echoErrorResponse();
             }
-             break;
+            break;
 
         default:
             // Task types.
