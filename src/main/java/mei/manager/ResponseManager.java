@@ -1,9 +1,12 @@
 package mei.manager;
 
-import mei.tasks.Task;
-
 import java.util.Arrays;
 import java.util.HashMap;
+
+import mei.javafx.MainWindow;
+import mei.tasks.Task;
+
+
 
 /**
  * This is the manager responsible for managing Mei's responses.
@@ -30,54 +33,46 @@ public class ResponseManager {
         RESPONSE_MAP.put("NoTask", new String[] {"I can't find any tasks for you :(", "Maybe start adding new tasks?"});
 
         // Listing found user tasks.
-        RESPONSE_MAP.put("FindTasks", new String[] {"Alright! Here are the tasks that I found from your list:", "Hope I didn't miss any!"});
-        RESPONSE_MAP.put("FindTasksEmpty", new String[] {"Sorry! It seems like there isn't any tasks that matched the description :("});
+        RESPONSE_MAP.put("FindTasks", new String[] {"Alright! Here are the tasks that I found from your list:",
+                                                    "Hope I didn't miss any!"});
+        RESPONSE_MAP.put("FindTasksEmpty", new String[] {"Sorry! It seems like there isn't any tasks"
+                                                            + " that matched the description :("});
 
         // Adding new task.
         RESPONSE_MAP.put("AddTask", new String[] {"Certainly! Your new task is on the way!"});
-        RESPONSE_MAP.put("AddTaskSuccess", new String[] {"Task successfully added! Yay!", "Your added task is:\n", "The total tasks you currently have is: "});
+        RESPONSE_MAP.put("AddTaskSuccess", new String[] {"Task successfully added! Yay!", "Your added task is:\n",
+                                                            "The total tasks you currently have is: "});
 
         // Marking and unmarking existing tasks.
-        RESPONSE_MAP.put("MarkTask", new String[] {"You've completed this? That's amazing!", "I've noted down your achievement, congratulations!"});
-        RESPONSE_MAP.put("UnmarkTask", new String[] {"It's alright to take things easy.", "I've unchecked this task for you to revisit next time!"});
+        RESPONSE_MAP.put("MarkTask", new String[] {"You've completed this? That's amazing!",
+                                                      "I've noted down your achievement, congratulations!"});
+        RESPONSE_MAP.put("UnmarkTask", new String[] {"It's alright to take things easy.",
+                                                        "I've unchecked this task for you to revisit next time!"});
 
         // Deleting tasks.
-        RESPONSE_MAP.put("DeleteTask", new String[] {"Got it! I will erase this task from my list.", "The removed task is:\n", "The amount of tasks left for you is: "});
+        RESPONSE_MAP.put("DeleteTask", new String[] {"Got it! I will erase this task from my list.",
+            "The removed task is:\n", "The amount of tasks left for you is: "});
 
         // Exception responses.
         RESPONSE_MAP.put("UnknownUserInput", new String[] {"Come again? I don't quite get what you are saying."});
-        RESPONSE_MAP.put("UnknownTaskType", new String[] {"Oops! I think you may have entered an unknown task type! Please try again!", "The accepted tasks are todo, deadline, and event :))"});
+        RESPONSE_MAP.put("UnknownTaskType", new String[] {"Oops! I think you may have entered an unknown task type!"
+                + "Please try again!", "The accepted tasks are todo, deadline, and event :))"});
         RESPONSE_MAP.put("EmptyTaskDescription", new String[] {"Remember to add a description to your tasks, okay?"});
-        RESPONSE_MAP.put("TaskIndexOutOfBounds", new String[] {"Hmm..? This task number doesn't seem to be on the list...", "Can you repeat with a valid one? :3"});
-        RESPONSE_MAP.put("DeadlineNotEnoughInfo", new String[] {"Hmm? I think you missed some information there...", "I would need to know the deadline so... do use /by to indicate it!"});
-        RESPONSE_MAP.put("EventNotEnoughInfo", new String[] {"Hmm? I think you missed some information there...", "I would need to know the start and end date/times so... do use /from and /to to indicate them!"});
-    }
-
-
-    /**
-     * Simply echos what is passed in.
-     * This function ensures that every response echoed is wrapped in divider lines.
-     *
-     * @param input The input string to echo.
-     */
-    public void echo(String input) {
-        dividerLine();
-        System.out.println(input);
-        dividerLine();
+        RESPONSE_MAP.put("TaskIndexOutOfBounds", new String[] {"Hmm..? This task number doesn't seem to be"
+                + "on the list...", "Can you repeat with a valid one? :3"});
+        RESPONSE_MAP.put("DeadlineNotEnoughInfo", new String[] {"Hmm? I think you missed some information there...",
+            "I would need to know the deadline so... do use /by to indicate it!"});
+        RESPONSE_MAP.put("EventNotEnoughInfo", new String[] {"Hmm? I think you missed some information there...",
+            "I would need to know the start and end date/times so... do use /from and /to to indicate them!"});
     }
 
     /**
-     * Echos everything in the given input array.
-     * This function ensures that all the responses echoed are wrapped in the desired format.
+     * Returns back the input array to the main window to be set as Mei's responses to the user.
      *
-     * @param inputs The input array to echo.
+     * @param inputs The input array to return back.
      */
-    public static void echoLines(String[] inputs) {
-        dividerLine();
-        for (String input : inputs) {
-            System.out.println(input);
-        }
-        dividerLine();
+    public static void setInputsAsApplicationResponse(String[] inputs) {
+        MainWindow.setMeiResponses(inputs);
     }
 
     /**
@@ -85,7 +80,7 @@ public class ResponseManager {
      * The corresponding array that contains the responses are fetched with the relevant keyword.
      */
     public void greetUser() {
-        echoLines(getResponses("Greeting"));
+        setInputsAsApplicationResponse(getResponses("Greeting"));
     }
 
     /**
@@ -94,7 +89,7 @@ public class ResponseManager {
      * The corresponding array that contains the responses are fetched with the relevant keyword.
      */
     public void exitChat() {
-        echoLines(getResponses("Exit"));
+        setInputsAsApplicationResponse(getResponses("Exit"));
     }
 
     /**
@@ -102,7 +97,8 @@ public class ResponseManager {
      * The corresponding array that contains the responses are fetched with the relevant keyword.
      * Goes through a series of process to append the newly added task to the end of the response array
      * to echo it back to the user.
-     * The original strings that are manipulated were cached to restore the response array to its original state upon echoing.
+     * The original strings that are manipulated were cached to restore the response array
+     * to its original state upon echoing.
      *
      * @param task The task successfully added to be echoed.
      */
@@ -123,7 +119,7 @@ public class ResponseManager {
         addTaskSuccessResponses[totalTaskStringIndex] += totalTasks;
 
         // Echo the responses.
-        echoLines(addTaskSuccessResponses);
+        setInputsAsApplicationResponse(addTaskSuccessResponses);
 
         // Reset the added task string back to default without the newly added task.
         addTaskSuccessResponses[taskStringIndex] = initialAddedTaskString;
@@ -135,7 +131,8 @@ public class ResponseManager {
      * The corresponding array that contains the responses are fetched with the relevant keyword.
      * Goes through a series of process to append the deleted task to the end of the response array
      * to echo it back to the user.
-     * The original strings that are manipulated were cached to restore the response array to its original state upon echoing.
+     * The original strings that are manipulated were cached to restore the response array to its original state
+     * upon echoing.
      *
      * @param deletedTask The deleted task.
      */
@@ -156,7 +153,7 @@ public class ResponseManager {
         deleteTaskSuccessResponses[totalTaskStringIndex] += totalTasks;
 
         // Echo the responses.
-        echoLines(deleteTaskSuccessResponses);
+        setInputsAsApplicationResponse(deleteTaskSuccessResponses);
 
         // Reset the added task string back to default without the newly added task.
         deleteTaskSuccessResponses[taskStringIndex] = initialDeletedTaskString;
@@ -171,7 +168,7 @@ public class ResponseManager {
     public void listTasksResponse(String[] tasksToBeDisplayed) {
         String[] listTasksResponses = getResponses("ListTasks");
         listTasksResponses = concatResponses(listTasksResponses, tasksToBeDisplayed);
-        echoLines(listTasksResponses);
+        setInputsAsApplicationResponse(listTasksResponses);
     }
 
     /**
@@ -198,7 +195,7 @@ public class ResponseManager {
      * Lets the user know if there is no task to be found.
      */
     public void noTaskResponse() {
-        echoLines(getResponses("NoTask"));
+        setInputsAsApplicationResponse(getResponses("NoTask"));
     }
 
     /**
@@ -208,7 +205,7 @@ public class ResponseManager {
      */
     public void markTaskResponse(Task markedTask) {
         String[] markTaskResponses = appendTaskStringToResponseArrayAndReturn("MarkTask", markedTask.toString());
-        echoLines(markTaskResponses);
+        setInputsAsApplicationResponse(markTaskResponses);
     }
 
     /**
@@ -218,7 +215,7 @@ public class ResponseManager {
      */
     public void unmarkTaskResponse(Task unmarkedTask) {
         String[] unmarkTaskResponses = appendTaskStringToResponseArrayAndReturn("UnmarkTask", unmarkedTask.toString());
-        echoLines(unmarkTaskResponses);
+        setInputsAsApplicationResponse(unmarkTaskResponses);
     }
 
     /**
@@ -231,17 +228,18 @@ public class ResponseManager {
         String[] foundTasksResponses = getResponses("FindTasks");
 
         if (foundTasks.length == 0) {
-            echoLines(getResponses("FindTasksEmpty"));
+            setInputsAsApplicationResponse(getResponses("FindTasksEmpty"));
             return;
         }
 
         foundTasksResponses = concatResponses(foundTasksResponses, foundTasks);
-        echoLines(foundTasksResponses);
+        setInputsAsApplicationResponse(foundTasksResponses);
     }
 
 
     /**
-     * Appends a task as its string representation defined in its class to a response array corresponding to the given array key.
+     * Appends a task as its string representation defined in its class to a response array
+     * corresponding to the given array key.
      * This method also returns the final appended array.
      *
      * @param arrayKey The key to fetch the response array from the RESPONSE_MAP.
@@ -254,13 +252,6 @@ public class ResponseManager {
         taskResponses = Arrays.copyOf(taskResponses, unmarkTaskResponseLength);
         taskResponses[unmarkTaskResponseLength - 1] = taskString;
         return taskResponses;
-    }
-
-    /**
-     * A divider line that groups the responses and makes everything neater.
-     */
-    private static void dividerLine() {
-        System.out.println("_________________________________");
     }
 
     /**

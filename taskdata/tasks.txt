@@ -1,3 +1,3 @@
-ToDo|[ ]|read book
+ToDo|[X]|read book
 Deadline|[X]|return book|25/05/2025 0600
 ToDo|[ ]|go to library
