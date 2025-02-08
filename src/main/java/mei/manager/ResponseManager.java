@@ -1,8 +1,5 @@
 package mei.manager;
 
-import java.util.Arrays;
-import java.util.HashMap;
-
 import mei.tasks.Task;
 import response.AddTaskResponse;
 import response.DeleteTaskResponse;
@@ -16,7 +13,6 @@ import response.UnmarkTaskResponse;
  * Any calls to make Mei speak or make a response should be done via here.
  */
 public class ResponseManager {
-    private static final HashMap<String, String[]> RESPONSE_MAP = new HashMap<>();
     private final TaskManager taskManager;
 
     /**
@@ -24,7 +20,6 @@ public class ResponseManager {
      * The response map is given the final modifier as no modifications should be made upon initialization.
      */
     public ResponseManager(TaskManager taskManager) {
-        // Task manager.
         this.taskManager = taskManager;
     }
 
@@ -104,53 +99,6 @@ public class ResponseManager {
     public void makeFindTasksResponse(String[] foundTasks) {
         FindTasksResponse findTasksResponse = new FindTasksResponse(foundTasks);
         findTasksResponse.formResponsesAndSet();
-    }
-
-    /**
-     * Appends a task as its string representation defined in its class to a response array
-     * corresponding to the given array key.
-     * This method also returns the final appended array.
-     *
-     * @param arrayKey The key to fetch the response array from the RESPONSE_MAP.
-     * @param taskString The task represented as a string.
-     * @return The resulting appended array.
-     */
-    public String[] appendTaskStringToResponseArrayAndReturn(String arrayKey, String taskString) {
-        String[] taskResponses = getResponses(arrayKey);
-        int unmarkTaskResponseLength = taskResponses.length + 1;
-        taskResponses = Arrays.copyOf(taskResponses, unmarkTaskResponseLength);
-        taskResponses[unmarkTaskResponseLength - 1] = taskString;
-        return taskResponses;
-    }
-
-    /**
-     * Concatenates 2 arrays, first followed by the second.
-     * If the arrays are empty, an empty string array is returned.
-     * However, we expect both the first and second arrays are always non-empty.
-     *
-     * @param first The first array.
-     * @param second The second array.
-     * @return The resulting array after concatenation.
-     */
-    public String[] concatResponses(String[] first, String[] second) {
-        int firstLength = first.length;
-        int secondLength = second.length;
-        String[] result = new String[firstLength + secondLength];
-
-        System.arraycopy(first, 0, result, 0, firstLength);
-        System.arraycopy(second, 0, result, firstLength, firstLength + secondLength - firstLength);
-
-        return result;
-    }
-
-    /**
-     * Get the array of responses from the response map.
-     *
-     * @param key The hash key of the responses.
-     * @return The array of responses corresponding to the given key.
-     */
-    public static String[] getResponses(String key) {
-        return RESPONSE_MAP.get(key);
     }
 
 }

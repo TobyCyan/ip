@@ -58,10 +58,16 @@ public class ResponseManagerTest {
 
     @Test
     public void concatResponse_noEmpty_success() {
-        ResponseManager rm = new ResponseManager(new TaskManager(new ArrayList<Task>(), new FileStorageStub("./")));
+        Response response = new Response() {
+            @Override
+            public void formResponsesAndSet() {
+                return;
+            }
+        };
+
         String[] firstStr = new String[]{"Hello guys!"};
         String[] secondStr = new String[]{"Welcome to my YouTube channel."};
-        String[] actual = rm.concatResponses(firstStr, secondStr);
+        String[] actual = response.concatResponses(firstStr, secondStr);
         String[] expected = new String[] {"Hello guys!", "Welcome to my YouTube channel."};
         assertArrayEquals(expected, actual);
     }

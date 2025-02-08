@@ -1,6 +1,10 @@
 package mei.manager;
 
-import mei.exception.*;
+import mei.exception.EmptyTaskDescriptionException;
+import mei.exception.MeiException;
+import mei.exception.TaskIndexOutOfBoundsException;
+import mei.exception.UnknownTaskTypeException;
+import mei.exception.UnknownUserInputException;
 import mei.tasks.Task;
 
 /**
@@ -11,7 +15,14 @@ import mei.tasks.Task;
 public class InputManager {
     private final TaskManager taskManager;
     private final ResponseManager responseManager;
-    
+
+    /**
+     * Initializes the input manager.
+     * This manager is also connected to the task manager and response manager.
+     *
+     * @param taskManager The task manager.
+     * @param responseManager The response manager.
+     */
     public InputManager(TaskManager taskManager, ResponseManager responseManager) {
         this.taskManager = taskManager;
         this.responseManager = responseManager;
@@ -20,7 +31,8 @@ public class InputManager {
     /**
      * Interprets and redirects all incoming inputs to their respective functions.
      * This should serve as a middle-man function between the user and the manager functions.
-     * This method can only receive a limited number of commands based on the keyword (i.e. the first word of the given input.)
+     * This method can only receive a limited number of commands based on the keyword
+     * (i.e. the first word of the given input.)
      * and the command is assumed to be a task command if none of the defined cases match.
      *
      * @param input The user input to redirect.
@@ -52,6 +64,7 @@ public class InputManager {
 
         default:
             redirectToAddTask(splitInput);
+
         }
     }
 
@@ -67,7 +80,7 @@ public class InputManager {
             if (!taskManager.isTaskIndexValid(taskIndex)) {
                 throw new TaskIndexOutOfBoundsException();
             }
-        } catch (MeiException e) {
+        } catch (TaskIndexOutOfBoundsException e) {
             e.echoErrorResponse();
             return true;
         }
@@ -117,7 +130,7 @@ public class InputManager {
             String[] foundTasksAsStrings = taskManager.findTasksToDisplay(splitInput[1]);
             responseManager.makeFindTasksResponse(foundTasksAsStrings);
 
-        } catch (MeiException e) {
+        } catch (EmptyTaskDescriptionException e) {
             e.echoErrorResponse();
         }
     }

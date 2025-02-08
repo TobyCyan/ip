@@ -46,7 +46,6 @@ public class TaskManager {
         this.fileStorage = fileStorage;
     }
 
-
     /**
      * Processes new added tasks before returning them to the response manager to prompt the user.
      * Assumes that there are only 3 types of tasks to be considered: todo, deadline and event.
@@ -58,44 +57,53 @@ public class TaskManager {
     public Task processAddTask(String taskType, String taskDescription) throws MeiException {
         String taskStringSplitRegex = "(/from|/by|/to)";
         String[] taskDescriptionSplit = taskDescription.split(taskStringSplitRegex, 3);
-        Task newTask = null;
         String description = taskDescriptionSplit[0];
 
         switch (taskType) {
         case "todo":
-            newTask = new ToDo(description);
-            break;
+            return addTodoTaskAndReturn(description);
 
         case "deadline":
-            // Task description split must be length 2.
-            if (taskDescriptionSplit.length < 2) {
-                throw new DeadlineNotEnoughInfoException();
-            }
-
-            String deadlineDateTime = taskDescriptionSplit[1];
-            newTask = new Deadline(description, deadlineDateTime);
-            break;
+            return addDeadlineTaskAndReturn(taskDescriptionSplit, description);
 
         case "event":
-            // Task description split must be length 3.
-            if (taskDescriptionSplit.length < 3) {
-                throw new EventNotEnoughInfoException();
-            }
-
-            String startDateTime = taskDescriptionSplit[1];
-            String endDateTime = taskDescriptionSplit[2];
-            newTask = new Event(description, startDateTime, endDateTime);
-            break;
+            return addEventTaskAndReturn(taskDescriptionSplit, description);
 
         default:
-            break;
+            return null;
         }
+    }
 
-        if (newTask == null) {
-            return newTask;
-        }
-
+    private Task addTodoTaskAndReturn(String description) {
+        ToDo newTask = new ToDo(description);
         addTask(newTask);
+        return newTask;
+    }
+
+    private Task addDeadlineTaskAndReturn(String[] taskDescriptionSplit, String description) throws DeadlineNotEnoughInfoException {
+        // Task description split must be length 2.
+        if (taskDescriptionSplit.length < 2) {
+            throw new DeadlineNotEnoughInfoException();
+        }
+
+        String deadlineDateTime = taskDescriptionSplit[1];
+        Deadline newTask = new Deadline(description, deadlineDateTime);
+        addTask(newTask);
+
+        return newTask;
+    }
+
+    private Task addEventTaskAndReturn(String[] taskDescriptionSplit, String description) throws EventNotEnoughInfoException {
+        // Task description split must be length 3.
+        if (taskDescriptionSplit.length < 3) {
+            throw new EventNotEnoughInfoException();
+        }
+
+        String startDateTime = taskDescriptionSplit[1];
+        String endDateTime = taskDescriptionSplit[2];
+        Event newTask = new Event(description, startDateTime, endDateTime);
+        addTask(newTask);
+
         return newTask;
     }
 
