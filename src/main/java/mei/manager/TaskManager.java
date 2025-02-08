@@ -103,6 +103,7 @@ public class TaskManager {
      * @param task The new task to be added.
      */
     public void addTask(Task task) {
+        assert task != null : "task added should never be null";
         tasks.add(task);
         fileStorage.writeTask(task);
     }
@@ -115,6 +116,8 @@ public class TaskManager {
      * @return The completed task itself.
      */
     public Task markTask(int taskIndex) {
+        assert isTaskIndexValid(taskIndex) : "task index to be marked should be valid";
+
         Task taskToBeMarked = tasks.get(taskIndex - 1);
         taskToBeMarked.completeTask();
 
@@ -132,6 +135,8 @@ public class TaskManager {
      * @return The unmarked task itself to be prompted to the user.
      */
     public Task unmarkTask(int taskIndex) {
+        assert isTaskIndexValid(taskIndex) : "task index to be unmarked should be valid";
+
         Task taskToBeUnmarked = tasks.get(taskIndex - 1);
         taskToBeUnmarked.uncheckTask();
 
@@ -148,6 +153,8 @@ public class TaskManager {
      * @return The deleted task itself to be prompted to the user.
      */
     public Task deleteTask(int taskIndex) {
+        assert isTaskIndexValid(taskIndex) : "task index to be deleted should be valid";
+
         Task taskToBeDeleted = tasks.get(taskIndex - 1);
         tasks.remove(taskToBeDeleted);
 
@@ -216,7 +223,7 @@ public class TaskManager {
 
     /**
      * Checks whether the task index used to process a task is valid.
-     * The index is considered valid if there a task of that index exists.
+     * The index is considered valid if there's a task of that index exists.
      *
      * @param taskIndex The task index to check.
      * @return true or false depending on whether the index is valid.

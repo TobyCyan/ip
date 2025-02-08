@@ -46,6 +46,9 @@ public class InputManager {
                 break;
             }
             Task markedTask = taskManager.markTask(taskIndexToMark);
+
+            assert markedTask != null : "marked task should never be null";
+
             responseManager.markTaskResponse(markedTask);
             break;
 
@@ -55,6 +58,9 @@ public class InputManager {
                 break;
             }
             Task unmarkedTask = taskManager.unmarkTask(taskIndexToUnmark);
+
+            assert unmarkedTask != null : "unmarked task should never be null";
+
             responseManager.unmarkTaskResponse(unmarkedTask);
             break;
 
@@ -64,6 +70,9 @@ public class InputManager {
                 break;
             }
             Task deletedTask = taskManager.deleteTask(taskIndexToDelete);
+
+            assert deletedTask != null : "deleted task should never be null";
+
             responseManager.deleteTaskResponse(deletedTask);
             break;
 
