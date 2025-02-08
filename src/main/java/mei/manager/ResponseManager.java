@@ -87,6 +87,8 @@ public class ResponseManager {
         String[] addTaskSuccessResponses = getResponses("AddTaskSuccess");
         int totalTasks = taskManager.getTotalTasks();
 
+        assert totalTasks >= 1 : "total tasks after adding a new task should be at least 1";
+
         // Index variables where information should be appended to.
         int totalTaskStringIndex = addTaskSuccessResponses.length - 1;
         int taskStringIndex = 1;

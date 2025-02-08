@@ -61,6 +61,8 @@ public class MainWindow extends AnchorPane {
             return;
         }
 
+        assert !userText.isEmpty() : "user input should not be empty";
+
         if (userText.equals("bye")) {
             // Says bye to the user.
             DialogBox exitChatDialogBox = getMeiDialog(ResponseManager.getResponses("Exit"));
