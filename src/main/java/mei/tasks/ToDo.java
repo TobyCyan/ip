@@ -1,5 +1,10 @@
 package mei.tasks;
 
+/**
+ * Represents the todo task.
+ * Consists of the description for this task.
+ * This class contains methods to easily represent this task as a string.
+ */
 public class ToDo extends Task {
 
     public ToDo(String description) {

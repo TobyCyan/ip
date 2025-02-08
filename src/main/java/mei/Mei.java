@@ -5,8 +5,6 @@ import mei.manager.InputManager;
 import mei.manager.ResponseManager;
 import mei.manager.TaskManager;
 
-import java.util.Scanner;
-
 /**
  * Represents the main class for the chatbot known as Mei.
  * Consists of all the managers that are passed into other managers to establish communication between the managers.

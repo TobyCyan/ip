@@ -1,5 +1,11 @@
 package mei.manager;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import mei.exception.DeadlineNotEnoughInfoException;
 import mei.exception.EventNotEnoughInfoException;
 import mei.exception.MeiException;
@@ -9,9 +15,6 @@ import mei.tasks.Event;
 import mei.tasks.Task;
 import mei.tasks.ToDo;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * Represents the manager class that supports all task-related functionalities.
  * This class contains methods to add, delete, mark, unmark tasks.
@@ -19,12 +22,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Hence, it is important to update this list when new tasks get added.
  */
 public class TaskManager {
-    private final List<Task> tasks;
     /** The set of task types that are valid, be sure to update this when new task types are added. **/
     private static final HashSet<String> TASK_TYPES = new HashSet<>();
+
+    private final List<Task> tasks;
     private final FileStorage fileStorage;
-    /** Regex to use for splitting the given user task input. */
-    private static final String TASK_STRING_SPLIT_REGEX = "(/from|/by|/to)";
 
     /**
      * Initializes the valid task types and adds them to the set of task types.
@@ -54,8 +56,9 @@ public class TaskManager {
      * @return The processed task itself, or null if the task type does not match any of the valid types.
      */
     public Task processAddTask(String taskType, String taskDescription) throws MeiException {
+        String taskStringSplitRegex = "(/from|/by|/to)";
+        String[] taskDescriptionSplit = taskDescription.split(taskStringSplitRegex, 3);
         Task newTask = null;
-        String[] taskDescriptionSplit = taskDescription.split(TASK_STRING_SPLIT_REGEX, 3);
         String description = taskDescriptionSplit[0];
 
         switch (taskType) {
@@ -66,7 +69,7 @@ public class TaskManager {
         case "deadline":
             // Task description split must be length 2.
             if (taskDescriptionSplit.length < 2) {
-                throw new DeadlineNotEnoughInfoException(ResponseManager.getResponses("DeadlineNotEnoughInfo"));
+                throw new DeadlineNotEnoughInfoException();
             }
 
             String deadlineDateTime = taskDescriptionSplit[1];
@@ -76,7 +79,7 @@ public class TaskManager {
         case "event":
             // Task description split must be length 3.
             if (taskDescriptionSplit.length < 3) {
-                throw new EventNotEnoughInfoException(ResponseManager.getResponses("EventNotEnoughInfo"));
+                throw new EventNotEnoughInfoException();
             }
 
             String startDateTime = taskDescriptionSplit[1];
@@ -216,7 +219,7 @@ public class TaskManager {
 
     /**
      * Checks whether the task index used to process a task is valid.
-     * The index is considered valid if there a task of that index exists.
+     * The index is considered valid if there's a task of that index exists.
      *
      * @param taskIndex The task index to check.
      * @return true or false depending on whether the index is valid.

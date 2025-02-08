@@ -8,9 +8,12 @@ package mei.exception;
  * with the key of the same name excluding the exception word at the end.
  */
 public class EmptyTaskDescriptionException extends MeiException {
+    private static final String[] ERROR_RESPONSES = new String[] {
+        "Remember to add a description to your tasks, okay?"
+    };
 
-    public EmptyTaskDescriptionException(String[] errorResponses) {
-        super(errorResponses);
+    public EmptyTaskDescriptionException() {
+        super(ERROR_RESPONSES);
     }
 
 }
