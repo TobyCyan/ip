@@ -80,7 +80,8 @@ public class TaskManager {
         return newTask;
     }
 
-    private Task addDeadlineTaskAndReturn(String[] taskDescriptionSplit, String description) throws DeadlineNotEnoughInfoException {
+    private Task addDeadlineTaskAndReturn(String[] taskDescriptionSplit, String description)
+            throws DeadlineNotEnoughInfoException {
         // Task description split must be length 2.
         if (taskDescriptionSplit.length < 2) {
             throw new DeadlineNotEnoughInfoException();
@@ -93,7 +94,8 @@ public class TaskManager {
         return newTask;
     }
 
-    private Task addEventTaskAndReturn(String[] taskDescriptionSplit, String description) throws EventNotEnoughInfoException {
+    private Task addEventTaskAndReturn(String[] taskDescriptionSplit, String description)
+            throws EventNotEnoughInfoException {
         // Task description split must be length 3.
         if (taskDescriptionSplit.length < 3) {
             throw new EventNotEnoughInfoException();

@@ -1,12 +1,12 @@
 package mei.manager;
 
+import mei.response.AddTaskResponse;
+import mei.response.DeleteTaskResponse;
+import mei.response.FindTasksResponse;
+import mei.response.ListTasksResponse;
+import mei.response.MarkTaskResponse;
+import mei.response.UnmarkTaskResponse;
 import mei.tasks.Task;
-import response.AddTaskResponse;
-import response.DeleteTaskResponse;
-import response.FindTasksResponse;
-import response.ListTasksResponse;
-import response.MarkTaskResponse;
-import response.UnmarkTaskResponse;
 
 /**
  * This is the manager responsible for managing Mei's responses.

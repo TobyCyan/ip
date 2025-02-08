@@ -1,4 +1,4 @@
-package response;
+package mei.response;
 
 /**
  * Represents the response to return the found tasks back to the user.

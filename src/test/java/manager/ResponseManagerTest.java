@@ -2,17 +2,12 @@ package manager;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-import java.util.ArrayList;
-
 import org.junit.jupiter.api.Test;
 
-import mei.manager.ResponseManager;
-import mei.manager.TaskManager;
-import mei.stub.FileStorageStub;
 import mei.tasks.Task;
-import response.MarkTaskResponse;
-import response.Response;
-import response.UnmarkTaskResponse;
+import mei.response.MarkTaskResponse;
+import mei.response.Response;
+import mei.response.UnmarkTaskResponse;
 
 
 /**
