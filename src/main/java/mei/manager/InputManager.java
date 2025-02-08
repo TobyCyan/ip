@@ -136,7 +136,6 @@ public class InputManager {
     }
 
     private void redirectToAddTask(String[] splitInput) {
-        // Task types.
         try {
             String taskType = splitInput[0];
 
