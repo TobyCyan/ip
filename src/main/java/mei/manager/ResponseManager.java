@@ -32,9 +32,11 @@ public class ResponseManager {
      */
     public void makeNewAddTaskResponse(Task task) {
         int totalTasks = taskManager.getTotalTasks();
+        assert totalTasks >= 1 : "total tasks after adding a new task should be at least 1";
 
         AddTaskResponse addTaskResponse = new AddTaskResponse(task, totalTasks);
         addTaskResponse.formResponsesAndSet();
+       
     }
 
     /**
