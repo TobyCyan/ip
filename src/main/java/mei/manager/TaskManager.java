@@ -1,5 +1,11 @@
 package mei.manager;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import mei.exception.DeadlineNotEnoughInfoException;
 import mei.exception.EventNotEnoughInfoException;
 import mei.exception.MeiException;
@@ -9,9 +15,6 @@ import mei.tasks.Event;
 import mei.tasks.Task;
 import mei.tasks.ToDo;
 
-import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-
 /**
  * Represents the manager class that supports all task-related functionalities.
  * This class contains methods to add, delete, mark, unmark tasks.
@@ -19,12 +22,11 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Hence, it is important to update this list when new tasks get added.
  */
 public class TaskManager {
-    private final List<Task> tasks;
     /** The set of task types that are valid, be sure to update this when new task types are added. **/
     private static final HashSet<String> TASK_TYPES = new HashSet<>();
+
+    private final List<Task> tasks;
     private final FileStorage fileStorage;
-    /** Regex to use for splitting the given user task input. */
-    private static final String TASK_STRING_SPLIT_REGEX = "(/from|/by|/to)";
 
     /**
      * Initializes the valid task types and adds them to the set of task types.
@@ -44,7 +46,6 @@ public class TaskManager {
         this.fileStorage = fileStorage;
     }
 
-
     /**
      * Processes new added tasks before returning them to the response manager to prompt the user.
      * Assumes that there are only 3 types of tasks to be considered: todo, deadline and event.
@@ -54,45 +55,57 @@ public class TaskManager {
      * @return The processed task itself, or null if the task type does not match any of the valid types.
      */
     public Task processAddTask(String taskType, String taskDescription) throws MeiException {
-        Task newTask = null;
-        String[] taskDescriptionSplit = taskDescription.split(TASK_STRING_SPLIT_REGEX, 3);
+        String taskStringSplitRegex = "(/from|/by|/to)";
+        String[] taskDescriptionSplit = taskDescription.split(taskStringSplitRegex, 3);
         String description = taskDescriptionSplit[0];
 
         switch (taskType) {
         case "todo":
-            newTask = new ToDo(description);
-            break;
+            return addTodoTaskAndReturn(description);
 
         case "deadline":
-            // Task description split must be length 2.
-            if (taskDescriptionSplit.length < 2) {
-                throw new DeadlineNotEnoughInfoException(ResponseManager.getResponses("DeadlineNotEnoughInfo"));
-            }
-
-            String deadlineDateTime = taskDescriptionSplit[1];
-            newTask = new Deadline(description, deadlineDateTime);
-            break;
+            return addDeadlineTaskAndReturn(taskDescriptionSplit, description);
 
         case "event":
-            // Task description split must be length 3.
-            if (taskDescriptionSplit.length < 3) {
-                throw new EventNotEnoughInfoException(ResponseManager.getResponses("EventNotEnoughInfo"));
-            }
-
-            String startDateTime = taskDescriptionSplit[1];
-            String endDateTime = taskDescriptionSplit[2];
-            newTask = new Event(description, startDateTime, endDateTime);
-            break;
+            return addEventTaskAndReturn(taskDescriptionSplit, description);
 
         default:
-            break;
+            return null;
         }
+    }
 
-        if (newTask == null) {
-            return newTask;
-        }
-
+    private Task addTodoTaskAndReturn(String description) {
+        ToDo newTask = new ToDo(description);
         addTask(newTask);
+        return newTask;
+    }
+
+    private Task addDeadlineTaskAndReturn(String[] taskDescriptionSplit, String description)
+            throws DeadlineNotEnoughInfoException {
+        // Task description split must be length 2.
+        if (taskDescriptionSplit.length < 2) {
+            throw new DeadlineNotEnoughInfoException();
+        }
+
+        String deadlineDateTime = taskDescriptionSplit[1];
+        Deadline newTask = new Deadline(description, deadlineDateTime);
+        addTask(newTask);
+
+        return newTask;
+    }
+
+    private Task addEventTaskAndReturn(String[] taskDescriptionSplit, String description)
+            throws EventNotEnoughInfoException {
+        // Task description split must be length 3.
+        if (taskDescriptionSplit.length < 3) {
+            throw new EventNotEnoughInfoException();
+        }
+
+        String startDateTime = taskDescriptionSplit[1];
+        String endDateTime = taskDescriptionSplit[2];
+        Event newTask = new Event(description, startDateTime, endDateTime);
+        addTask(newTask);
+
         return newTask;
     }
 

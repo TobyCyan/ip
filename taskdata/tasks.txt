@@ -1,5 +1,1 @@
-Deadline|[X]|return book|25/05/2025 0600
-ToDo|[ ]|go to library
-ToDo|[ ]|finish this project
-ToDo|[ ]|sleep
-ToDo|[ ]|play games
+ToDo|[ ]|return book

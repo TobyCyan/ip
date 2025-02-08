@@ -9,12 +9,20 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import mei.Mei;
-import mei.manager.ResponseManager;
 
 /**
  * Represents the main window class that contains all the components in the application.
  */
 public class MainWindow extends AnchorPane {
+    private static final String[] GREETING_RESPONSES = new String[] {
+        "Hello! My name is Mei!",
+        "What can I do for you?"
+    };
+
+    private static final String[] GOODBYE_RESPONSES = new String[] {
+        "See you next time! :)"
+    };
+
     @FXML
     private static String[] meiText;
     @FXML
@@ -38,7 +46,7 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
-        addChildrenToDialogContainer(getMeiDialog(ResponseManager.getResponses("Greeting")));
+        addChildrenToDialogContainer(getMeiDialog(GREETING_RESPONSES));
     }
 
     /** Injects the Duke instance */
@@ -65,7 +73,7 @@ public class MainWindow extends AnchorPane {
 
         if (userText.equals("bye")) {
             // Says bye to the user.
-            DialogBox exitChatDialogBox = getMeiDialog(ResponseManager.getResponses("Exit"));
+            DialogBox exitChatDialogBox = getMeiDialog(GOODBYE_RESPONSES);
             addChildrenToDialogContainer(exitChatDialogBox);
             Platform.exit();
             return;

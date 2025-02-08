@@ -1,5 +1,9 @@
 package mei.tasks;
 
+/**
+ * Represents the base class for all tasks.
+ * Consists of a description and a boolean on whether the task is done or not.
+ */
 public class Task {
     protected final String description;
     private boolean isTaskDone;

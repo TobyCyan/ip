@@ -1,6 +1,6 @@
 package mei.exception;
 
-import mei.manager.ResponseManager;
+import mei.javafx.MainWindow;
 
 /**
  * Represents the parent class for all exceptions specific to Mei.
@@ -20,7 +20,7 @@ public class MeiException extends Throwable {
      * The error response array is defined at the construction of any Mei exceptions.
      */
     public void echoErrorResponse() {
-        ResponseManager.setInputsAsApplicationResponse(errorResponses);
+        MainWindow.setMeiResponses(errorResponses);
     }
 
 }

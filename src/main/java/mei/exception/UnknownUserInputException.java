@@ -8,7 +8,11 @@ package mei.exception;
  * with the key of the same name excluding the exception word at the end.
  */
 public class UnknownUserInputException extends MeiException {
-    public UnknownUserInputException(String[] errorResponses) {
-        super(errorResponses);
+    private static final String[] ERROR_RESPONSES = new String[] {
+        "Come again? I don't quite get what you are saying."
+    };
+
+    public UnknownUserInputException() {
+        super(ERROR_RESPONSES);
     }
 }

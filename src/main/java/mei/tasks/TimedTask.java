@@ -6,9 +6,16 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents the base class for timed tasks.
+ * Consists of the formatters for input and output date/time objects.
+ * This class contains methods to convert a date/time string into LocalDateTime objects
+ * or LocalDateTime objects of different formats into another format.
+ */
 public class TimedTask extends Task {
     /** The possible formats that the user could input their datetime. **/
-    private static final String[] INPUT_FORMATS = new String[] {"d/MM/yyyy HHmm", "d-MM-yyyy HHmm", "yyyy/MM/d HHmm", "yyyy-MM-d HHmm"};
+    private static final String[] INPUT_FORMATS = new String[] {"d/MM/yyyy HHmm", "d-MM-yyyy HHmm", "yyyy/MM/d HHmm",
+                                                                "yyyy-MM-d HHmm"};
 
     /** The formatters for parsing any local date time data in a timed task. **/
     private static final List<DateTimeFormatter> INPUT_FORMATTERS = new ArrayList<>();
@@ -44,7 +51,8 @@ public class TimedTask extends Task {
             try {
                 return LocalDateTime.parse(dateTime.trim(), formatter);
             } catch (DateTimeParseException ignore) {
-
+                // This can be safely ignored since we want to check whether the date/time input matches
+                // any of the formatters and the parse method could throw an exception.
             }
         }
         return null;

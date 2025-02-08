@@ -1,14 +1,14 @@
 package mei.fileaccess;
 
-import mei.tasks.Deadline;
-import mei.tasks.Event;
-import mei.tasks.Task;
-import mei.tasks.ToDo;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import mei.tasks.Deadline;
+import mei.tasks.Event;
+import mei.tasks.Task;
+import mei.tasks.ToDo;
 
 /**
  * Represents a class that acts as a utility to read from the designated file path.
@@ -17,7 +17,6 @@ import java.util.Scanner;
  * This class should not be interacted with directly but rather all methods here can be called from the FileStorage class.
  */
 public class FileRead {
-    private static final String SPLIT_TASK_FILE_DATA_REGEX = "\\|";
     private final String fileReadPath;
 
     public FileRead(String fileReadPath) {
@@ -51,8 +50,11 @@ public class FileRead {
     }
 
     private Task processFileTaskData(String fileData) {
-        String[] splitFileData = fileData.split(SPLIT_TASK_FILE_DATA_REGEX, 5);
+        String splitTaskFileDataRegex = "\\|";
+        String[] splitFileData = fileData.split(splitTaskFileDataRegex, 5);
         Task newTask = null;
+
+        // Extract the necessary task fields.
         String taskType = splitFileData[0];
         boolean isTaskDone = splitFileData[1].equals("[X]");
         String description = splitFileData[2];
@@ -69,6 +71,10 @@ public class FileRead {
             String startDateTime = splitFileData[3];
             String endDateTime = splitFileData[4];
             newTask = new Event(description, startDateTime, endDateTime);
+            break;
+
+        default:
+            // Do nothing.
             break;
         }
 

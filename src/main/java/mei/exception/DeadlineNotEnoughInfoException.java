@@ -8,9 +8,13 @@ package mei.exception;
  * with the key of the same name excluding the exception word at the end.
  */
 public class DeadlineNotEnoughInfoException extends MeiException {
+    private static final String[] ERROR_RESPONSES = new String[] {
+        "Hmm? I think you missed some information there...",
+        "I would need to know the deadline so... do use /by to indicate it!"
+    };
 
-    public DeadlineNotEnoughInfoException(String[] errorResponses) {
-        super(errorResponses);
+    public DeadlineNotEnoughInfoException() {
+        super(ERROR_RESPONSES);
     }
 
 }

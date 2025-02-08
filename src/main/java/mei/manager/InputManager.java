@@ -1,6 +1,10 @@
 package mei.manager;
 
-import mei.exception.*;
+import mei.exception.EmptyTaskDescriptionException;
+import mei.exception.MeiException;
+import mei.exception.TaskIndexOutOfBoundsException;
+import mei.exception.UnknownTaskTypeException;
+import mei.exception.UnknownUserInputException;
 import mei.tasks.Task;
 
 /**
@@ -11,7 +15,14 @@ import mei.tasks.Task;
 public class InputManager {
     private final TaskManager taskManager;
     private final ResponseManager responseManager;
-    
+
+    /**
+     * Initializes the input manager.
+     * This manager is also connected to the task manager and response manager.
+     *
+     * @param taskManager The task manager.
+     * @param responseManager The response manager.
+     */
     public InputManager(TaskManager taskManager, ResponseManager responseManager) {
         this.taskManager = taskManager;
         this.responseManager = responseManager;
@@ -20,7 +31,8 @@ public class InputManager {
     /**
      * Interprets and redirects all incoming inputs to their respective functions.
      * This should serve as a middle-man function between the user and the manager functions.
-     * This method can only receive a limited number of commands based on the keyword (i.e. the first word of the given input.)
+     * This method can only receive a limited number of commands based on the keyword
+     * (i.e. the first word of the given input.)
      * and the command is assumed to be a task command if none of the defined cases match.
      *
      * @param input The user input to redirect.
@@ -31,87 +43,28 @@ public class InputManager {
 
         switch (keyword) {
         case "list":
-            String[] tasksToBeListed = taskManager.getTaskStringsToDisplay();
-            if (tasksToBeListed == null) {
-                responseManager.noTaskResponse();
-                break;
-            } else {
-                responseManager.listTasksResponse(tasksToBeListed);
-            }
+            redirectToListTasks();
             break;
 
         case "mark":
-            int taskIndexToMark = Integer.parseInt(splitInput[1]);
-            if (isTaskIndexProblematic(taskIndexToMark)) {
-                break;
-            }
-            Task markedTask = taskManager.markTask(taskIndexToMark);
-
-            assert markedTask != null : "marked task should never be null";
-
-            responseManager.markTaskResponse(markedTask);
+            redirectToMarkTaskOfIndex(splitInput[1]);
             break;
 
         case "unmark":
-            int taskIndexToUnmark = Integer.parseInt(splitInput[1]);
-            if (isTaskIndexProblematic(taskIndexToUnmark)) {
-                break;
-            }
-            Task unmarkedTask = taskManager.unmarkTask(taskIndexToUnmark);
-
-            assert unmarkedTask != null : "unmarked task should never be null";
-
-            responseManager.unmarkTaskResponse(unmarkedTask);
+            redirectToUnMarkTaskOfIndex(splitInput[1]);
             break;
 
         case "delete":
-            int taskIndexToDelete = Integer.parseInt(splitInput[1]);
-            if (isTaskIndexProblematic(taskIndexToDelete)) {
-                break;
-            }
-            Task deletedTask = taskManager.deleteTask(taskIndexToDelete);
-
-            assert deletedTask != null : "deleted task should never be null";
-
-            responseManager.deleteTaskResponse(deletedTask);
+            redirectToDeleteTaskOfIndex(splitInput[1]);
             break;
 
         case "find":
-            try {
-                if (splitInput.length == 1) {
-                    throw new EmptyTaskDescriptionException(ResponseManager.getResponses("EmptyTaskSearchDescription"));
-                }
-                String[] foundTasksAsStrings = taskManager.findTasksToDisplay(splitInput[1]);
-                responseManager.findTasksResponse(foundTasksAsStrings);
-
-            } catch (MeiException e) {
-                e.echoErrorResponse();
-            }
+            redirectToFindTasks(splitInput);
             break;
 
         default:
-            // Task types.
-            try {
-                // First word doesn't fit in any of the commands nor task types.
-                if (!taskManager.isTaskTypeExist(splitInput[0])) {
-                    throw new UnknownUserInputException(ResponseManager.getResponses("UnknownUserInput"));
-                }
+            redirectToAddTask(splitInput);
 
-                // User input only has a single word. i.e. no description.
-                if (splitInput.length == 1) {
-                    throw new EmptyTaskDescriptionException(ResponseManager.getResponses("EmptyTaskDescription"));
-                }
-
-                Task addedTask = taskManager.processAddTask(keyword, splitInput[1]);
-                // No new task is created, which means task type is unknown or task description does not contain enough information to create a new task.
-                if (addedTask == null) {
-                    throw new UnknownTaskTypeException(ResponseManager.getResponses("UnknownTaskType"));
-                } else {
-                    responseManager.addTaskResponse(addedTask);
-                }
-            } catch (MeiException e) {
-                e.echoErrorResponse();
-            }
         }
     }
 
@@ -125,12 +78,90 @@ public class InputManager {
     public boolean isTaskIndexProblematic(int taskIndex) {
         try {
             if (!taskManager.isTaskIndexValid(taskIndex)) {
-                throw new TaskIndexOutOfBoundsException(ResponseManager.getResponses("TaskIndexOutOfBounds"));
+                throw new TaskIndexOutOfBoundsException();
             }
-        } catch (MeiException e) {
+        } catch (TaskIndexOutOfBoundsException e) {
             e.echoErrorResponse();
             return true;
         }
         return false;
+    }
+
+    private void redirectToListTasks() {
+        String[] tasksToBeListed = taskManager.getTaskStringsToDisplay();
+        responseManager.makeListTasksResponse(tasksToBeListed);
+    }
+
+    private void redirectToMarkTaskOfIndex(String taskIndexString) {
+        int taskIndexToMark = Integer.parseInt(taskIndexString);
+        if (isTaskIndexProblematic(taskIndexToMark)) {
+            return;
+        }
+
+        Task markedTask = taskManager.markTask(taskIndexToMark);
+        responseManager.makeMarkTaskResponse(markedTask);
+    }
+
+    private void redirectToUnMarkTaskOfIndex(String taskIndexString) {
+        int taskIndexToUnmark = Integer.parseInt(taskIndexString);
+        if (isTaskIndexProblematic(taskIndexToUnmark)) {
+            return;
+        }
+
+        Task unmarkedTask = taskManager.unmarkTask(taskIndexToUnmark);
+        responseManager.makeUnmarkTaskResponse(unmarkedTask);
+    }
+
+    private void redirectToDeleteTaskOfIndex(String taskIndexString) {
+        int taskIndexToDelete = Integer.parseInt(taskIndexString);
+        if (isTaskIndexProblematic(taskIndexToDelete)) {
+            return;
+        }
+
+        Task deletedTask = taskManager.deleteTask(taskIndexToDelete);
+        responseManager.makeDeleteTaskResponse(deletedTask);
+    }
+
+    private void redirectToFindTasks(String[] splitInput) {
+        try {
+            if (splitInput.length == 1) {
+                throw new EmptyTaskDescriptionException();
+            }
+            String[] foundTasksAsStrings = taskManager.findTasksToDisplay(splitInput[1]);
+            responseManager.makeFindTasksResponse(foundTasksAsStrings);
+
+        } catch (EmptyTaskDescriptionException e) {
+            e.echoErrorResponse();
+        }
+    }
+
+    private void redirectToAddTask(String[] splitInput) {
+        try {
+            String taskType = splitInput[0];
+
+            // First word doesn't fit in any of the commands nor task types.
+            if (!taskManager.isTaskTypeExist(taskType)) {
+                throw new UnknownUserInputException();
+            }
+
+            // User input only has a single word. i.e. no description.
+            if (splitInput.length == 1) {
+                throw new EmptyTaskDescriptionException();
+            }
+
+            String description = splitInput[1];
+            Task addedTask = taskManager.processAddTask(taskType, description);
+
+            // No new task is created, which means task type is unknown
+            // or task description does not contain enough information to create a new task.
+            if (addedTask == null) {
+                throw new UnknownTaskTypeException();
+            } else {
+                responseManager.makeNewAddTaskResponse(addedTask);
+            }
+
+        } catch (MeiException e) {
+            e.echoErrorResponse();
+        }
     }
 }
