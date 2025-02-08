@@ -9,9 +9,13 @@ package mei.exception;
  * with the key of the same name excluding the exception word at the end.
  */
 public class UnknownTaskTypeException extends MeiException {
+    private static final String[] ERROR_RESPONSES = new String[] {
+        "Oops! I think you may have entered an unknown task type!"
+            + "Please try again!", "The accepted tasks are todo, deadline, and event :))"
+    };
 
-    public UnknownTaskTypeException(String[] errorResponses) {
-        super(errorResponses);
+    public UnknownTaskTypeException() {
+        super(ERROR_RESPONSES);
     }
 
 }

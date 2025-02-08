@@ -8,9 +8,13 @@ package mei.exception;
  * with the key of the same name excluding the exception word at the end.
  */
 public class EventNotEnoughInfoException extends MeiException {
+    private static final String[] ERROR_RESPONSES = new String[] {
+        "Hmm? I think you missed some information there...",
+        "I would need to know the start and end date/times so... do use /from and /to to indicate them!"
+    };
 
-    public EventNotEnoughInfoException(String[] errorResponses) {
-        super(errorResponses);
+    public EventNotEnoughInfoException() {
+        super(ERROR_RESPONSES);
     }
 
 }

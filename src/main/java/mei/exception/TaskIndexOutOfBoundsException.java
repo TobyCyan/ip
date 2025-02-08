@@ -9,9 +9,13 @@ package mei.exception;
  * with the key of the same name excluding the exception word at the end.
  */
 public class TaskIndexOutOfBoundsException extends MeiException {
+    private static final String[] ERROR_RESPONSES = new String[] {
+        "Hmm..? This task number doesn't seem to be"
+            + "on the list...", "Can you repeat with a valid one? :3"
+    };
 
-    public TaskIndexOutOfBoundsException(String[] errorResponses) {
-        super(errorResponses);
+    public TaskIndexOutOfBoundsException() {
+        super(ERROR_RESPONSES);
     }
 
 }
