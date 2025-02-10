@@ -29,11 +29,11 @@ public class TaskManagerTest {
     public void getTaskStringsToDisplay_gotTasks_success() {
         FileStorageStub fs = new FileStorageStub("./");
         List<Task> tasks = new ArrayList<>();
-        tasks.add(new Task("task 1"));
-        tasks.add(new Task("task 2"));
-        tasks.add(new Task("task 3"));
-        tasks.add(new Task("task 4"));
-        tasks.add(new Task("task 5"));
+        tasks.add(new Task("task 1", "add task"));
+        tasks.add(new Task("task 2", "add task"));
+        tasks.add(new Task("task 3", "add task"));
+        tasks.add(new Task("task 4", "add task"));
+        tasks.add(new Task("task 5", "add task"));
 
         TaskManager tm = new TaskManager(tasks, fs);
         String[] actual = tm.getTaskStringsToDisplay();

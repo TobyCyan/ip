@@ -69,7 +69,7 @@ public class ResponseManagerTest {
 
     @Test
     public void appendTaskStringToResponseArrayAndReturn_markTask_success() {
-        Task task = new Task("task 1");
+        Task task = new Task("task 1", "add task");
         MarkTaskResponse markTaskResponse = new MarkTaskResponse(task);
         task.completeTask();
         String taskString = task.toString();
@@ -88,7 +88,7 @@ public class ResponseManagerTest {
 
     @Test
     public void appendTaskStringToResponseArrayAndReturn_unmarkTask_success() {
-        Task task = new Task("task 1");
+        Task task = new Task("task 1", "add task");
         UnmarkTaskResponse unmarkTaskResponse = new UnmarkTaskResponse(task);
         String taskString = task.toString();
         String[] markTaskResponses = new String[] {
