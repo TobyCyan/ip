@@ -14,8 +14,12 @@ import java.util.List;
  */
 public class TimedTask extends Task {
     /** The possible formats that the user could input their datetime. **/
-    private static final String[] INPUT_FORMATS = new String[] {"d/MM/yyyy HHmm", "d-MM-yyyy HHmm", "yyyy/MM/d HHmm",
-                                                                "yyyy-MM-d HHmm"};
+    private static final String[] INPUT_FORMATS = new String[] {
+        "d/MM/yyyy HHmm",
+        "d-MM-yyyy HHmm",
+        "yyyy/MM/d HHmm",
+        "yyyy-MM-d HHmm"
+    };
 
     /** The formatters for parsing any local date time data in a timed task. **/
     private static final List<DateTimeFormatter> INPUT_FORMATTERS = new ArrayList<>();
@@ -40,7 +44,9 @@ public class TimedTask extends Task {
      * Converts the given datetime string into a LocalDateTime object.
      * The string should be given in the format specified to the formatters in INPUT_FORMATTERS.
      * The string is trimmed to remove leading and trailing spaces, then parsed into LocalDateTime object.
-     * Tries to loop through all the available formatters and return when found one that matches the format of the input.
+     * <p>
+     * Tries to loop through all the available formatters
+     * and return when found one that matches the format of the input.
      * If none of the formats match, returns null for error handling.
      *
      * @param dateTime The datetime string to be parsed into a LocalDateTime object.
@@ -55,6 +61,7 @@ public class TimedTask extends Task {
                 // any of the formatters and the parse method could throw an exception.
             }
         }
+        // Should throw an exception to show the valid date/time formats instead.
         return null;
     }
 
@@ -66,6 +73,8 @@ public class TimedTask extends Task {
      * @return A string of the datetime in the output format.
      */
     public String toFormattedDateTimeOutputString(LocalDateTime dateTime) {
+        assert dateTime != null : "date/time object cannot be null";
+
         return dateTime.getDayOfWeek() + " " + dateTime.format(OUTPUT_FORMATTER);
     }
 
@@ -74,13 +83,17 @@ public class TimedTask extends Task {
      * Mainly used for writing the task's datetime to the .txt file where task data are stored
      * so that the datetime can be retrieved and interpreted in their original format.
      * <p>
-     * To ensure a constant run time, this function shall format the input datetime object into the first format in INPUT_FORMATTERS.
-     * That way we can always convert the string back to its LocalDateTime form in the first loop of the conversion function.
+     * To ensure a constant run time, this function shall format the input datetime object
+     * into the first format in INPUT_FORMATTERS.
+     * That way we can always convert the string back to its LocalDateTime form
+     * in the first loop of the conversion function.
      *
      * @param dateTime The datetime object to format.
      * @return A string of the datetime in the input format.
      */
     public String toFormattedDateTimeInputString(LocalDateTime dateTime) {
+        assert dateTime != null : "date/time object cannot be null";
+
         return dateTime.format(INPUT_FORMATTERS.get(0));
     }
 
