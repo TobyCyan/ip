@@ -10,10 +10,10 @@ import mei.exception.DeadlineNotEnoughInfoException;
 import mei.exception.EventNotEnoughInfoException;
 import mei.exception.MeiException;
 import mei.fileaccess.FileStorage;
-import mei.tasks.Deadline;
-import mei.tasks.Event;
-import mei.tasks.Task;
-import mei.tasks.ToDo;
+import mei.task.Deadline;
+import mei.task.Event;
+import mei.task.Task;
+import mei.task.ToDo;
 
 /**
  * Represents the manager class that supports all task-related functionalities.
@@ -24,6 +24,7 @@ import mei.tasks.ToDo;
 public class TaskManager {
     /** The set of task types that are valid, be sure to update this when new task types are added. **/
     private static final HashSet<String> TASK_TYPES = new HashSet<>();
+    private static Task mostRecentDeletedTask;
 
     private final List<Task> tasks;
     private final FileStorage fileStorage;
@@ -50,37 +51,38 @@ public class TaskManager {
      * Processes new added tasks before returning them to the response manager to prompt the user.
      * Assumes that there are only 3 types of tasks to be considered: todo, deadline and event.
      *
+     * @param addTaskCommand The original command used when the task to process is added.
      * @param taskType The type of the task.
-     * @param taskDescription The description of the task.
+     * @param taskDescriptionAsCommand The description of the task as a command.
      * @return The processed task itself, or null if the task type does not match any of the valid types.
      */
-    public Task processAddTask(String taskType, String taskDescription) throws MeiException {
+    public Task processAddTask(String addTaskCommand, String taskType, String taskDescriptionAsCommand) throws MeiException {
         String taskStringSplitRegex = "(/from|/by|/to)";
-        String[] taskDescriptionSplit = taskDescription.split(taskStringSplitRegex, 3);
+        String[] taskDescriptionSplit = taskDescriptionAsCommand.split(taskStringSplitRegex, 3);
         String description = taskDescriptionSplit[0];
 
         switch (taskType) {
         case "todo":
-            return addTodoTaskAndReturn(description);
+            return addTodoTaskAndReturn(addTaskCommand, description);
 
         case "deadline":
-            return addDeadlineTaskAndReturn(taskDescriptionSplit, description);
+            return addDeadlineTaskAndReturn(addTaskCommand, taskDescriptionSplit, description);
 
         case "event":
-            return addEventTaskAndReturn(taskDescriptionSplit, description);
+            return addEventTaskAndReturn(addTaskCommand, taskDescriptionSplit, description);
 
         default:
             return null;
         }
     }
 
-    private Task addTodoTaskAndReturn(String description) {
-        ToDo newTask = new ToDo(description);
+    private Task addTodoTaskAndReturn(String addTaskCommand, String description) {
+        ToDo newTask = new ToDo(description, addTaskCommand);
         addTask(newTask);
         return newTask;
     }
 
-    private Task addDeadlineTaskAndReturn(String[] taskDescriptionSplit, String description)
+    private Task addDeadlineTaskAndReturn(String addTaskCommand, String[] taskDescriptionSplit, String description)
             throws DeadlineNotEnoughInfoException {
         // Task description split must be length 2.
         if (taskDescriptionSplit.length < 2) {
@@ -88,13 +90,13 @@ public class TaskManager {
         }
 
         String deadlineDateTime = taskDescriptionSplit[1];
-        Deadline newTask = new Deadline(description, deadlineDateTime);
+        Deadline newTask = new Deadline(description, deadlineDateTime, addTaskCommand);
         addTask(newTask);
 
         return newTask;
     }
 
-    private Task addEventTaskAndReturn(String[] taskDescriptionSplit, String description)
+    private Task addEventTaskAndReturn(String addTaskCommand, String[] taskDescriptionSplit, String description)
             throws EventNotEnoughInfoException {
         // Task description split must be length 3.
         if (taskDescriptionSplit.length < 3) {
@@ -103,7 +105,7 @@ public class TaskManager {
 
         String startDateTime = taskDescriptionSplit[1];
         String endDateTime = taskDescriptionSplit[2];
-        Event newTask = new Event(description, startDateTime, endDateTime);
+        Event newTask = new Event(description, startDateTime, endDateTime, addTaskCommand);
         addTask(newTask);
 
         return newTask;
@@ -161,6 +163,7 @@ public class TaskManager {
     /**
      * Deletes the task located at the given task index.
      * Tells the file storage class to carry out the process.
+     * Also updates the most recently deleted task to be restored if undo is called.
      *
      * @param taskIndex The index where the deleted task is located at.
      * @return The deleted task itself to be prompted to the user.
@@ -170,6 +173,7 @@ public class TaskManager {
 
         Task taskToBeDeleted = tasks.get(taskIndex - 1);
         tasks.remove(taskToBeDeleted);
+        mostRecentDeletedTask = taskToBeDeleted;
 
         fileStorage.removeTask(taskIndex);
 
@@ -256,4 +260,9 @@ public class TaskManager {
     public boolean isTaskTypeExist(String type) {
         return TASK_TYPES.contains(type);
     }
+
+    public String getMostRecentDeletedTaskAddCommand() {
+        return mostRecentDeletedTask.getAddTaskCommand();
+    }
+
 }

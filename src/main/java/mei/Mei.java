@@ -40,7 +40,7 @@ public class Mei {
      * @param userInput The user input to redirect and get a response out of.
      */
     public void redirectInputToSetResponses(String userInput) {
-        inputManager.redirectInput(userInput);
+        inputManager.redirectInput(userInput, false);
     }
 
 }

@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import mei.tasks.Task;
+import mei.task.Task;
 
 /**
  * Represents a class that acts as a utility to write to the designated file path.

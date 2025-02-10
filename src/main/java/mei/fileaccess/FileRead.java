@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import mei.tasks.Deadline;
-import mei.tasks.Event;
-import mei.tasks.Task;
-import mei.tasks.ToDo;
+import mei.task.Deadline;
+import mei.task.Event;
+import mei.task.Task;
+import mei.task.ToDo;
 
 /**
  * Represents a class that acts as a utility to read from the designated file path.
@@ -51,7 +51,7 @@ public class FileRead {
 
     private Task processFileTaskData(String fileData) {
         String splitTaskFileDataRegex = "\\|";
-        String[] splitFileData = fileData.split(splitTaskFileDataRegex, 5);
+        String[] splitFileData = fileData.split(splitTaskFileDataRegex, 6);
         Task newTask = null;
 
         // Extract the necessary task fields.
@@ -61,16 +61,21 @@ public class FileRead {
 
         switch (taskType) {
         case "ToDo":
-            newTask = new ToDo(description);
+            String addTodoTaskCommand = splitFileData[3];
+            newTask = new ToDo(description, addTodoTaskCommand);
             break;
+
         case "Deadline":
             String deadlineDateTime = splitFileData[3];
-            newTask = new Deadline(description, deadlineDateTime);
+            String addDeadlineTaskCommand = splitFileData[4];
+            newTask = new Deadline(description, deadlineDateTime, addDeadlineTaskCommand);
             break;
+
         case "Event":
             String startDateTime = splitFileData[3];
             String endDateTime = splitFileData[4];
-            newTask = new Event(description, startDateTime, endDateTime);
+            String addEventTaskCommand = splitFileData[5];
+            newTask = new Event(description, startDateTime, endDateTime, addEventTaskCommand);
             break;
 
         default:

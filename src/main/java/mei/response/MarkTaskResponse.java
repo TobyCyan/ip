@@ -1,6 +1,6 @@
 package mei.response;
 
-import mei.tasks.Task;
+import mei.task.Task;
 
 /**
  * Represents the response to mark an existing user task.

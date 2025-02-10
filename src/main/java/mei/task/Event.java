@@ -1,4 +1,4 @@
-package mei.tasks;
+package mei.task;
 
 import java.time.LocalDateTime;
 
@@ -19,9 +19,10 @@ public class Event extends TimedTask {
      * @param description The description of this task.
      * @param startDateTime The starting date/time of this task.
      * @param endDateTime The ending date/time of this task.
+     * @param addTaskCommand The command used to add this task.
      */
-    public Event(String description, String startDateTime, String endDateTime) {
-        super(description);
+    public Event(String description, String startDateTime, String endDateTime, String addTaskCommand) {
+        super(description, addTaskCommand);
         this.startDateTime = convertDateTimeFormat(startDateTime);
         this.endDateTime = convertDateTimeFormat(endDateTime);
     }
@@ -33,8 +34,12 @@ public class Event extends TimedTask {
      * @return The string representation for writing to the save file.
      */
     public String getTaskDataString() {
-        return toRunTimeClassString() + "|" + getTaskStatusString() + "|" + super.description + "|"
-                + toFormattedDateTimeInputString(startDateTime) + "|" + toFormattedDateTimeInputString(endDateTime);
+        return toRunTimeClassString()
+                + "|" + getTaskStatusString()
+                + "|" + super.description
+                + "|" + toFormattedDateTimeInputString(startDateTime)
+                + "|" + toFormattedDateTimeInputString(endDateTime)
+                + "|" + super.addTaskCommand;
     }
 
     /**

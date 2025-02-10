@@ -1,18 +1,24 @@
 package mei.manager;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import mei.exception.EmptyMostRecentReversedInputException;
 import mei.exception.EmptyTaskDescriptionException;
 import mei.exception.MeiException;
 import mei.exception.TaskIndexOutOfBoundsException;
 import mei.exception.UnknownTaskTypeException;
 import mei.exception.UnknownUserInputException;
-import mei.tasks.Task;
+import mei.task.Task;
 
 /**
  *  Represents the manager for all user inputs towards the interaction with Mei.
  *  This class contains methods to interpret user input and redirect it to the appropriate managers.
  *  Acts as the middle-man between the user and other managers.
+ *  This manager also maintains a list of undo commands that the user can call undo on.
  */
 public class InputManager {
+    private static List<String> mostRecentUndoCommands = new ArrayList<>();
     private final TaskManager taskManager;
     private final ResponseManager responseManager;
 
@@ -34,12 +40,16 @@ public class InputManager {
      * This method can only receive a limited number of commands based on the keyword
      * (i.e. the first word of the given input.)
      * and the command is assumed to be a task command if none of the defined cases match.
+     * <p>
+     * Handles undo-ing of user command.
      *
      * @param input The user input to redirect.
+     * @param isUndoCommand Whether this input is an undo command.
      */
-    public void redirectInput(String input) {
+    public void redirectInput(String input, boolean isUndoCommand) {
         String[] splitInput = input.split(" ", 2);
         String keyword = splitInput[0];
+        boolean shouldUpdateMostRecentUndoCommand = false;
 
         switch (keyword) {
         case "list":
@@ -47,24 +57,37 @@ public class InputManager {
             break;
 
         case "mark":
-            redirectToMarkTaskOfIndex(splitInput[1]);
+            shouldUpdateMostRecentUndoCommand = isSuccessRedirectToMarkTaskOfIndex(splitInput[1]);
             break;
 
         case "unmark":
-            redirectToUnMarkTaskOfIndex(splitInput[1]);
+            shouldUpdateMostRecentUndoCommand = isSuccessRedirectToUnMarkTaskOfIndex(splitInput[1]);
             break;
 
         case "delete":
-            redirectToDeleteTaskOfIndex(splitInput[1]);
+            shouldUpdateMostRecentUndoCommand = isSuccessRedirectToDeleteTaskOfIndex(splitInput[1]);
             break;
 
         case "find":
             redirectToFindTasks(splitInput);
             break;
 
-        default:
-            redirectToAddTask(splitInput);
+        case "undo":
+            redirectToUndo();
+            break;
 
+        default:
+            shouldUpdateMostRecentUndoCommand = isSuccessRedirectToAddTask(splitInput);
+        }
+
+        // Pop the most recent reversed input if undo-ing.
+        if (isUndoCommand) {
+            popMostRecentUndoCommand();
+            return;
+        }
+
+        if (shouldUpdateMostRecentUndoCommand) {
+            mostRecentUndoCommands.add(reverseInput(splitInput));
         }
     }
 
@@ -92,34 +115,37 @@ public class InputManager {
         responseManager.makeListTasksResponse(tasksToBeListed);
     }
 
-    private void redirectToMarkTaskOfIndex(String taskIndexString) {
+    private boolean isSuccessRedirectToMarkTaskOfIndex(String taskIndexString) {
         int taskIndexToMark = Integer.parseInt(taskIndexString);
         if (isTaskIndexProblematic(taskIndexToMark)) {
-            return;
+            return false;
         }
 
         Task markedTask = taskManager.markTask(taskIndexToMark);
         responseManager.makeMarkTaskResponse(markedTask);
+        return true;
     }
 
-    private void redirectToUnMarkTaskOfIndex(String taskIndexString) {
+    private boolean isSuccessRedirectToUnMarkTaskOfIndex(String taskIndexString) {
         int taskIndexToUnmark = Integer.parseInt(taskIndexString);
         if (isTaskIndexProblematic(taskIndexToUnmark)) {
-            return;
+            return false;
         }
 
         Task unmarkedTask = taskManager.unmarkTask(taskIndexToUnmark);
         responseManager.makeUnmarkTaskResponse(unmarkedTask);
+        return true;
     }
 
-    private void redirectToDeleteTaskOfIndex(String taskIndexString) {
+    private boolean isSuccessRedirectToDeleteTaskOfIndex(String taskIndexString) {
         int taskIndexToDelete = Integer.parseInt(taskIndexString);
         if (isTaskIndexProblematic(taskIndexToDelete)) {
-            return;
+            return false;
         }
 
         Task deletedTask = taskManager.deleteTask(taskIndexToDelete);
         responseManager.makeDeleteTaskResponse(deletedTask);
+        return true;
     }
 
     private void redirectToFindTasks(String[] splitInput) {
@@ -135,7 +161,7 @@ public class InputManager {
         }
     }
 
-    private void redirectToAddTask(String[] splitInput) {
+    private boolean isSuccessRedirectToAddTask(String[] splitInput) {
         try {
             String taskType = splitInput[0];
 
@@ -150,7 +176,7 @@ public class InputManager {
             }
 
             String description = splitInput[1];
-            Task addedTask = taskManager.processAddTask(taskType, description);
+            Task addedTask = taskManager.processAddTask(String.join(" ", splitInput), taskType, description);
 
             // No new task is created, which means task type is unknown
             // or task description does not contain enough information to create a new task.
@@ -158,10 +184,90 @@ public class InputManager {
                 throw new UnknownTaskTypeException();
             } else {
                 responseManager.makeNewAddTaskResponse(addedTask);
+                return true;
             }
 
         } catch (MeiException e) {
             e.echoErrorResponse();
         }
+
+        return false;
     }
+
+    private void redirectToUndo() {
+        try {
+            if (mostRecentUndoCommands.isEmpty()) {
+                throw new EmptyMostRecentReversedInputException();
+            }
+
+            String mostRecentUndoCommand = getMostRecentUndoCommand();
+            redirectInput(mostRecentUndoCommand, true);
+
+        } catch (EmptyMostRecentReversedInputException e) {
+            e.echoErrorResponse();
+        }
+    }
+
+    /**
+     * Reverses the input to the opposite command.
+     * e.g. add -> delete, mark -> unmark and vice versa.
+     * This method assumes that only reversible inputs are passed in.
+     * The input is also mutated here.
+     *
+     * @param splitInput The split input to reverse.
+     * @return The reversed input command.
+     */
+    public String reverseInput(String[] splitInput) {
+        String command = splitInput[0];
+        String reversedCommand;
+
+        switch (command) {
+        case "mark":
+            reversedCommand = convertToUnmarkCommand(splitInput[1]);
+            break;
+
+        case "unmark":
+            reversedCommand = convertToMarkCommand(splitInput[1]);
+            break;
+
+        case "delete":
+            reversedCommand = convertToAddCommand(splitInput);
+            break;
+
+        default:
+            // case add.
+            reversedCommand = convertToDeleteCommand(splitInput);
+        }
+
+        return reversedCommand;
+    }
+
+    private String convertToDeleteCommand(String[] splitInput) {
+        String deleteCommand = "delete";
+        String taskIndexToDelete = String.valueOf(taskManager.getTotalTasks());
+        return deleteCommand + " " + taskIndexToDelete;
+    }
+
+    private String convertToAddCommand(String[] splitInput) {
+        return taskManager.getMostRecentDeletedTaskAddCommand();
+    }
+
+    private String convertToMarkCommand(String taskIndexString) {
+        String markCommand = "mark";
+        return markCommand + " " + taskIndexString;
+    }
+
+    private String convertToUnmarkCommand(String taskIndexString) {
+        String unmarkCommand = "unmark";
+        return unmarkCommand + " " + taskIndexString;
+    }
+
+    private String getMostRecentUndoCommand() {
+        return mostRecentUndoCommands.get(mostRecentUndoCommands.size() - 1);
+    }
+
+    private void popMostRecentUndoCommand() {
+        mostRecentUndoCommands.remove(mostRecentUndoCommands.size() - 1);
+    }
+
 }
