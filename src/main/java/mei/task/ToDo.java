@@ -1,4 +1,4 @@
-package mei.tasks;
+package mei.task;
 
 /**
  * Represents the todo task.
@@ -7,8 +7,16 @@ package mei.tasks;
  */
 public class ToDo extends Task {
 
-    public ToDo(String description) {
-        super(description);
+    /**
+     * Initializes a Todo task.
+     * The task description is trimmed.
+     * So that display and save formats will ignore leading and trailing spaces.
+     *
+     * @param description The description of this task.
+     * @param addTaskCommand The command used to add this task.
+     */
+    public ToDo(String description, String addTaskCommand) {
+        super(description, addTaskCommand);
     }
 
     /**

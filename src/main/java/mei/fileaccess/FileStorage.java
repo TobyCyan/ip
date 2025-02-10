@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import mei.tasks.Task;
+import mei.task.Task;
 
 /**
  * Represents the storage class that is responsible for interacting directly with the file-related calls.

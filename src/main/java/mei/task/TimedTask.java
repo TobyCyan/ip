@@ -1,4 +1,4 @@
-package mei.tasks;
+package mei.task;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -32,9 +32,10 @@ public class TimedTask extends Task {
      * into its LocalDateTime object.
      *
      * @param description The description of this task.
+     * @param addTaskCommand The command used to add this task.
      */
-    public TimedTask(String description) {
-        super(description);
+    public TimedTask(String description, String addTaskCommand) {
+        super(description, addTaskCommand);
         for (String format : INPUT_FORMATS) {
             INPUT_FORMATTERS.add(DateTimeFormatter.ofPattern(format));
         }

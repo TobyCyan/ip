@@ -1,4 +1,4 @@
-package mei.tasks;
+package mei.task;
 
 /**
  * Represents the base class for all tasks.
@@ -6,6 +6,7 @@ package mei.tasks;
  */
 public class Task {
     protected final String description;
+    protected final String addTaskCommand;
     private boolean isTaskDone;
 
     /**
@@ -14,10 +15,12 @@ public class Task {
      * So that display and save formats will ignore leading and trailing spaces.
      *
      * @param description The description of this task.
+     * @param addTaskCommand The command used to add this task.
      */
-    public Task(String description) {
+    public Task(String description, String addTaskCommand) {
         this.description = description.trim();
         this.isTaskDone = false;
+        this.addTaskCommand = addTaskCommand;
     }
 
     /**
@@ -36,7 +39,10 @@ public class Task {
      * @return The string representation for writing to the save file.
      */
     public String getTaskDataString() {
-        return toRunTimeClassString() + "|" + getTaskStatusString() + "|" + description;
+        return toRunTimeClassString()
+                + "|" + getTaskStatusString()
+                + "|" + description
+                + "|" + addTaskCommand;
     }
 
     /**
@@ -66,6 +72,15 @@ public class Task {
 
     public String toRunTimeClassString() {
         return getClass().getSimpleName();
+    }
+
+    /**
+     * Gets the task's command when it was added.
+     *
+     * @return The add task command of this task.
+     */
+    public String getAddTaskCommand() {
+        return addTaskCommand;
     }
 
     /**

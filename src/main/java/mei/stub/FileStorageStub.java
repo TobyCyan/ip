@@ -1,9 +1,6 @@
 package mei.stub;
 
 import mei.fileaccess.FileStorage;
-import mei.tasks.Task;
-
-import java.util.ArrayList;
 
 /**
  * Represents a stub class for the file storage.

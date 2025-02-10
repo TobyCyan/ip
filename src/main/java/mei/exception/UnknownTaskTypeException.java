@@ -5,8 +5,6 @@ package mei.exception;
  * The task type is invalid if it does not exist in the TASK_TYPES list defined within the Task Manager class.
  * echoErrorResponse should be called when this exception is caught.
  * This is classified as a task-related exception.
- * The error response is given based on the string array retrieved from the RESPONSE_MAP in the Response Manager
- * with the key of the same name excluding the exception word at the end.
  */
 public class UnknownTaskTypeException extends MeiException {
     private static final String[] ERROR_RESPONSES = new String[] {
