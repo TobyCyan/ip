@@ -1,6 +1,11 @@
 package mei.manager;
 
-import mei.exception.*;
+import mei.exception.EmptyMostRecentReversedInputException;
+import mei.exception.EmptyTaskDescriptionException;
+import mei.exception.MeiException;
+import mei.exception.TaskIndexOutOfBoundsException;
+import mei.exception.UnknownTaskTypeException;
+import mei.exception.UnknownUserInputException;
 import mei.task.Task;
 
 /**
@@ -34,7 +39,7 @@ public class InputManager {
      *
      * @param input The user input to redirect.
      */
-    public void redirectInput(String input) {
+    public void redirectInput(String input, boolean isUndoCommand) {
         String[] splitInput = input.split(" ", 2);
         String keyword = splitInput[0];
         boolean shouldUpdateMostRecentReversedInput = false;
@@ -66,7 +71,12 @@ public class InputManager {
 
         default:
             shouldUpdateMostRecentReversedInput = isSuccessRedirectToAddTask(splitInput);
+        }
 
+        // Reset the most recent reversed input if undo-ing.
+        if (isUndoCommand) {
+            mostRecentReversedInput = null;
+            return;
         }
 
         if (shouldUpdateMostRecentReversedInput) {
@@ -184,7 +194,8 @@ public class InputManager {
             }
             assert !mostRecentReversedInput.isEmpty()
                     : "most recent reversed input must be initialized.";
-            redirectInput(mostRecentReversedInput);
+
+            redirectInput(mostRecentReversedInput, true);
 
         } catch (EmptyMostRecentReversedInputException e) {
             e.echoErrorResponse();
