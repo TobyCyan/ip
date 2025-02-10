@@ -36,8 +36,11 @@ public class InputManager {
      * This method can only receive a limited number of commands based on the keyword
      * (i.e. the first word of the given input.)
      * and the command is assumed to be a task command if none of the defined cases match.
+     * <p>
+     * Handles undo-ing of user command.
      *
      * @param input The user input to redirect.
+     * @param isUndoCommand Whether this input is an undo command.
      */
     public void redirectInput(String input, boolean isUndoCommand) {
         String[] splitInput = input.split(" ", 2);
