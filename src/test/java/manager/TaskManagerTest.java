@@ -1,15 +1,16 @@
 package manager;
 
-import mei.manager.TaskManager;
-import org.junit.jupiter.api.Test;
-import mei.stub.FileStorageStub;
-import mei.task.Task;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import mei.manager.TaskManager;
+import mei.stub.FileStorageStub;
+import mei.task.Task;
+
 
 /**
  * Represents the class to test task manager methods.
@@ -37,7 +38,12 @@ public class TaskManagerTest {
 
         TaskManager tm = new TaskManager(tasks, fs);
         String[] actual = tm.getTaskStringsToDisplay();
-        String[] expected = new String[] {"1. [ ] task 1", "2. [ ] task 2", "3. [ ] task 3", "4. [ ] task 4", "5. [ ] task 5"};
+        String[] expected = new String[] {
+            "1. [ ] task 1",
+            "2. [ ] task 2",
+            "3. [ ] task 3",
+            "4. [ ] task 4",
+            "5. [ ] task 5"};
         assertArrayEquals(expected, actual);
     }
 

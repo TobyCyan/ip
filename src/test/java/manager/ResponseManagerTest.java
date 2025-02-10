@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import org.junit.jupiter.api.Test;
 
-import mei.task.Task;
 import mei.response.MarkTaskResponse;
 import mei.response.Response;
 import mei.response.UnmarkTaskResponse;
+import mei.task.Task;
 
 
 /**
