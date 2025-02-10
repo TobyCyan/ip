@@ -14,7 +14,7 @@ import mei.Mei;
  * Represents the main class for this application.
  */
 public class Main extends Application {
-    private Mei mei = new Mei("./taskdata/tasks.txt");
+    private Mei mei = new Mei("./../taskdata/tasks.txt");
 
     @Override
     public void start(Stage stage) {

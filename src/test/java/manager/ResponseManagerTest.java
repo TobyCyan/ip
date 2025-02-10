@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 import org.junit.jupiter.api.Test;
 
-import mei.tasks.Task;
+import mei.task.Task;
 import mei.response.MarkTaskResponse;
 import mei.response.Response;
 import mei.response.UnmarkTaskResponse;

@@ -1,11 +1,7 @@
 package mei.manager;
 
-import mei.exception.EmptyTaskDescriptionException;
-import mei.exception.MeiException;
-import mei.exception.TaskIndexOutOfBoundsException;
-import mei.exception.UnknownTaskTypeException;
-import mei.exception.UnknownUserInputException;
-import mei.tasks.Task;
+import mei.exception.*;
+import mei.task.Task;
 
 /**
  *  Represents the manager for all user inputs towards the interaction with Mei.
@@ -13,6 +9,7 @@ import mei.tasks.Task;
  *  Acts as the middle-man between the user and other managers.
  */
 public class InputManager {
+    private static String mostRecentReversedInput;
     private final TaskManager taskManager;
     private final ResponseManager responseManager;
 
@@ -40,6 +37,7 @@ public class InputManager {
     public void redirectInput(String input) {
         String[] splitInput = input.split(" ", 2);
         String keyword = splitInput[0];
+        boolean shouldUpdateMostRecentReversedInput = false;
 
         switch (keyword) {
         case "list":
@@ -47,24 +45,32 @@ public class InputManager {
             break;
 
         case "mark":
-            redirectToMarkTaskOfIndex(splitInput[1]);
+            shouldUpdateMostRecentReversedInput = isSuccessRedirectToMarkTaskOfIndex(splitInput[1]);
             break;
 
         case "unmark":
-            redirectToUnMarkTaskOfIndex(splitInput[1]);
+            shouldUpdateMostRecentReversedInput = isSuccessRedirectToUnMarkTaskOfIndex(splitInput[1]);
             break;
 
         case "delete":
-            redirectToDeleteTaskOfIndex(splitInput[1]);
+            shouldUpdateMostRecentReversedInput = isSuccessRedirectToDeleteTaskOfIndex(splitInput[1]);
             break;
 
         case "find":
             redirectToFindTasks(splitInput);
             break;
 
-        default:
-            redirectToAddTask(splitInput);
+        case "undo":
+            redirectToUndo();
+            break;
 
+        default:
+            shouldUpdateMostRecentReversedInput = isSuccessRedirectToAddTask(splitInput);
+
+        }
+
+        if (shouldUpdateMostRecentReversedInput) {
+            mostRecentReversedInput = reverseInput(splitInput);
         }
     }
 
@@ -92,34 +98,37 @@ public class InputManager {
         responseManager.makeListTasksResponse(tasksToBeListed);
     }
 
-    private void redirectToMarkTaskOfIndex(String taskIndexString) {
+    private boolean isSuccessRedirectToMarkTaskOfIndex(String taskIndexString) {
         int taskIndexToMark = Integer.parseInt(taskIndexString);
         if (isTaskIndexProblematic(taskIndexToMark)) {
-            return;
+            return false;
         }
 
         Task markedTask = taskManager.markTask(taskIndexToMark);
         responseManager.makeMarkTaskResponse(markedTask);
+        return true;
     }
 
-    private void redirectToUnMarkTaskOfIndex(String taskIndexString) {
+    private boolean isSuccessRedirectToUnMarkTaskOfIndex(String taskIndexString) {
         int taskIndexToUnmark = Integer.parseInt(taskIndexString);
         if (isTaskIndexProblematic(taskIndexToUnmark)) {
-            return;
+            return false;
         }
 
         Task unmarkedTask = taskManager.unmarkTask(taskIndexToUnmark);
         responseManager.makeUnmarkTaskResponse(unmarkedTask);
+        return true;
     }
 
-    private void redirectToDeleteTaskOfIndex(String taskIndexString) {
+    private boolean isSuccessRedirectToDeleteTaskOfIndex(String taskIndexString) {
         int taskIndexToDelete = Integer.parseInt(taskIndexString);
         if (isTaskIndexProblematic(taskIndexToDelete)) {
-            return;
+            return false;
         }
 
         Task deletedTask = taskManager.deleteTask(taskIndexToDelete);
         responseManager.makeDeleteTaskResponse(deletedTask);
+        return true;
     }
 
     private void redirectToFindTasks(String[] splitInput) {
@@ -135,7 +144,7 @@ public class InputManager {
         }
     }
 
-    private void redirectToAddTask(String[] splitInput) {
+    private boolean isSuccessRedirectToAddTask(String[] splitInput) {
         try {
             String taskType = splitInput[0];
 
@@ -150,7 +159,7 @@ public class InputManager {
             }
 
             String description = splitInput[1];
-            Task addedTask = taskManager.processAddTask(taskType, description);
+            Task addedTask = taskManager.processAddTask(String.join(" ", splitInput), taskType, description);
 
             // No new task is created, which means task type is unknown
             // or task description does not contain enough information to create a new task.
@@ -158,10 +167,82 @@ public class InputManager {
                 throw new UnknownTaskTypeException();
             } else {
                 responseManager.makeNewAddTaskResponse(addedTask);
+                return true;
             }
 
         } catch (MeiException e) {
             e.echoErrorResponse();
         }
+
+        return false;
     }
+
+    private void redirectToUndo() {
+        try {
+            if (mostRecentReversedInput == null) {
+                throw new EmptyMostRecentReversedInputException();
+            }
+            assert !mostRecentReversedInput.isEmpty()
+                    : "most recent reversed input must be initialized.";
+            redirectInput(mostRecentReversedInput);
+
+        } catch (EmptyMostRecentReversedInputException e) {
+            e.echoErrorResponse();
+        }
+    }
+
+    /**
+     * Reverses the input to the opposite command.
+     * e.g. add -> delete, mark -> unmark and vice versa.
+     * This method assumes that only reversible inputs are passed in.
+     * The input is also mutated here.
+     *
+     * @param splitInput The split input to reverse.
+     * @return The reversed input command.
+     */
+    public String reverseInput(String[] splitInput) {
+        String command = splitInput[0];
+        String reversedCommand;
+
+        switch (command) {
+        case "mark":
+            reversedCommand = convertToUnmarkCommand(splitInput[1]);
+            break;
+
+        case "unmark":
+            reversedCommand = convertToMarkCommand(splitInput[1]);
+            break;
+
+        case "delete":
+            reversedCommand = convertToAddCommand(splitInput);
+            break;
+
+        default:
+            // case add.
+            reversedCommand = convertToDeleteCommand(splitInput);
+        }
+
+        return reversedCommand;
+    }
+
+    private String convertToDeleteCommand(String[] splitInput) {
+        String deleteCommand = "delete";
+        String taskIndexToDelete = String.valueOf(taskManager.getTotalTasks());
+        return deleteCommand + " " + taskIndexToDelete;
+    }
+
+    private String convertToAddCommand(String[] splitInput) {
+        return taskManager.getMostRecentDeletedTaskAddCommand();
+    }
+
+    private String convertToMarkCommand(String taskIndexString) {
+        String markCommand = "mark";
+        return markCommand + " " + taskIndexString;
+    }
+
+    private String convertToUnmarkCommand(String taskIndexString) {
+        String unmarkCommand = "unmark";
+        return unmarkCommand + " " + taskIndexString;
+    }
+
 }

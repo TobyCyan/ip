@@ -6,7 +6,7 @@ import mei.response.FindTasksResponse;
 import mei.response.ListTasksResponse;
 import mei.response.MarkTaskResponse;
 import mei.response.UnmarkTaskResponse;
-import mei.tasks.Task;
+import mei.task.Task;
 
 /**
  * This is the manager responsible for managing Mei's responses.
@@ -36,7 +36,6 @@ public class ResponseManager {
 
         AddTaskResponse addTaskResponse = new AddTaskResponse(task, totalTasks);
         addTaskResponse.formResponsesAndSet();
-       
     }
 
     /**

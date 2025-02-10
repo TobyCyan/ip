@@ -3,7 +3,7 @@ package manager;
 import mei.manager.TaskManager;
 import org.junit.jupiter.api.Test;
 import mei.stub.FileStorageStub;
-import mei.tasks.Task;
+import mei.task.Task;
 
 import java.util.ArrayList;
 import java.util.List;

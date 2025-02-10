@@ -1,4 +1,4 @@
-package mei.tasks;
+package mei.task;
 
 import java.time.LocalDateTime;
 
@@ -16,9 +16,10 @@ public class Deadline extends TimedTask {
      *
      * @param description The description of this task.
      * @param deadlineDateTime The deadline date/time of this task.
+     * @param addTaskCommand The command used to add this task.
      */
-    public Deadline(String description, String deadlineDateTime) {
-        super(description);
+    public Deadline(String description, String deadlineDateTime, String addTaskCommand) {
+        super(description, addTaskCommand);
         this.deadlineDateTime = convertDateTimeFormat(deadlineDateTime);
     }
 
@@ -29,8 +30,20 @@ public class Deadline extends TimedTask {
      * @return The string representation for writing to the save file.
      */
     public String getTaskDataString() {
-        return toRunTimeClassString() + "|" + getTaskStatusString() + "|" + super.description + "|"
-                + toFormattedDateTimeInputString(deadlineDateTime);
+        return toRunTimeClassString()
+                + "|" + getTaskStatusString()
+                + "|" + super.description
+                + "|" + toFormattedDateTimeInputString(deadlineDateTime)
+                + "|" + super.addTaskCommand;
+    }
+
+    /**
+     * Represents the current task as the command used when it was first added.
+     *
+     * @return The add task command string.
+     */
+    public String toAddTaskCommandString() {
+        return addTaskCommand;
     }
 
     /**
