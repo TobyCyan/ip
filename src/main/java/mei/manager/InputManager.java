@@ -15,6 +15,7 @@ import mei.task.Task;
  *  Represents the manager for all user inputs towards the interaction with Mei.
  *  This class contains methods to interpret user input and redirect it to the appropriate managers.
  *  Acts as the middle-man between the user and other managers.
+ *  This manager also maintains a list of undo commands that the user can call undo on.
  */
 public class InputManager {
     private static List<String> mostRecentUndoCommands = new ArrayList<>();
