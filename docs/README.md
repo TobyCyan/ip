@@ -6,12 +6,12 @@
 And behold, your personal Task Managing Assistant, **Mei**!
 
 With **Mei**, you can:
-+ Add
-+ List
-+ Mark/ Unmark as complete
-+ Find
-+ Undo
-+ Save
+- [x]  Add
+- [x]  List
+- [x]  Mark/ Unmark as complete
+- [x]  Find
+- [x]  Undo
+- [x]  Save
 
 ***ALL your tasks***!! 🥳
 
@@ -65,7 +65,7 @@ Simply type `list`, and you can see:
 
 ## Marking/ Unmarking a Task
 
-> What's a task management assistant if she can't even mark/ unmark your tasks for you? - Me
+> What's a task management assistant if she can't even `mark`/ `unmark` your tasks for you? - Me
 
 To mark/ unmark the completion of your tasks, simply type:
 ```
@@ -74,7 +74,7 @@ unmark {task number}
 ```
 
 > [!TIP]
-> Use the list command to see the number of your tasks on the list!
+> Use the `list` command to see the number of your tasks on the list!
 
 For instance:
 ```
