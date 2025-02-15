@@ -2,13 +2,11 @@ package mei.fileaccess;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import mei.exception.DateTimeConversionException;
 import mei.exception.ProcessTaskDateTimeConversionException;
-import mei.exception.ProcessTaskException;
 import mei.task.Deadline;
 import mei.task.Event;
 import mei.task.Task;
@@ -45,7 +43,7 @@ public class FileRead {
 
         Scanner scanner = new Scanner(file);
 
-        return ScanTasksThenReturn(scanner);
+        return scanTasksThenReturn(scanner);
     }
 
     private Task processFileTaskData(String fileData) throws DateTimeConversionException {
@@ -91,18 +89,18 @@ public class FileRead {
         return newTask;
     }
 
-    private ArrayList<Task> ScanTasksThenReturn(Scanner scanner) {
+    private ArrayList<Task> scanTasksThenReturn(Scanner scanner) {
         ArrayList<Task> resultTasks = new ArrayList<>();
 
         while (scanner.hasNext()) {
             String newLine = scanner.nextLine();
-            ProcessThenAddTo(newLine, resultTasks);
+            processThenAddTo(newLine, resultTasks);
         }
 
         return resultTasks;
     }
 
-    private void ProcessThenAddTo(String newLine, ArrayList<Task> resultTasks) {
+    private void processThenAddTo(String newLine, ArrayList<Task> resultTasks) {
         try {
             Task taskData = processFileTaskData(newLine);
             resultTasks.add(taskData);
