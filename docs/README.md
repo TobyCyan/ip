@@ -8,13 +8,13 @@ This application is optimized for usage via a **Command Line Interface** (CLI) w
 
 With **Mei**, you can:
 - [x]  Add
-    - [Link ToDo](#adding-todos)
-    - [Link Deadlines & Events](#adding-deadlines-&-events)
-- [x]  [Link List](#listing-all-tasks)
-- [x]  [Link Mark/ Unmark as complete](#marking-unmarking-a-task)
-- [x]  [Link Find](#find-feature)
-- [x]  [Link Undo](#undo-feature)
-- [x]  [Link Save](#save-feature)
+    - [ToDo](#adding-todos)
+    - [Deadlines & Events](#adding-deadlines--events)
+- [x]  [List](#listing-all-tasks)
+- [x]  [Mark/ Unmark as complete](#marking-unmarking-a-task)
+- [x]  [Find](#find-feature)
+- [x]  [Undo](#undo-feature)
+- [x]  [Save](#save-feature)
 
 ***ALL your tasks***!! 🥳
 
