@@ -39,7 +39,7 @@ deadline {task name} /by {date/time}
 event {task name} /from {date/time} /to {date/time}
 ```
 
-> [!IMPORTANT]
+> **IMPORTANT**
 > The format of the date/time has to be in day/month/year HoursMinutes in the 24-hour time format.
 > However, you may swap out the `/` for `-`.
 > The day and year may be swapped too.
@@ -73,7 +73,7 @@ mark {task number}
 unmark {task number}
 ```
 
-> [!TIP]
+> **TIP**
 > Use the `list` command to see the number of your tasks on the list!
 
 For instance:
@@ -96,7 +96,7 @@ You may find any tasks by typing the following command:
 ```
 find {keyword}
 ```
-> [!NOTE]
+> **NOTE**
 > The keyword to find a task must be part of the task description!
 
 For instance:
@@ -114,7 +114,7 @@ You may expect an output like this:
 
 ## Save Feature
 
-> [!NOTE]
+> **NOTE**
 > You may be wondering, where do the tasks get saved to in your devices?
 > Well *fear not*! Here's the `main` method 😉
 > You may find all of your saved task data from the given relative path!
