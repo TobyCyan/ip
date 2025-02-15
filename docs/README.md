@@ -1,24 +1,35 @@
-# Duke User Guide
+# Mei User Guide
 
-// Update the title above to match the actual product name
+![Screenshot of the user interface.](/Ui.png)
 
-// Product screenshot goes here
+## Welcome User😄! 
+And behold, your personal Task Managing Assistant, **Mei**!
 
-// Product intro goes here
+With **Mei**, you can:
++ Add
++ Edit
++ Mark as complete
++ Unmark as complete
++ Save
++ List
 
-## Adding deadlines
+***ALL your tasks***!! 🥳
 
-// Describe the action and its outcome.
+## Adding ToDos
 
-// Give examples of usage
-
-Example: `keyword (optional arguments)`
-
-// A description of the expected outcome goes here
-
+You may add ToDo tasks by typing the following command:
 ```
-expected output
+todo {task name}
 ```
+
+For instance:
+```
+todo return books
+```
+
+You may expect an output like this:
+![Expected output for adding a ToDo task](./resources/images/AddToDoOutput.png)
+
 
 ## Feature ABC
 
