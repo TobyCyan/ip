@@ -6,12 +6,12 @@
 And behold, your personal Task Managing Assistant, **Mei**!
 
 With **Mei**, you can:
-+ Add
-+ List
-+ Mark/ Unmark as complete
-+ Find
-+ Undo
-+ Save
+- [x]  Add
+- [x]  List
+- [x]  Mark/ Unmark as complete
+- [x]  Find
+- [x]  Undo
+- [x]  Save
 
 ***ALL your tasks***!! 🥳
 
@@ -28,7 +28,8 @@ todo return books
 ```
 
 You may expect an output like this:
-![Expected output for adding a ToDo task](../resources/images/AddToDoOutput.png)
+
+![Expected output for adding a ToDo task](./AddToDoOutput.png)
 
 ## Adding Deadlines & Events
 
@@ -50,18 +51,21 @@ event watch a movie /from 2025-02-25 1100 /to 2025/02/25 1300
 ```
 
 You may expect an output like this:
-![Expected output for adding a Deadline task](../resources/images/AddDeadlineOutput.png)
-![Expected output for adding an Event task](../resources/images/AddEventOutput.png)
+
+![Expected output for adding a Deadline task](./AddDeadlineOutput.png)
+
+![Expected output for adding an Event task](./AddEventOutput.png)
 
 ## Listing All Tasks
 
 After adding a few tasks, you may want to see what you have added so far.
 Simply type `list`, and you can see:
-![Expected output for listing tasks.](../resources/images/ListOutput.png)
+
+![Expected output for listing tasks.](./ListOutput.png)
 
 ## Marking/ Unmarking a Task
 
-> What's a task management assistant if she can't even mark/ unmark your tasks for you? - Me
+> What's a task management assistant if she can't even `mark`/ `unmark` your tasks for you? - Me
 
 To mark/ unmark the completion of your tasks, simply type:
 ```
@@ -70,7 +74,7 @@ unmark {task number}
 ```
 
 > [!TIP]
-> Use the list command to see the number of your tasks on the list!
+> Use the `list` command to see the number of your tasks on the list!
 
 For instance:
 ```
@@ -79,8 +83,10 @@ unmark 1
 ```
 
 You may expect an output like this:
-![Expected output for marking a task](../resources/images/MarkOutput.png)
-![Expected output for unmarking a task](../resources/images/UnmarkOutput.png)
+
+![Expected output for marking a task](./MarkOutput.png)
+
+![Expected output for unmarking a task](./UnmarkOutput.png)
 
 
 ## Find Feature
@@ -99,7 +105,8 @@ find library
 ```
 
 You may expect an output like this:
-![Expected output for finding a task](../resources/images/FindOutput.png)
+
+![Expected output for finding a task](./FindOutput.png)
 
 ## Undo Feature
 
