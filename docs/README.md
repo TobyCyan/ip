@@ -1,6 +1,6 @@
 # Mei User Guide
 
-![Screenshot of the user interface.](./Ui.png)
+![Screenshot of the user interface.](Ui.png)
 
 ## Welcome User😄! 
 And behold, your personal Task Managing Assistant, **Mei**!
@@ -29,7 +29,7 @@ todo return books
 
 You may expect an output like this:
 
-![Expected output for adding a ToDo task](./AddToDoOutput.png)
+![Expected output for adding a ToDo task](AddToDoOutput.png)
 
 ## Adding Deadlines & Events
 
@@ -52,16 +52,16 @@ event watch a movie /from 2025-02-25 1100 /to 2025/02/25 1300
 
 You may expect an output like this:
 
-![Expected output for adding a Deadline task](./AddDeadlineOutput.png)
+![Expected output for adding a Deadline task](AddDeadlineOutput.png)
 
-![Expected output for adding an Event task](./AddEventOutput.png)
+![Expected output for adding an Event task](AddEventOutput.png)
 
 ## Listing All Tasks
 
 After adding a few tasks, you may want to see what you have added so far.
 Simply type `list`, and you can see:
 
-![Expected output for listing tasks.](./ListOutput.png)
+![Expected output for listing tasks.](ListOutput.png)
 
 ## Marking/ Unmarking a Task
 
@@ -84,9 +84,9 @@ unmark 1
 
 You may expect an output like this:
 
-![Expected output for marking a task](./MarkOutput.png)
+![Expected output for marking a task](MarkOutput.png)
 
-![Expected output for unmarking a task](./UnmarkOutput.png)
+![Expected output for unmarking a task](UnmarkOutput.png)
 
 
 ## Find Feature
@@ -106,7 +106,7 @@ find library
 
 You may expect an output like this:
 
-![Expected output for finding a task](./FindOutput.png)
+![Expected output for finding a task](FindOutput.png)
 
 ## Undo Feature
 
