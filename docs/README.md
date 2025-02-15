@@ -4,14 +4,17 @@
 
 ## Welcome User😄! 
 And behold, your personal Task Managing Assistant, **Mei**!
+This application is optimized for usage via a **Command Line Interface** (CLI) while still having a Graphical User Interface (GUI).
 
 With **Mei**, you can:
 - [x]  Add
-- [x]  List
-- [x]  Mark/ Unmark as complete
-- [x]  Find
-- [x]  Undo
-- [x]  Save
+    - [Link ToDo](#adding-todos)
+    - [Link Deadlines & Events](#adding-deadlines-&-events)
+- [x]  [Link List](#listing-all-tasks)
+- [x]  [Link Mark/ Unmark as complete](#marking-unmarking-a-task)
+- [x]  [Link Find](#find-feature)
+- [x]  [Link Undo](#undo-feature)
+- [x]  [Link Save](#save-feature)
 
 ***ALL your tasks***!! 🥳
 
