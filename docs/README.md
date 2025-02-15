@@ -18,6 +18,7 @@ With **Mei**, you can:
 
 ***ALL your tasks***!! 🥳
 
+
 ## Adding ToDos
 
 You may add ToDo tasks by typing the following command:
@@ -34,6 +35,7 @@ You may expect an output like this:
 
 ![Expected output for adding a ToDo task](AddToDoOutput.png)
 
+
 ## Adding Deadlines & Events
 
 You may add Deadline and Event tasks by typing the following command:
@@ -43,6 +45,7 @@ event {task name} /from {date/time} /to {date/time}
 ```
 
 > **IMPORTANT**
+> 
 > The format of the date/time has to be in day/month/year HoursMinutes in the 24-hour time format.
 > However, you may swap out the `/` for `-`.
 > The day and year may be swapped too.
@@ -59,12 +62,14 @@ You may expect an output like this:
 
 ![Expected output for adding an Event task](AddEventOutput.png)
 
+
 ## Listing All Tasks
 
 After adding a few tasks, you may want to see what you have added so far.
 Simply type `list`, and you can see:
 
 ![Expected output for listing tasks.](ListOutput.png)
+
 
 ## Marking/ Unmarking a Task
 
@@ -77,6 +82,7 @@ unmark {task number}
 ```
 
 > **TIP**
+> 
 > Use the `list` command to see the number of your tasks on the list!
 
 For instance:
@@ -100,6 +106,7 @@ You may find any tasks by typing the following command:
 find {keyword}
 ```
 > **NOTE**
+> 
 > The keyword to find a task must be part of the task description!
 
 For instance:
@@ -111,13 +118,16 @@ You may expect an output like this:
 
 ![Expected output for finding a task](FindOutput.png)
 
+
 ## Undo Feature
 
 **Undo** previous commands within the ***same*** user session by typing `undo`!
 
+
 ## Save Feature
 
 > **NOTE**
+> 
 > You may be wondering, where do the tasks get saved to in your devices?
 > Well *fear not*! Here's the `main` method 😉
 > You may find all of your saved task data from the given relative path!
