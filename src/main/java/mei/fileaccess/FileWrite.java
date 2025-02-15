@@ -13,8 +13,10 @@ import mei.task.Task;
 
 /**
  * Represents a class that acts as a utility to write to the designated file path.
- * This class holds methods that can write, overwrite, and remove task data that supposedly holds all the saved task data.
- * This class should not be interacted with directly but rather all methods here can be called from the FileStorage class.
+ * This class holds methods that can write, overwrite,
+ * and remove task data that supposedly holds all the saved task data.
+ * This class should not be interacted with directly but rather all methods here can be called
+ * from the FileStorage class.
  */
 public class FileWrite {
     private final String fileWritePath;
@@ -58,6 +60,8 @@ public class FileWrite {
     }
 
     /**
+     * Overwrites the task data at the given line number where it is located in the task data file.
+     * <p>
      * @@author TobyCyan-reused.
      * Reused from stackoverflow.com/questions/31375972/how-to-replace-a-specific-line-in-a-file-using-java
      * Overwrites a line of task data from the tasks.txt file at the given line number.
