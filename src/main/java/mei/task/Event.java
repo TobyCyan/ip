@@ -1,6 +1,9 @@
 package mei.task;
 
+import mei.exception.DateTimeConversionException;
+
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Represents the event task.
@@ -20,8 +23,9 @@ public class Event extends TimedTask {
      * @param startDateTime The starting date/time of this task.
      * @param endDateTime The ending date/time of this task.
      * @param addTaskCommand The command used to add this task.
+     * @throws DateTimeConversionException if the input deadlineDateTime doesn't match any of the valid formats.
      */
-    public Event(String description, String startDateTime, String endDateTime, String addTaskCommand) {
+    public Event(String description, String startDateTime, String endDateTime, String addTaskCommand) throws DateTimeConversionException {
         super(description, addTaskCommand);
         this.startDateTime = convertDateTimeFormat(startDateTime);
         this.endDateTime = convertDateTimeFormat(endDateTime);

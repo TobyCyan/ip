@@ -104,10 +104,12 @@ public class FileStorage {
         if (!isCreateParentDirSuccess) {
             throw new IOException("Parent directory creation failed.");
         }
+
         boolean isCreateFileSuccess = createFileUnderParent(file);
         if (!isCreateFileSuccess) {
             throw new IOException("File path creation failed.");
         }
+
         return true;
     }
 

@@ -23,6 +23,7 @@ public class Main extends Application {
             AnchorPane anchorPane = fxmlLoader.load();
             Scene scene = new Scene(anchorPane);
             stage.setScene(scene);
+            stage.setTitle("Mei");
             stage.setOnCloseRequest(event -> Platform.exit());
             fxmlLoader.<MainWindow>getController().setMei(mei);
             stage.show();

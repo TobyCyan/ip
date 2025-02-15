@@ -1,5 +1,7 @@
 package mei.task;
 
+import mei.exception.DateTimeConversionException;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -52,8 +54,9 @@ public class TimedTask extends Task {
      *
      * @param dateTime The datetime string to be parsed into a LocalDateTime object.
      * @return The LocalDateTime object of the given datetime string.
+     * @throws DateTimeConversionException If the input dateTime doesn't match any of the formats.
      */
-    public static LocalDateTime convertDateTimeFormat(String dateTime) {
+    public static LocalDateTime convertDateTimeFormat(String dateTime) throws DateTimeConversionException {
         for (DateTimeFormatter formatter : INPUT_FORMATTERS) {
             try {
                 return LocalDateTime.parse(dateTime.trim(), formatter);
@@ -62,8 +65,9 @@ public class TimedTask extends Task {
                 // any of the formatters and the parse method could throw an exception.
             }
         }
-        // Should throw an exception to show the valid date/time formats instead.
-        return null;
+
+        // Input is not in a valid format.
+        throw new DateTimeConversionException();
     }
 
     /**

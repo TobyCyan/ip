@@ -2,9 +2,13 @@ package mei.fileaccess;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import mei.exception.DateTimeConversionException;
+import mei.exception.ProcessTaskDateTimeConversionException;
+import mei.exception.ProcessTaskException;
 import mei.task.Deadline;
 import mei.task.Event;
 import mei.task.Task;
@@ -32,7 +36,6 @@ public class FileRead {
      * @throws IOException if an error occurred while reading from the task data file.
      */
     public ArrayList<Task> readFromFile() throws IOException {
-        ArrayList<Task> resultTasks = new ArrayList<>();
         File file = new File(fileReadPath);
 
         boolean isFilePathExist = FileStorage.isFilePathExist(file);
@@ -41,15 +44,11 @@ public class FileRead {
         }
 
         Scanner scanner = new Scanner(file);
-        while (scanner.hasNext()) {
-            Task taskData = processFileTaskData(scanner.nextLine());
-            resultTasks.add(taskData);
-        }
 
-        return resultTasks;
+        return ScanTasksThenReturn(scanner);
     }
 
-    private Task processFileTaskData(String fileData) {
+    private Task processFileTaskData(String fileData) throws DateTimeConversionException {
         String splitTaskFileDataRegex = "\\|";
         String[] splitFileData = fileData.split(splitTaskFileDataRegex, 6);
         Task newTask = null;
@@ -83,9 +82,36 @@ public class FileRead {
             break;
         }
 
-        if (newTask != null && isTaskDone) {
+        assert newTask != null : "Shouldn't encounter an empty line when scanning for tasks.";
+
+        if (isTaskDone) {
             newTask.completeTask();
         }
+
         return newTask;
+    }
+
+    private ArrayList<Task> ScanTasksThenReturn(Scanner scanner) {
+        ArrayList<Task> resultTasks = new ArrayList<>();
+
+        while (scanner.hasNext()) {
+            String newLine = scanner.nextLine();
+            ProcessThenAddTo(newLine, resultTasks);
+        }
+
+        return resultTasks;
+    }
+
+    private void ProcessThenAddTo(String newLine, ArrayList<Task> resultTasks) {
+        try {
+            Task taskData = processFileTaskData(newLine);
+            resultTasks.add(taskData);
+
+        } catch (DateTimeConversionException e) {
+            // A date/time conversion exception is thrown,
+            // but we want the chatbot to prompt a process task version of the exception instead.
+            ProcessTaskDateTimeConversionException trueException = new ProcessTaskDateTimeConversionException();
+            trueException.echoErrorResponse();
+        }
     }
 }

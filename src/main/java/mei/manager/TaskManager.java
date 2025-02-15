@@ -1,11 +1,9 @@
 package mei.manager;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import mei.exception.DateTimeConversionException;
 import mei.exception.DeadlineNotEnoughInfoException;
 import mei.exception.EventNotEnoughInfoException;
 import mei.exception.MeiException;
@@ -83,13 +81,14 @@ public class TaskManager {
     }
 
     private Task addDeadlineTaskAndReturn(String addTaskCommand, String[] taskDescriptionSplit, String description)
-            throws DeadlineNotEnoughInfoException {
-        // Task description split must be length 2.
+            throws DeadlineNotEnoughInfoException, DateTimeConversionException {
         if (taskDescriptionSplit.length < 2) {
             throw new DeadlineNotEnoughInfoException();
         }
 
         String deadlineDateTime = taskDescriptionSplit[1];
+
+        // A date/time conversion exception may be thrown here.
         Deadline newTask = new Deadline(description, deadlineDateTime, addTaskCommand);
         addTask(newTask);
 
@@ -97,14 +96,15 @@ public class TaskManager {
     }
 
     private Task addEventTaskAndReturn(String addTaskCommand, String[] taskDescriptionSplit, String description)
-            throws EventNotEnoughInfoException {
-        // Task description split must be length 3.
+            throws EventNotEnoughInfoException, DateTimeConversionException {
         if (taskDescriptionSplit.length < 3) {
             throw new EventNotEnoughInfoException();
         }
 
         String startDateTime = taskDescriptionSplit[1];
         String endDateTime = taskDescriptionSplit[2];
+
+        // A date/time conversion exception may be thrown here.
         Event newTask = new Event(description, startDateTime, endDateTime, addTaskCommand);
         addTask(newTask);
 
@@ -125,7 +125,6 @@ public class TaskManager {
 
     /**
      * Marks the given task as completed.
-     * TODO: (Optional) Add a response when user tries to mark a task that is already marked.
      *
      * @param taskIndex The index of the task to be marked as completed.
      * @return The completed task itself.
@@ -144,7 +143,6 @@ public class TaskManager {
     /**
      * Marks the given task as incomplete.
      * Tells the file storage class to carry out the process.
-     * TODO: (Optional) Add a response when user tries to unmark a task that isn't marked.
      *
      * @param taskIndex The index of the task to be marked as incomplete.
      * @return The unmarked task itself to be prompted to the user.
