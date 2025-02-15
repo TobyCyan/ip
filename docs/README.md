@@ -28,6 +28,7 @@ todo return books
 ```
 
 You may expect an output like this:
+
 ![Expected output for adding a ToDo task](../resources/images/AddToDoOutput.png)
 
 ## Adding Deadlines & Events
@@ -50,13 +51,16 @@ event watch a movie /from 2025-02-25 1100 /to 2025/02/25 1300
 ```
 
 You may expect an output like this:
+
 ![Expected output for adding a Deadline task](../resources/images/AddDeadlineOutput.png)
+
 ![Expected output for adding an Event task](../resources/images/AddEventOutput.png)
 
 ## Listing All Tasks
 
 After adding a few tasks, you may want to see what you have added so far.
 Simply type `list`, and you can see:
+
 ![Expected output for listing tasks.](../resources/images/ListOutput.png)
 
 ## Marking/ Unmarking a Task
@@ -79,7 +83,9 @@ unmark 1
 ```
 
 You may expect an output like this:
+
 ![Expected output for marking a task](../resources/images/MarkOutput.png)
+
 ![Expected output for unmarking a task](../resources/images/UnmarkOutput.png)
 
 
@@ -99,6 +105,7 @@ find library
 ```
 
 You may expect an output like this:
+
 ![Expected output for finding a task](../resources/images/FindOutput.png)
 
 ## Undo Feature
