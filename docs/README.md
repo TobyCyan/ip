@@ -1,6 +1,6 @@
 # Mei User Guide
 
-![Screenshot of the user interface.](/Ui.png)
+![Screenshot of the user interface.](./Ui.png)
 
 ## Welcome User😄! 
 And behold, your personal Task Managing Assistant, **Mei**!
@@ -28,7 +28,7 @@ todo return books
 ```
 
 You may expect an output like this:
-![Expected output for adding a ToDo task](./resources/images/AddToDoOutput.png)
+![Expected output for adding a ToDo task](../resources/images/AddToDoOutput.png)
 
 
 ## Feature ABC
