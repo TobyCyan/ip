@@ -1,19 +1,23 @@
 # Mei User Guide
 
-![Screenshot of the user interface.](./Ui.png)
+![Screenshot of the user interface.](Ui.png)
 
 ## Welcome User😄! 
 And behold, your personal Task Managing Assistant, **Mei**!
+This application is optimized for usage via a **Command Line Interface** (CLI) while still having a Graphical User Interface (GUI).
 
 With **Mei**, you can:
 - [x]  Add
-- [x]  List
-- [x]  Mark/ Unmark as complete
-- [x]  Find
-- [x]  Undo
-- [x]  Save
+    - [ToDo](#adding-todos)
+    - [Deadlines & Events](#adding-deadlines--events)
+- [x]  [List](#listing-all-tasks)
+- [x]  [Mark/ Unmark as complete](#marking-unmarking-a-task)
+- [x]  [Find](#find-feature)
+- [x]  [Undo](#undo-feature)
+- [x]  [Save](#save-feature)
 
 ***ALL your tasks***!! 🥳
+
 
 ## Adding ToDos
 
@@ -29,7 +33,8 @@ todo return books
 
 You may expect an output like this:
 
-![Expected output for adding a ToDo task](./AddToDoOutput.png)
+![Expected output for adding a ToDo task](AddToDoOutput.png)
+
 
 ## Adding Deadlines & Events
 
@@ -39,7 +44,8 @@ deadline {task name} /by {date/time}
 event {task name} /from {date/time} /to {date/time}
 ```
 
-> [!IMPORTANT]
+> **IMPORTANT**
+> 
 > The format of the date/time has to be in day/month/year HoursMinutes in the 24-hour time format.
 > However, you may swap out the `/` for `-`.
 > The day and year may be swapped too.
@@ -52,16 +58,18 @@ event watch a movie /from 2025-02-25 1100 /to 2025/02/25 1300
 
 You may expect an output like this:
 
-![Expected output for adding a Deadline task](./AddDeadlineOutput.png)
+![Expected output for adding a Deadline task](AddDeadlineOutput.png)
 
-![Expected output for adding an Event task](./AddEventOutput.png)
+![Expected output for adding an Event task](AddEventOutput.png)
+
 
 ## Listing All Tasks
 
 After adding a few tasks, you may want to see what you have added so far.
 Simply type `list`, and you can see:
 
-![Expected output for listing tasks.](./ListOutput.png)
+![Expected output for listing tasks.](ListOutput.png)
+
 
 ## Marking/ Unmarking a Task
 
@@ -73,7 +81,8 @@ mark {task number}
 unmark {task number}
 ```
 
-> [!TIP]
+> **TIP**
+> 
 > Use the `list` command to see the number of your tasks on the list!
 
 For instance:
@@ -84,9 +93,9 @@ unmark 1
 
 You may expect an output like this:
 
-![Expected output for marking a task](./MarkOutput.png)
+![Expected output for marking a task](MarkOutput.png)
 
-![Expected output for unmarking a task](./UnmarkOutput.png)
+![Expected output for unmarking a task](UnmarkOutput.png)
 
 
 ## Find Feature
@@ -96,7 +105,8 @@ You may find any tasks by typing the following command:
 ```
 find {keyword}
 ```
-> [!NOTE]
+> **NOTE**
+> 
 > The keyword to find a task must be part of the task description!
 
 For instance:
@@ -106,15 +116,18 @@ find library
 
 You may expect an output like this:
 
-![Expected output for finding a task](./FindOutput.png)
+![Expected output for finding a task](FindOutput.png)
+
 
 ## Undo Feature
 
 **Undo** previous commands within the ***same*** user session by typing `undo`!
 
+
 ## Save Feature
 
-> [!NOTE]
+> **NOTE**
+> 
 > You may be wondering, where do the tasks get saved to in your devices?
 > Well *fear not*! Here's the `main` method 😉
 > You may find all of your saved task data from the given relative path!
