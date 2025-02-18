@@ -48,7 +48,7 @@ public class FileWrite {
             if (isCreateFilePathSuccess) {
                 appendToFile(taskDataAsString);
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             System.out.println("Error creating file path: " + e.getMessage());
         }
     }
