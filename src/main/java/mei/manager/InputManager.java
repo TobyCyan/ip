@@ -116,7 +116,7 @@ public class InputManager {
     }
 
     private boolean isSuccessRedirectToMarkTaskOfIndex(String taskIndexString) {
-        int taskIndexToMark = Integer.parseInt(taskIndexString);
+        int taskIndexToMark = parseInputToInteger(taskIndexString);
         if (isTaskIndexProblematic(taskIndexToMark)) {
             return false;
         }
@@ -127,7 +127,7 @@ public class InputManager {
     }
 
     private boolean isSuccessRedirectToUnMarkTaskOfIndex(String taskIndexString) {
-        int taskIndexToUnmark = Integer.parseInt(taskIndexString);
+        int taskIndexToUnmark = parseInputToInteger(taskIndexString);
         if (isTaskIndexProblematic(taskIndexToUnmark)) {
             return false;
         }
@@ -138,7 +138,7 @@ public class InputManager {
     }
 
     private boolean isSuccessRedirectToDeleteTaskOfIndex(String taskIndexString) {
-        int taskIndexToDelete = Integer.parseInt(taskIndexString);
+        int taskIndexToDelete = parseInputToInteger(taskIndexString);
         if (isTaskIndexProblematic(taskIndexToDelete)) {
             return false;
         }
@@ -268,6 +268,16 @@ public class InputManager {
 
     private void popMostRecentUndoCommand() {
         mostRecentUndoCommands.remove(mostRecentUndoCommands.size() - 1);
+    }
+
+    private int parseInputToInteger(String input) {
+        int invalidNumber = -1;
+
+        try {
+            return Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            return invalidNumber;
+        }
     }
 
 }

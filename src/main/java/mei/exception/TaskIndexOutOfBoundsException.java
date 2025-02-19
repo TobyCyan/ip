@@ -9,7 +9,8 @@ package mei.exception;
 public class TaskIndexOutOfBoundsException extends MeiException {
     private static final String[] ERROR_RESPONSES = new String[] {
         "Hmm..? This task number doesn't seem to be"
-            + " on the list...", "Can you repeat with a valid one? :3"
+            + " on the list...", "Can you repeat with a valid one? :3",
+        "Hint: Use numbers that appear on the list!"
     };
 
     public TaskIndexOutOfBoundsException() {

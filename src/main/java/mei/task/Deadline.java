@@ -3,7 +3,6 @@ package mei.task;
 import mei.exception.DateTimeConversionException;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * Represents the deadline task.
