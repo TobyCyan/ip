@@ -9,7 +9,7 @@ package mei.exception;
 public class DateTimeConversionException extends MeiException {
     private static final String[] ERROR_RESPONSES = new String[] {
         "Oh, forgot to tell you, I would prefer the dates and timings given in this format.",
-        "day/month/year HoursMinutes, you could swap the / for - too!",
+        "day/month/year HoursMinutes, you could swap all the / for - too! (Must swap all or none :3)",
         "And feel free to swap the placements of the day and year.",
         "For example, 25/02/2025 1600, 2026-01-16 0800 are both valid date/times!"
     };

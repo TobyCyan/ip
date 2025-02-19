@@ -1,12 +1,12 @@
 package mei.task;
 
-import mei.exception.DateTimeConversionException;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import mei.exception.DateTimeConversionException;
 
 /**
  * Represents the base class for timed tasks.
