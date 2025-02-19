@@ -270,6 +270,15 @@ public class InputManager {
         mostRecentUndoCommands.remove(mostRecentUndoCommands.size() - 1);
     }
 
+    /**
+     * Parses the given string input into its int type and returns it.
+     * There is no assumption that the input must be a number as a string,
+     * so an invalid number is returned in the case of an invalid input.
+     * This invalid number will later be handled by the isTaskIndexProblematic method.
+     *
+     * @param input The input to parse.
+     * @return The int value of the input, or an invalid number if the input isn't a number string.
+     */
     private int parseInputToInteger(String input) {
         int invalidNumber = -1;
 

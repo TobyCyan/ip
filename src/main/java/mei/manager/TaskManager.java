@@ -1,12 +1,12 @@
 package mei.manager;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import mei.exception.DateTimeConversionException;
-import mei.exception.DeadlineNotEnoughInfoException;
-import mei.exception.EventNotEnoughInfoException;
-import mei.exception.MeiException;
+import mei.exception.*;
 import mei.fileaccess.FileStorage;
 import mei.task.Deadline;
 import mei.task.Event;
@@ -54,20 +54,17 @@ public class TaskManager {
      * @param taskDescriptionAsCommand The description of the task as a command.
      * @return The processed task itself, or null if the task type does not match any of the valid types.
      */
-    public Task processAddTask(String addTaskCommand, String taskType, String taskDescriptionAsCommand) throws MeiException {
-        String taskStringSplitRegex = "(/from|/by|/to)";
-        String[] taskDescriptionSplit = taskDescriptionAsCommand.split(taskStringSplitRegex, 3);
-        String description = taskDescriptionSplit[0];
-
+    public Task processAddTask(String addTaskCommand, String taskType, String taskDescriptionAsCommand)
+            throws MeiException {
         switch (taskType) {
         case "todo":
-            return addTodoTaskAndReturn(addTaskCommand, description);
+            return addTodoTaskAndReturn(addTaskCommand, taskDescriptionAsCommand);
 
         case "deadline":
-            return addDeadlineTaskAndReturn(addTaskCommand, taskDescriptionSplit, description);
+            return addDeadlineTaskAndReturn(addTaskCommand, taskDescriptionAsCommand);
 
         case "event":
-            return addEventTaskAndReturn(addTaskCommand, taskDescriptionSplit, description);
+            return addEventTaskAndReturn(addTaskCommand, taskDescriptionAsCommand);
 
         default:
             return null;
@@ -75,17 +72,22 @@ public class TaskManager {
     }
 
     private Task addTodoTaskAndReturn(String addTaskCommand, String description) {
+
         ToDo newTask = new ToDo(description, addTaskCommand);
         addTask(newTask);
         return newTask;
     }
 
-    private Task addDeadlineTaskAndReturn(String addTaskCommand, String[] taskDescriptionSplit, String description)
+    private Task addDeadlineTaskAndReturn(String addTaskCommand, String taskDescriptionAsCommand)
             throws DeadlineNotEnoughInfoException, DateTimeConversionException {
+        String taskStringSplitRegex = "/by";
+        String[] taskDescriptionSplit = taskDescriptionAsCommand.split(taskStringSplitRegex, 2);
+
         if (taskDescriptionSplit.length < 2) {
             throw new DeadlineNotEnoughInfoException();
         }
 
+        String description = taskDescriptionSplit[0];
         String deadlineDateTime = taskDescriptionSplit[1];
 
         // A date/time conversion exception may be thrown here.
@@ -95,12 +97,16 @@ public class TaskManager {
         return newTask;
     }
 
-    private Task addEventTaskAndReturn(String addTaskCommand, String[] taskDescriptionSplit, String description)
-            throws EventNotEnoughInfoException, DateTimeConversionException {
+    private Task addEventTaskAndReturn(String addTaskCommand, String taskDescriptionAsCommand)
+            throws EventNotEnoughInfoException, DateTimeConversionException, DatesNotInOrderException {
+        String taskStringSplitRegex = "(/from|/to)";
+        String[] taskDescriptionSplit = taskDescriptionAsCommand.split(taskStringSplitRegex, 3);
+
         if (taskDescriptionSplit.length < 3) {
             throw new EventNotEnoughInfoException();
         }
 
+        String description = taskDescriptionSplit[0];
         String startDateTime = taskDescriptionSplit[1];
         String endDateTime = taskDescriptionSplit[2];
 

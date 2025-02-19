@@ -71,6 +71,18 @@ public class TimedTask extends Task {
     }
 
     /**
+     * Checks whether the start and end dates are in order,
+     * which means the start date cannot be after the end date.
+     *
+     * @param startDate The start date.
+     * @param endDate The end date.
+     * @return true or false depending on whether start and end dates are in order.
+     */
+    public static boolean isInOrder(LocalDateTime startDate, LocalDateTime endDate) {
+        return startDate.isBefore(endDate);
+    }
+
+    /**
      * Formats the datetime object into a string that can be read/ write in the output format.
      * Mainly used for displaying the task's datetime in a more readable format.
      *

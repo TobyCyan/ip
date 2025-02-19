@@ -1,9 +1,9 @@
 package mei.task;
 
-import mei.exception.DateTimeConversionException;
-
 import java.time.LocalDateTime;
-import java.util.Date;
+
+import mei.exception.DateTimeConversionException;
+import mei.exception.DatesNotInOrderException;
 
 /**
  * Represents the event task.
@@ -25,10 +25,15 @@ public class Event extends TimedTask {
      * @param addTaskCommand The command used to add this task.
      * @throws DateTimeConversionException if the input deadlineDateTime doesn't match any of the valid formats.
      */
-    public Event(String description, String startDateTime, String endDateTime, String addTaskCommand) throws DateTimeConversionException {
+    public Event(String description, String startDateTime, String endDateTime, String addTaskCommand)
+            throws DateTimeConversionException, DatesNotInOrderException {
         super(description, addTaskCommand);
         this.startDateTime = convertDateTimeFormat(startDateTime);
         this.endDateTime = convertDateTimeFormat(endDateTime);
+
+        if (!isInOrder(this.startDateTime, this.endDateTime)) {
+            throw new DatesNotInOrderException();
+        }
     }
 
     /**

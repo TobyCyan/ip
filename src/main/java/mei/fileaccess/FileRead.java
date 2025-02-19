@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import mei.exception.DateTimeConversionException;
+import mei.exception.DatesNotInOrderException;
 import mei.exception.ProcessTaskDateTimeConversionException;
 import mei.task.Deadline;
 import mei.task.Event;
@@ -48,7 +49,8 @@ public class FileRead {
         return scanTasksThenReturn(scanner);
     }
 
-    private Task processFileTaskData(String fileData) throws DateTimeConversionException {
+    private Task processFileTaskData(String fileData)
+            throws DateTimeConversionException, DatesNotInOrderException {
         String splitTaskFileDataRegex = "\\|";
         String[] splitFileData = fileData.split(splitTaskFileDataRegex, 6);
         Task newTask = null;
@@ -112,6 +114,8 @@ public class FileRead {
             // but we want the chatbot to prompt a process task version of the exception instead.
             ProcessTaskDateTimeConversionException trueException = new ProcessTaskDateTimeConversionException();
             trueException.echoErrorResponse();
+        } catch (DatesNotInOrderException e) {
+            e.echoErrorResponse();
         }
     }
 }

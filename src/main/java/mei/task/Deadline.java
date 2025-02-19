@@ -1,8 +1,9 @@
 package mei.task;
 
+import java.time.LocalDateTime;
+
 import mei.exception.DateTimeConversionException;
 
-import java.time.LocalDateTime;
 
 /**
  * Represents the deadline task.
@@ -21,7 +22,8 @@ public class Deadline extends TimedTask {
      * @param addTaskCommand The command used to add this task.
      * @throws DateTimeConversionException if the input deadlineDateTime doesn't match any of the valid formats.
      */
-    public Deadline(String description, String deadlineDateTime, String addTaskCommand) throws DateTimeConversionException {
+    public Deadline(String description, String deadlineDateTime, String addTaskCommand)
+            throws DateTimeConversionException {
         super(description, addTaskCommand);
         this.deadlineDateTime = convertDateTimeFormat(deadlineDateTime);
     }
