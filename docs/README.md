@@ -18,6 +18,16 @@ With **Mei**, you can:
 
 ***ALL your tasks***!! 🥳
 
+## Getting Started
+
+Follow these steps to start chatting with Mei:
+1. Download this [JAR file.](https://github.com/TobyCyan/ip/releases/download/A-Release/mei.jar)
+2. Move/ copy it to an empty folder.
+3. Open up your command prompt.
+4. Navigate to the folder where the JAR file is at using the `cd` command.
+5. Type `java -jar mei.jar` to launch the application.
+6. **All Done!** You may proceed to chat with Mei 🥳
+
 
 ## Adding ToDos
 
@@ -47,7 +57,7 @@ event {task name} /from {date/time} /to {date/time}
 > **IMPORTANT**
 > 
 > The format of the date/time has to be in day/month/year HoursMinutes in the 24-hour time format.
-> However, you may swap out the `/` for `-`.
+> However, you may swap out the `/` for `-`, but it also has to be either all `/` or `-`!
 > The day and year may be swapped too.
 
 For instance:
@@ -131,6 +141,8 @@ You may expect an output like this:
 > You may be wondering, where do the tasks get saved to in your devices?
 > Well *fear not*! Here's the `main` method 😉
 > You may find all of your saved task data from the given relative path!
+> 
+> Note that this path is relative to the folder that the .jar file is kept in.
 ```java
 public static void main(String[] args) {
     new Mei("./taskdata/tasks.txt").run();
